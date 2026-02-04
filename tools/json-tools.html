@@ -100,6 +100,14 @@
     <div id="fullscreen-overlay" class="fullscreen-overlay" hidden>
         <div class="fullscreen-header">
             <span class="fullscreen-title">Output</span>
+            <div class="fullscreen-actions-left">
+                <button class="action-btn" id="format-btn-fs" onclick="formatJSONFullscreen()" title="Format" aria-label="Format">
+                    <span class="action-icon">{ }</span>
+                </button>
+                <button class="action-btn" id="minify-btn-fs" onclick="minifyJSONFullscreen()" title="Minify" aria-label="Minify">
+                    <span class="action-icon">⊖</span>
+                </button>
+            </div>
             <div class="fullscreen-actions">
                 <button class="action-btn tree-only-btn-fs" id="collapse-btn-fs" onclick="collapseAllFullscreen()" title="Collapse all" style="display: none;">
                     <span class="action-icon">⊟</span>
@@ -107,6 +115,13 @@
                 <button class="action-btn tree-only-btn-fs" id="expand-btn-fs" onclick="expandAllFullscreen()" title="Expand all" style="display: none;">
                     <span class="action-icon">⊞</span>
                 </button>
+                <button class="action-btn" onclick="clearOutputFullscreen()" title="Clear output" aria-label="Clear output">
+                    <span class="action-icon">✕</span>
+                </button>
+                <button class="copy-btn" onclick="copyOutputFullscreen()" title="Copy to clipboard" aria-label="Copy to clipboard">
+                    <span class="copy-icon">📋</span>
+                </button>
+                <span class="char-count" id="output-count-fs">0 characters</span>
                 <button class="fullscreen-close-btn" id="fullscreen-close-btn" title="Exit fullscreen (Esc)">
                     ✕ Close
                 </button>

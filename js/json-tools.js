@@ -316,6 +316,8 @@ function toggleOutputFullscreen() {
         toggleFullscreen('json-output');
         // Hide tree buttons in fullscreen
         document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
+        // Update character count
+        updateFullscreenOutputCount(textOutput.value.length);
     } else {
         toggleFullscreen('tree-output');
         // Show tree buttons in fullscreen
@@ -323,6 +325,9 @@ function toggleOutputFullscreen() {
         // Re-attach tree handlers to cloned content
         const fullscreenContent = document.getElementById('fullscreen-content');
         setTimeout(() => addTreeHandlersToContainer(fullscreenContent), 0);
+        // Clear character count for tree view
+        updateFullscreenOutputCount(0);
+        document.getElementById('output-count-fs').textContent = '';
     }
 }
 
@@ -408,4 +413,140 @@ function addTreeHandlersToContainer(container) {
             }
         });
     });
+}
+
+// Format JSON in fullscreen
+function formatJSONFullscreen() {
+    const input = document.getElementById('json-input').value;
+    if (!input.trim()) {
+        showStatus('status-bar', 'Please enter JSON to format', 'error');
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(input);
+        const formatted = JSON.stringify(parsed, null, 2);
+        // Update the main output
+        document.getElementById('json-output').value = formatted;
+        showTextOutput();
+        updateOutputCount(formatted.length);
+        // Update fullscreen content directly
+        const fullscreenContent = document.getElementById('fullscreen-content');
+        let textarea = fullscreenContent.querySelector('textarea');
+        if (!textarea) {
+            // Switch from tree view to textarea
+            fullscreenContent.innerHTML = '';
+            textarea = document.createElement('textarea');
+            textarea.id = 'json-output-fs';
+            textarea.readOnly = true;
+            fullscreenContent.appendChild(textarea);
+            // Hide tree buttons, show text buttons
+            document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
+        }
+        textarea.value = formatted;
+        updateFullscreenOutputCount(formatted.length);
+        showStatus('status-bar', '✓ JSON formatted successfully', 'success');
+    } catch (error) {
+        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+    }
+}
+
+// Minify JSON in fullscreen
+function minifyJSONFullscreen() {
+    const input = document.getElementById('json-input').value;
+    if (!input.trim()) {
+        showStatus('status-bar', 'Please enter JSON to minify', 'error');
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(input);
+        const minified = JSON.stringify(parsed);
+        // Update the main output
+        document.getElementById('json-output').value = minified;
+        showTextOutput();
+        updateOutputCount(minified.length);
+        // Update fullscreen content directly
+        const fullscreenContent = document.getElementById('fullscreen-content');
+        let textarea = fullscreenContent.querySelector('textarea');
+        if (!textarea) {
+            // Switch from tree view to textarea
+            fullscreenContent.innerHTML = '';
+            textarea = document.createElement('textarea');
+            textarea.id = 'json-output-fs';
+            textarea.readOnly = true;
+            fullscreenContent.appendChild(textarea);
+            // Hide tree buttons
+            document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
+        }
+        textarea.value = minified;
+        updateFullscreenOutputCount(minified.length);
+        showStatus('status-bar', '✓ JSON minified successfully', 'success');
+    } catch (error) {
+        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+    }
+}
+
+// Clear output in fullscreen
+function clearOutputFullscreen() {
+    const fullscreenContent = document.getElementById('fullscreen-content');
+    const textarea = fullscreenContent.querySelector('textarea');
+    const treeView = fullscreenContent.querySelector('.tree-view');
+
+    if (textarea) {
+        textarea.value = '';
+        document.getElementById('json-output').value = '';
+    }
+    if (treeView) {
+        treeView.innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
+        document.getElementById('tree-output').innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
+    }
+
+    updateOutputCount(0);
+    updateFullscreenOutputCount(0);
+    showStatus('status-bar', '✓ Output cleared', 'success');
+}
+
+// Copy output in fullscreen
+function copyOutputFullscreen() {
+    const fullscreenContent = document.getElementById('fullscreen-content');
+    const textarea = fullscreenContent.querySelector('textarea');
+    const treeView = fullscreenContent.querySelector('.tree-view');
+
+    let text = '';
+    if (textarea) {
+        text = textarea.value;
+    } else if (treeView) {
+        text = treeView.textContent || treeView.innerText;
+    }
+
+    if (!text.trim()) {
+        showStatus('status-bar', 'Nothing to copy', 'error');
+        return;
+    }
+
+    copyToClipboard(text).then(() => {
+        showStatus('status-bar', '✓ Copied to clipboard', 'success');
+        // Visual feedback on button
+        const btn = document.querySelector('.fullscreen-actions .copy-btn');
+        if (btn) {
+            btn.classList.add('copied');
+            const icon = btn.querySelector('.copy-icon');
+            if (icon) icon.textContent = '✓';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                if (icon) icon.textContent = '📋';
+            }, 1500);
+        }
+    }).catch(() => {
+        showStatus('status-bar', 'Failed to copy', 'error');
+    });
+}
+
+// Update fullscreen output character count
+function updateFullscreenOutputCount(length) {
+    const countEl = document.getElementById('output-count-fs');
+    if (countEl) {
+        countEl.textContent = `${length.toLocaleString()} characters`;
+    }
 }
