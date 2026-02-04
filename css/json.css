@@ -1,0 +1,397 @@
+/* Horizontal Editor Layout */
+.editor-layout-horizontal {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+    min-height: 500px;
+}
+
+.editor-layout-horizontal .editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-layout-horizontal .editor-panel textarea {
+    flex: 1;
+    min-height: 400px;
+}
+
+.editor-layout-horizontal .editor-panel .tree-view {
+    flex: 1;
+    min-height: 400px;
+    max-height: none;
+}
+
+/* Vertical Action Buttons */
+.action-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.action-buttons-vertical button {
+    padding: 10px 15px;
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.action-buttons-vertical button:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.action-buttons-vertical button.secondary {
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.action-buttons-vertical button.secondary:hover {
+    background: var(--secondary-hover);
+    border-color: #cbd5e0;
+}
+
+/* Validation Result */
+.validation-result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    display: none;
+}
+
+.validation-result.show {
+    display: block;
+}
+
+.validation-result.valid {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.validation-result.invalid {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+.validation-result pre {
+    margin-top: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Tree View Styles */
+.tree-view {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: auto;
+    min-height: 500px;
+    max-height: 500px;
+}
+
+.tree-node {
+    margin-left: 20px;
+    position: relative;
+}
+
+.tree-key {
+    color: #2c5aa0;
+    font-weight: 500;
+}
+
+.tree-string {
+    color: #22863a;
+}
+
+.tree-number {
+    color: #005cc5;
+}
+
+.tree-boolean {
+    color: #d73a49;
+}
+
+.tree-null {
+    color: #6f42c1;
+}
+
+.tree-bracket {
+    color: #6a737d;
+    font-weight: 600;
+}
+
+.tree-toggle {
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    width: 16px;
+    color: #6a737d;
+}
+
+.tree-toggle:hover {
+    color: var(--primary-color);
+}
+
+.tree-collapsed {
+    display: none;
+}
+
+.tree-line {
+    display: block;
+}
+
+.tree-expandable {
+    cursor: pointer;
+}
+
+.tree-expandable:hover {
+    background: var(--secondary-hover);
+}
+
+/* Fullscreen Button in Panel Header */
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fullscreen-btn {
+    padding: 4px 8px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+}
+
+.fullscreen-btn:hover {
+    background: var(--secondary-bg);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.fullscreen-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.fullscreen-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* Copy Button in Panel Header */
+.copy-btn {
+    padding: 4px 8px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+}
+
+.copy-btn:hover {
+    background: var(--secondary-bg);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.copy-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.copy-btn.copied {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border-color: var(--success-border);
+}
+
+.copy-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+/* Fullscreen Overlay */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.fullscreen-overlay[hidden] {
+    display: none;
+}
+
+.fullscreen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fullscreen-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.fullscreen-close-btn {
+    padding: 8px 16px;
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.fullscreen-close-btn:hover {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-color: var(--error-border);
+}
+
+.fullscreen-content {
+    flex: 1;
+    background: white;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fullscreen content - textarea specific */
+.fullscreen-content textarea {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: unset;
+    border: none;
+    border-radius: 0 0 8px 8px;
+    resize: none;
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Fullscreen content - div containers (validation-result, tree-view) */
+.fullscreen-content .validation-result,
+.fullscreen-content .tree-view {
+    flex: 1;
+    overflow: auto;
+    min-height: unset;
+    max-height: unset;
+    border: none;
+    border-radius: 0 0 8px 8px;
+    margin: 0;
+    padding: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Body class to prevent scrolling when fullscreen is active */
+body.fullscreen-active {
+    overflow: hidden;
+}
+
+/* Responsive adjustments for JSON tools */
+@media (max-width: 900px) {
+    .editor-layout-horizontal {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .editor-layout-horizontal .editor-panel textarea,
+    .editor-layout-horizontal .editor-panel .tree-view {
+        min-height: 250px;
+    }
+
+    .action-buttons-vertical {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        min-width: auto;
+        padding: 15px 0;
+    }
+
+    .action-buttons-vertical button {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tree-view {
+        min-height: 350px;
+        max-height: 350px;
+    }
+
+    .fullscreen-overlay {
+        padding: 10px;
+    }
+
+    .fullscreen-header {
+        padding: 12px 15px;
+    }
+
+    .fullscreen-content textarea,
+    .fullscreen-content .validation-result,
+    .fullscreen-content .tree-view {
+        padding: 15px;
+    }
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Tools - DevTools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/json.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <h1>DevTools</h1>
+                <div class="logo-subtitle">Free utilities for developers</div>
+            </a>
+            <nav class="main-nav">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="json-tools.html" class="nav-link active">JSON Tools</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="workspace">
+            <div class="workspace-header">
+                <h2 class="workspace-title">JSON Tools</h2>
+                <p class="workspace-description">Paste your JSON and click any action below</p>
+            </div>
+
+            <div class="editor-layout-horizontal">
+                <!-- Input Panel -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">Input</span>
+                        <span class="char-count" id="input-count">0 characters</span>
+                    </div>
+                    <textarea id="json-input" placeholder='Paste your JSON here, e.g. {"name": "John", "age": 30}'></textarea>
+                </div>
+
+                <!-- Action Buttons (Vertical) -->
+                <div class="action-buttons-vertical">
+                    <button onclick="stringifyJSON()">Stringify</button>
+                    <button onclick="parseJSON()">Parse</button>
+                    <button onclick="formatJSON()">Format</button>
+                    <button onclick="minifyJSON()">Minify</button>
+                    <button onclick="validateJSON()">Validate</button>
+                    <button onclick="generateTreeView()">Tree View</button>
+                    <button class="secondary" onclick="clearAll()">Clear</button>
+                </div>
+
+                <!-- Output Panel -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">Output</span>
+                        <div class="panel-actions">
+                            <button class="copy-btn" onclick="copyOutput()" title="Copy to clipboard" aria-label="Copy to clipboard">
+                                <span class="copy-icon">📋</span>
+                            </button>
+                            <button class="fullscreen-btn" onclick="toggleOutputFullscreen()" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+                                <span class="fullscreen-icon">⛶</span>
+                            </button>
+                            <span class="char-count" id="output-count">0 characters</span>
+                        </div>
+                    </div>
+                    <textarea id="json-output" readonly></textarea>
+                    <div class="tree-view" id="tree-output" style="display: none;">
+                        <div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-bar" id="status-bar"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DevTools - Free and open source • No data collected • Works offline</p>
+    </footer>
+
+    <!-- Fullscreen Overlay -->
+    <div id="fullscreen-overlay" class="fullscreen-overlay" hidden>
+        <div class="fullscreen-header">
+            <span class="fullscreen-title">Output</span>
+            <button class="fullscreen-close-btn" onclick="exitFullscreen()" title="Exit fullscreen (Esc)">
+                ✕ Close
+            </button>
+        </div>
+        <div class="fullscreen-content" id="fullscreen-content"></div>
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/json-tools.js"></script>
+</body>
+</html>
