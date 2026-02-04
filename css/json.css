@@ -177,11 +177,25 @@
     background: var(--secondary-hover);
 }
 
+/* Panel Header Layout for Output */
+.editor-panel .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
 /* Fullscreen Button in Panel Header */
 .panel-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .fullscreen-btn {
@@ -255,6 +269,39 @@
     line-height: 1;
 }
 
+/* Generic Action Button in Panel Header */
+.action-btn {
+    padding: 4px 8px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+}
+
+.action-btn:hover {
+    background: var(--secondary-bg);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.action-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.action-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
 /* Fullscreen Overlay */
 .fullscreen-overlay {
     position: fixed;
@@ -283,6 +330,19 @@
     background: white;
     border-radius: 8px 8px 0 0;
     border-bottom: 1px solid var(--border-color);
+    position: relative;
+    z-index: 10;
+}
+
+.fullscreen-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fullscreen-actions button {
+    position: relative;
+    z-index: 11;
 }
 
 .fullscreen-title {

@@ -15,18 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof initFullscreenClickHandler === 'function') {
         initFullscreenClickHandler();
     }
+
+    // Initialize close button handler
+    const closeBtn = document.getElementById('fullscreen-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            exitFullscreen();
+        });
+    }
 });
 
 // Helper to show textarea output and hide tree view
 function showTextOutput() {
     document.getElementById('json-output').style.display = 'block';
     document.getElementById('tree-output').style.display = 'none';
+    // Hide tree-only buttons
+    document.querySelectorAll('.tree-only-btn').forEach(btn => btn.style.display = 'none');
 }
 
 // Helper to show tree view and hide textarea output
 function showTreeOutput() {
     document.getElementById('json-output').style.display = 'none';
     document.getElementById('tree-output').style.display = 'block';
+    // Show tree-only buttons
+    document.querySelectorAll('.tree-only-btn').forEach(btn => btn.style.display = 'flex');
 }
 
 // Update output character count
@@ -300,8 +314,15 @@ function toggleOutputFullscreen() {
 
     if (textOutput.style.display !== 'none') {
         toggleFullscreen('json-output');
+        // Hide tree buttons in fullscreen
+        document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
     } else {
         toggleFullscreen('tree-output');
+        // Show tree buttons in fullscreen
+        document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'flex');
+        // Re-attach tree handlers to cloned content
+        const fullscreenContent = document.getElementById('fullscreen-content');
+        setTimeout(() => addTreeHandlersToContainer(fullscreenContent), 0);
     }
 }
 
@@ -317,4 +338,74 @@ function clearAll() {
     document.getElementById('output-count').textContent = '0 characters';
 
     showStatus('status-bar', '✓ Cleared all fields', 'success');
+}
+
+// Clear output only
+function clearOutput() {
+    document.getElementById('json-output').value = '';
+    document.getElementById('tree-output').innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
+    showTextOutput();
+    document.getElementById('output-count').textContent = '0 characters';
+    showStatus('status-bar', '✓ Output cleared', 'success');
+}
+
+// Collapse all tree nodes
+function collapseAll() {
+    const treeOutput = document.getElementById('tree-output');
+    const nodes = treeOutput.querySelectorAll('.tree-node');
+    const toggles = treeOutput.querySelectorAll('.tree-toggle');
+
+    nodes.forEach(node => node.classList.add('tree-collapsed'));
+    toggles.forEach(toggle => toggle.textContent = '▶');
+
+    showStatus('status-bar', '✓ All nodes collapsed', 'success');
+}
+
+// Expand all tree nodes
+function expandAll() {
+    const treeOutput = document.getElementById('tree-output');
+    const nodes = treeOutput.querySelectorAll('.tree-node');
+    const toggles = treeOutput.querySelectorAll('.tree-toggle');
+
+    nodes.forEach(node => node.classList.remove('tree-collapsed'));
+    toggles.forEach(toggle => toggle.textContent = '▼');
+
+    showStatus('status-bar', '✓ All nodes expanded', 'success');
+}
+
+// Collapse all in fullscreen
+function collapseAllFullscreen() {
+    const fullscreenContent = document.getElementById('fullscreen-content');
+    const nodes = fullscreenContent.querySelectorAll('.tree-node');
+    const toggles = fullscreenContent.querySelectorAll('.tree-toggle');
+
+    nodes.forEach(node => node.classList.add('tree-collapsed'));
+    toggles.forEach(toggle => toggle.textContent = '▶');
+}
+
+// Expand all in fullscreen
+function expandAllFullscreen() {
+    const fullscreenContent = document.getElementById('fullscreen-content');
+    const nodes = fullscreenContent.querySelectorAll('.tree-node');
+    const toggles = fullscreenContent.querySelectorAll('.tree-toggle');
+
+    nodes.forEach(node => node.classList.remove('tree-collapsed'));
+    toggles.forEach(toggle => toggle.textContent = '▼');
+}
+
+// Add tree handlers to a container (used for fullscreen)
+function addTreeHandlersToContainer(container) {
+    container.querySelectorAll('.tree-expandable').forEach(node => {
+        node.addEventListener('click', function(e) {
+            if (e.target.classList.contains('tree-toggle') || e.target.closest('.tree-expandable')) {
+                const toggle = this.querySelector('.tree-toggle');
+                const treeNode = this.nextElementSibling;
+
+                if (treeNode && treeNode.classList.contains('tree-node')) {
+                    treeNode.classList.toggle('tree-collapsed');
+                    toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
+                }
+            }
+        });
+    });
 }

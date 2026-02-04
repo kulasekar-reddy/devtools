@@ -54,7 +54,24 @@
                 <div class="editor-panel">
                     <div class="panel-header">
                         <span class="panel-label">Output</span>
+                        <div class="panel-actions-left">
+                            <button class="action-btn" onclick="formatJSON()" title="Format" aria-label="Format">
+                                <span class="action-icon">{ }</span>
+                            </button>
+                            <button class="action-btn" onclick="minifyJSON()" title="Minify" aria-label="Minify">
+                                <span class="action-icon">⊖</span>
+                            </button>
+                        </div>
                         <div class="panel-actions">
+                            <button class="action-btn tree-only-btn" id="collapse-btn" onclick="collapseAll()" title="Collapse all" aria-label="Collapse all" style="display: none;">
+                                <span class="action-icon">⊟</span>
+                            </button>
+                            <button class="action-btn tree-only-btn" id="expand-btn" onclick="expandAll()" title="Expand all" aria-label="Expand all" style="display: none;">
+                                <span class="action-icon">⊞</span>
+                            </button>
+                            <button class="action-btn" onclick="clearOutput()" title="Clear output" aria-label="Clear output">
+                                <span class="action-icon">✕</span>
+                            </button>
                             <button class="copy-btn" onclick="copyOutput()" title="Copy to clipboard" aria-label="Copy to clipboard">
                                 <span class="copy-icon">📋</span>
                             </button>
@@ -83,9 +100,17 @@
     <div id="fullscreen-overlay" class="fullscreen-overlay" hidden>
         <div class="fullscreen-header">
             <span class="fullscreen-title">Output</span>
-            <button class="fullscreen-close-btn" onclick="exitFullscreen()" title="Exit fullscreen (Esc)">
-                ✕ Close
-            </button>
+            <div class="fullscreen-actions">
+                <button class="action-btn tree-only-btn-fs" id="collapse-btn-fs" onclick="collapseAllFullscreen()" title="Collapse all" style="display: none;">
+                    <span class="action-icon">⊟</span>
+                </button>
+                <button class="action-btn tree-only-btn-fs" id="expand-btn-fs" onclick="expandAllFullscreen()" title="Expand all" style="display: none;">
+                    <span class="action-icon">⊞</span>
+                </button>
+                <button class="fullscreen-close-btn" id="fullscreen-close-btn" title="Exit fullscreen (Esc)">
+                    ✕ Close
+                </button>
+            </div>
         </div>
         <div class="fullscreen-content" id="fullscreen-content"></div>
     </div>
