@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Subdomain redirect - executes immediately before page renders
+        (function() {
+            if (window.location.hostname === 'json.formatting.tech') {
+                window.location.replace('/tools/json-tools.html');
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevTools - Free Developer Utilities</title>
