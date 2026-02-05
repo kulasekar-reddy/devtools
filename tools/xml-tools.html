@@ -4,8 +4,8 @@
     <script>
         // Subdomain redirect - executes immediately before page renders
         (function() {
-            if (window.location.hostname === 'json.formatting.tech') {
-                window.location.replace('/tools/json-tools.html');
+            if (window.location.hostname === 'xml.formatting.tech') {
+                window.location.replace('/tools/xml-tools.html');
             }
         })();
     </script>
@@ -13,32 +13,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Meta Tags -->
-    <title>JSON Tools - Format, Minify, Validate JSON Online | DevTools</title>
-    <meta name="description" content="Free online JSON tools - Stringify, parse, format, minify, validate, and visualize JSON data. Interactive tree view, import/export files. No signup required.">
-    <meta name="keywords" content="JSON stringify, JSON parse, JSON formatter, JSON minifier, JSON validator, JSON tree view, JSON beautifier, online JSON tools, JSON editor, JSON viewer">
+    <title>XML Tools - Format, Minify, Validate XML Online | DevTools</title>
+    <meta name="description" content="Free online XML tools - Format, minify, validate, and visualize XML documents. Interactive tree view, import/export files, sample data. No signup required.">
+    <meta name="keywords" content="XML formatter, XML minifier, XML validator, XML tree view, XML beautifier, online XML tools, XML editor, XML viewer">
     <meta name="author" content="DevTools">
-    <link rel="canonical" href="https://json.formatting.tech/">
+    <link rel="canonical" href="https://xml.formatting.tech/">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://json.formatting.tech/">
-    <meta property="og:title" content="JSON Tools - Format, Minify, Validate JSON Online">
-    <meta property="og:description" content="Free online JSON tools - Format, minify, validate, and visualize JSON data with interactive tree view.">
+    <meta property="og:url" content="https://xml.formatting.tech/">
+    <meta property="og:title" content="XML Tools - Format, Minify, Validate XML Online">
+    <meta property="og:description" content="Free online XML tools - Format, minify, validate, and visualize XML documents with interactive tree view.">
     <meta property="og:site_name" content="DevTools">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="JSON Tools - Format, Minify, Validate JSON Online">
-    <meta name="twitter:description" content="Free online JSON tools - Format, minify, validate, and visualize JSON data.">
+    <meta name="twitter:title" content="XML Tools - Format, Minify, Validate XML Online">
+    <meta name="twitter:description" content="Free online XML tools - Format, minify, validate, and visualize XML documents.">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "JSON Tools",
-        "description": "Free online JSON tools for formatting, minifying, validating, and visualizing JSON data",
-        "url": "https://json.formatting.tech/",
+        "name": "XML Tools",
+        "description": "Free online XML tools for formatting, minifying, validating, and visualizing XML documents",
+        "url": "https://xml.formatting.tech/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
         "offers": {
@@ -47,21 +47,19 @@
             "priceCurrency": "USD"
         },
         "featureList": [
-            "Stringify JavaScript objects to JSON",
-            "Parse JSON strings",
-            "Format JSON with indentation",
-            "Minify JSON documents",
-            "Validate JSON syntax",
+            "Format XML with indentation",
+            "Minify XML documents",
+            "Validate XML syntax",
             "Interactive tree view",
-            "Import JSON files",
-            "Export JSON files"
+            "Import XML files",
+            "Export XML files"
         ]
     }
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/json.css">
+    <link rel="stylesheet" href="../css/xml.css">
 </head>
 <body>
     <div class="header">
@@ -72,8 +70,8 @@
             </a>
             <nav class="main-nav">
                 <a href="../index.html" class="nav-link">Home</a>
-                <a href="json-tools.html" class="nav-link active">JSON Tools</a>
-                <a href="xml-tools.html" class="nav-link">XML Tools</a>
+                <a href="json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="xml-tools.html" class="nav-link active">XML Tools</a>
             </nav>
         </div>
     </div>
@@ -83,23 +81,14 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <h2 class="sidebar-title">JSON Online Viewer</h2>
+                    <h2 class="sidebar-title">XML Online Viewer</h2>
                 </div>
                 <div class="sidebar-buttons">
-                    <button class="sidebar-btn" onclick="stringifyJSON()">
-                        <span class="btn-icon">{&quot;}</span>
-                        <span>Stringify</span>
-                    </button>
-                    <button class="sidebar-btn" onclick="parseJSON()">
-                        <span class="btn-icon">{}</span>
-                        <span>Parse</span>
-                    </button>
-                    <div class="sidebar-divider"></div>
-                    <button class="sidebar-btn" onclick="formatJSON()">
+                    <button class="sidebar-btn" onclick="formatXML()">
                         <span class="btn-icon">&#9776;</span>
                         <span>Format</span>
                     </button>
-                    <button class="sidebar-btn" onclick="minifyJSON()">
+                    <button class="sidebar-btn" onclick="minifyXML()">
                         <span class="btn-icon">&#9776;</span>
                         <span>Minify</span>
                     </button>
@@ -121,17 +110,17 @@
                         <span class="btn-icon">&#128196;</span>
                         <span>Clear</span>
                     </button>
-                    <button class="sidebar-btn" onclick="importJSON()">
+                    <button class="sidebar-btn" onclick="importXML()">
                         <span class="btn-icon">&#8593;</span>
                         <span>Import</span>
                     </button>
-                    <button class="sidebar-btn" onclick="exportJSON()">
+                    <button class="sidebar-btn" onclick="exportXML()">
                         <span class="btn-icon">&#8595;</span>
                         <span>Export</span>
                     </button>
                 </div>
                 <div class="sidebar-footer">
-                    <p class="sidebar-footer-text">DevTools<br><a href="xml-tools.html" style="color: #718096;">XML Tools</a></p>
+                    <p class="sidebar-footer-text">DevTools<br><a href="json-tools.html" style="color: #718096;">JSON Tools</a></p>
                 </div>
             </div>
 
@@ -147,7 +136,7 @@
                         </button>
                     </div>
                     <div class="toolbar-right">
-                        <button class="toolbar-btn" onclick="validateJSON()" title="Validate JSON">
+                        <button class="toolbar-btn" onclick="validateXML()" title="Validate XML">
                             Validate
                         </button>
                         <button class="toolbar-btn" onclick="copyContent()" title="Copy to clipboard">
@@ -160,28 +149,26 @@
                     </div>
                 </div>
                 <div class="editor-content">
-                    <textarea id="json-editor" placeholder="Put your JSON text here"></textarea>
+                    <textarea id="xml-editor" placeholder="Put your XML text here"></textarea>
                     <div class="tree-view" id="tree-view"></div>
                 </div>
                 <div class="status-bar" id="status-bar"></div>
             </div>
         </div>
-        <input type="file" id="file-input" class="hidden-input" accept=".json,.txt" onchange="handleFileImport(event)">
+        <input type="file" id="file-input" class="hidden-input" accept=".xml,.xsd,.xsl,.xslt,.svg,.html,.htm" onchange="handleFileImport(event)">
     </div>
 
     <footer>
-        <p>DevTools - Free and open source • No data collected • Works offline • <a href="xml-tools.html">XML Tools</a></p>
+        <p>DevTools - Free and open source • No data collected • Works offline • <a href="json-tools.html">JSON Tools</a></p>
     </footer>
 
     <!-- Fullscreen Overlay -->
     <div id="fullscreen-overlay" class="fullscreen-overlay" hidden>
         <div class="fullscreen-header">
-            <span class="fullscreen-title">JSON Editor</span>
+            <span class="fullscreen-title">XML Editor</span>
             <div class="fullscreen-actions">
-                <button class="toolbar-btn" onclick="stringifyJSON()" title="Stringify">Stringify</button>
-                <button class="toolbar-btn" onclick="parseJSON()" title="Parse">Parse</button>
-                <button class="toolbar-btn" onclick="formatJSON()" title="Format">Format</button>
-                <button class="toolbar-btn" onclick="minifyJSON()" title="Minify">Minify</button>
+                <button class="toolbar-btn" onclick="formatXML()" title="Format">Format</button>
+                <button class="toolbar-btn" onclick="minifyXML()" title="Minify">Minify</button>
                 <button class="toolbar-btn" onclick="showTreeModeFullscreen()" title="Tree View">Tree</button>
                 <button class="toolbar-btn" onclick="expandAll()" title="Expand All">Expand</button>
                 <button class="toolbar-btn" onclick="collapseAll()" title="Collapse All">Collapse</button>
@@ -196,6 +183,6 @@
     </div>
 
     <script src="../js/utils.js"></script>
-    <script src="../js/json-tools.js"></script>
+    <script src="../js/xml-tools.js"></script>
 </body>
 </html>

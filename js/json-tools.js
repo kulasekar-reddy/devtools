@@ -1,219 +1,240 @@
-// JSON Tools JavaScript - Single Input UI
+// JSON Tools JavaScript - Single Window In-Place Editing
+
+let currentMode = 'text'; // 'text' or 'tree'
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Set active navigation
     setActiveNav('json-tools.html');
 
-    // Initialize character counter for input
-    initCharCounter('json-input', 'input-count');
-
-    // Initialize fullscreen handlers
-    if (typeof initFullscreenKeyHandler === 'function') {
-        initFullscreenKeyHandler();
-    }
-    if (typeof initFullscreenClickHandler === 'function') {
-        initFullscreenClickHandler();
+    const editor = document.getElementById('json-editor');
+    if (editor) {
+        editor.addEventListener('input', updateCharCount);
+        updateCharCount();
     }
 
-    // Initialize close button handler
-    const closeBtn = document.getElementById('fullscreen-close-btn');
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            exitFullscreen();
+        }
+    });
+
+    // Close fullscreen when clicking on backdrop
+    const overlay = document.getElementById('fullscreen-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                exitFullscreen();
+            }
+        });
+    }
+
+    // Explicitly handle close button click
+    const closeBtn = document.querySelector('.fullscreen-close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
             e.stopPropagation();
             exitFullscreen();
         });
     }
 });
 
-// Helper to show textarea output and hide tree view
-function showTextOutput() {
-    document.getElementById('json-output').style.display = 'block';
-    document.getElementById('tree-output').style.display = 'none';
-    // Hide tree-only buttons
-    document.querySelectorAll('.tree-only-btn').forEach(btn => btn.style.display = 'none');
+// ===== CHARACTER COUNT =====
+function updateCharCount() {
+    const editor = document.getElementById('json-editor');
+    const count = document.getElementById('char-count');
+    const countFs = document.getElementById('char-count-fs');
+    const length = editor ? editor.value.length : 0;
+    const text = `${length.toLocaleString()} characters`;
+    if (count) count.textContent = text;
+    if (countFs) countFs.textContent = text;
 }
 
-// Helper to show tree view and hide textarea output
-function showTreeOutput() {
-    document.getElementById('json-output').style.display = 'none';
-    document.getElementById('tree-output').style.display = 'block';
-    // Show tree-only buttons
-    document.querySelectorAll('.tree-only-btn').forEach(btn => btn.style.display = 'flex');
+// ===== STATUS MESSAGES =====
+function showStatusMessage(message, type = 'success') {
+    const statusBar = document.getElementById('status-bar');
+    if (statusBar) {
+        statusBar.textContent = message;
+        statusBar.className = 'status-bar ' + type;
+        setTimeout(() => {
+            statusBar.textContent = '';
+            statusBar.className = 'status-bar';
+        }, 3000);
+    }
 }
 
-// Update output character count
-function updateOutputCount(length) {
-    document.getElementById('output-count').textContent = `${length.toLocaleString()} characters`;
+// ===== MODE SWITCHING =====
+function showTextMode() {
+    currentMode = 'text';
+    document.getElementById('json-editor').style.display = 'block';
+    document.getElementById('tree-view').classList.remove('active');
+    document.getElementById('text-mode-btn').classList.add('active');
+    document.getElementById('tree-mode-btn').classList.remove('active');
 }
 
-// JSON Stringify - Convert JSON to escaped string
-function stringifyJSON() {
-    const input = document.getElementById('json-input').value;
-    const output = document.getElementById('json-output');
+function showTreeMode() {
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
 
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to stringify', 'error');
+    if (!content) {
+        showStatusMessage('Please enter JSON to view as tree', 'error');
         return;
     }
 
     try {
-        // Validate it's valid JSON first
-        JSON.parse(input);
-        // Then stringify the raw input string (this adds quotes and escapes)
-        output.value = JSON.stringify(input);
-        showTextOutput();
-        showStatus('status-bar', '✓ JSON stringified successfully', 'success');
-        updateOutputCount(output.value.length);
+        const parsed = JSON.parse(content);
+        const treeView = document.getElementById('tree-view');
+        treeView.innerHTML = buildTree(parsed);
+        addTreeHandlers();
+
+        currentMode = 'tree';
+        editor.style.display = 'none';
+        treeView.classList.add('active');
+        document.getElementById('text-mode-btn').classList.remove('active');
+        document.getElementById('tree-mode-btn').classList.add('active');
+        showStatusMessage('Tree view generated');
     } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
     }
 }
 
-// JSON Parse - Parse stringified JSON back to formatted JSON
-function parseJSON() {
-    const input = document.getElementById('json-input').value;
-    const output = document.getElementById('json-output');
-
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter stringified JSON to parse', 'error');
-        return;
-    }
-
-    try {
-        // Parse the escaped string to get the original JSON string
-        const jsonString = JSON.parse(input);
-        // Then parse and format that JSON
-        const parsed = JSON.parse(jsonString);
-        output.value = JSON.stringify(parsed, null, 2);
-        showTextOutput();
-        showStatus('status-bar', '✓ JSON parsed successfully', 'success');
-        updateOutputCount(output.value.length);
-    } catch (error) {
-        showStatus('status-bar', 'Error: ' + error.message, 'error');
-    }
-}
-
-// Format JSON - Beautify with indentation
+// ===== FORMAT JSON =====
 function formatJSON() {
-    const input = document.getElementById('json-input').value;
-    const output = document.getElementById('json-output');
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
 
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to format', 'error');
+    if (!content) {
+        showStatusMessage('Please enter JSON to format', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed, null, 2);
-        showTextOutput();
-        showStatus('status-bar', '✓ JSON formatted successfully', 'success');
-        updateOutputCount(output.value.length);
+        const parsed = JSON.parse(content);
+        const formatted = JSON.stringify(parsed, null, 2);
+        editor.value = formatted;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage('JSON formatted successfully');
+        updateFullscreenContent();
     } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
     }
 }
 
-// Minify JSON - Remove whitespace
+// ===== MINIFY JSON =====
 function minifyJSON() {
-    const input = document.getElementById('json-input').value;
-    const output = document.getElementById('json-output');
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
 
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to minify', 'error');
+    if (!content) {
+        showStatusMessage('Please enter JSON to minify', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed);
-        showTextOutput();
-        showStatus('status-bar', '✓ JSON minified successfully', 'success');
-        updateOutputCount(output.value.length);
+        const parsed = JSON.parse(content);
+        const minified = JSON.stringify(parsed);
+        editor.value = minified;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage('JSON minified successfully');
+        updateFullscreenContent();
     } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
     }
 }
 
-// Validate JSON
-function validateJSON() {
-    const input = document.getElementById('json-input').value;
-    const output = document.getElementById('json-output');
+// ===== STRINGIFY (Object to JSON String) =====
+function stringifyJSON() {
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
 
-    if (!input.trim()) {
-        output.value = '⚠ Please enter JSON to validate';
-        showTextOutput();
-        showStatus('status-bar', 'Please enter JSON to validate', 'error');
+    if (!content) {
+        showStatusMessage('Please enter content to stringify', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(input);
+        // First try to evaluate as JavaScript (handles unquoted keys, single quotes, etc.)
+        let obj;
+        try {
+            // Use Function constructor to safely evaluate JS object literals
+            obj = (new Function('return ' + content))();
+        } catch (e) {
+            // If that fails, try parsing as JSON
+            obj = JSON.parse(content);
+        }
+
+        // Convert to escaped JSON string (without formatting)
+        const stringified = JSON.stringify(JSON.stringify(obj));
+        editor.value = stringified;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage('Content stringified successfully');
+        updateFullscreenContent();
+    } catch (error) {
+        showStatusMessage('Invalid input: ' + error.message, 'error');
+    }
+}
+
+// ===== PARSE (JSON String to Object) =====
+function parseJSON() {
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
+
+    if (!content) {
+        showStatusMessage('Please enter a JSON string to parse', 'error');
+        return;
+    }
+
+    try {
+        // First parse the outer string (removes escaping)
+        let parsed = JSON.parse(content);
+
+        // If the result is still a string, parse it again
+        if (typeof parsed === 'string') {
+            parsed = JSON.parse(parsed);
+        }
+
+        // Output without formatting - preserve the structure as-is
+        const result = JSON.stringify(parsed);
+        editor.value = result;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage('JSON string parsed successfully');
+        updateFullscreenContent();
+    } catch (error) {
+        showStatusMessage('Invalid JSON string: ' + error.message, 'error');
+    }
+}
+
+// ===== VALIDATE JSON =====
+function validateJSON() {
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
+
+    if (!content) {
+        showStatusMessage('Please enter JSON to validate', 'error');
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(content);
         const type = Array.isArray(parsed) ? 'Array' : typeof parsed;
         const keys = typeof parsed === 'object' && parsed !== null ? Object.keys(parsed).length : 0;
 
-        let result = '✓ Valid JSON\n\n';
-        result += `Type: ${type}\n`;
+        let message = `Valid JSON - Type: ${type}`;
         if (type === 'object' || type === 'Array') {
-            result += `Keys/Items: ${keys}\n`;
+            message += `, Keys/Items: ${keys}`;
         }
-        result += `Size: ${input.length.toLocaleString()} characters`;
-
-        output.value = result;
-        showTextOutput();
-        showStatus('status-bar', '✓ JSON is valid', 'success');
-        updateOutputCount(result.length);
+        message += `, Size: ${content.length.toLocaleString()} chars`;
+        showStatusMessage(message, 'success');
     } catch (error) {
-        let result = '✗ Invalid JSON\n\n';
-        result += `Error: ${error.message}\n\n`;
-        result += getErrorHint(error.message);
-
-        output.value = result;
-        showTextOutput();
-        showStatus('status-bar', 'Invalid JSON', 'error');
-        updateOutputCount(result.length);
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
     }
 }
 
-function getErrorHint(errorMessage) {
-    if (errorMessage.includes('position')) {
-        return 'Hint: Check for missing quotes, commas, or brackets near the error position.';
-    } else if (errorMessage.includes('token')) {
-        return 'Hint: Check for invalid characters or syntax errors.';
-    } else if (errorMessage.includes('JSON')) {
-        return 'Hint: Ensure your JSON follows proper format: {"key": "value"}';
-    }
-    return 'Hint: Check JSON syntax and structure.';
-}
-
-// Generate Tree View
-function generateTreeView() {
-    const input = document.getElementById('json-input').value;
-    const treeOutput = document.getElementById('tree-output');
-
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to visualize', 'error');
-        treeOutput.innerHTML = '<div style="color: #718096; padding: 20px;">Enter JSON in the input panel to see the tree structure</div>';
-        showTreeOutput();
-        return;
-    }
-
-    try {
-        const parsed = JSON.parse(input);
-        treeOutput.innerHTML = buildTree(parsed);
-        showTreeOutput();
-        showStatus('status-bar', '✓ Tree view generated successfully', 'success');
-        addTreeHandlers();
-        document.getElementById('output-count').textContent = '';
-    } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
-        treeOutput.innerHTML = `<div style="color: #e53e3e; padding: 20px;">Invalid JSON: ${error.message}</div>`;
-        showTreeOutput();
-    }
-}
-
+// ===== TREE VIEW =====
 function buildTree(obj, key = null, level = 0) {
     const indent = '  '.repeat(level);
     let html = '';
@@ -232,7 +253,7 @@ function buildTree(obj, key = null, level = 0) {
         } else {
             html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">▼</span> <span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
             html += `<div class="tree-node">`;
-            obj.forEach((item, index) => {
+            obj.forEach((item) => {
                 html += buildTree(item, null, level + 1);
             });
             html += `</div>`;
@@ -245,7 +266,7 @@ function buildTree(obj, key = null, level = 0) {
         } else {
             html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">▼</span> <span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
             html += `<div class="tree-node">`;
-            keys.forEach((k, index) => {
+            keys.forEach((k) => {
                 html += buildTree(obj[k], k, level + 1);
             });
             html += `</div>`;
@@ -259,294 +280,286 @@ function buildTree(obj, key = null, level = 0) {
 function addTreeHandlers() {
     document.querySelectorAll('.tree-expandable').forEach(node => {
         node.addEventListener('click', function(e) {
-            if (e.target.classList.contains('tree-toggle') || e.target.closest('.tree-expandable')) {
-                const toggle = this.querySelector('.tree-toggle');
-                const treeNode = this.nextElementSibling;
-
-                if (treeNode && treeNode.classList.contains('tree-node')) {
-                    treeNode.classList.toggle('tree-collapsed');
-                    toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
-                }
+            const toggle = this.querySelector('.tree-toggle');
+            const treeNode = this.nextElementSibling;
+            if (treeNode && treeNode.classList.contains('tree-node')) {
+                treeNode.classList.toggle('tree-collapsed');
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
             }
         });
     });
 }
 
-// Copy output
-function copyOutput() {
-    const textOutput = document.getElementById('json-output');
-    const treeOutput = document.getElementById('tree-output');
+function collapseAll() {
+    const overlay = document.getElementById('fullscreen-overlay');
+    const isFullscreen = overlay && !overlay.hidden;
 
-    let text = '';
-    if (textOutput.style.display !== 'none') {
-        text = textOutput.value;
-    } else {
-        text = treeOutput.textContent || treeOutput.innerText;
+    let container;
+    if (isFullscreen) {
+        container = document.getElementById('fullscreen-content');
+    } else if (currentMode === 'tree') {
+        container = document.getElementById('tree-view');
     }
 
-    if (!text.trim()) {
-        showStatus('status-bar', 'Nothing to copy', 'error');
+    if (!container) return;
+
+    container.querySelectorAll('.tree-node').forEach(node => node.classList.add('tree-collapsed'));
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▶');
+    showStatusMessage('All nodes collapsed');
+}
+
+function expandAll() {
+    const overlay = document.getElementById('fullscreen-overlay');
+    const isFullscreen = overlay && !overlay.hidden;
+
+    let container;
+    if (isFullscreen) {
+        container = document.getElementById('fullscreen-content');
+    } else if (currentMode === 'tree') {
+        container = document.getElementById('tree-view');
+    }
+
+    if (!container) return;
+
+    container.querySelectorAll('.tree-node').forEach(node => node.classList.remove('tree-collapsed'));
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▼');
+    showStatusMessage('All nodes expanded');
+}
+
+// ===== SAMPLE DATA =====
+function loadSample() {
+    const sampleJSON = `{
+  "name": "DevTools",
+  "version": "1.0.0",
+  "description": "Free developer utilities",
+  "features": [
+    "JSON formatting",
+    "XML tools",
+    "Tree view"
+  ],
+  "author": {
+    "name": "Developer",
+    "email": "dev@example.com"
+  },
+  "settings": {
+    "theme": "light",
+    "autoFormat": true,
+    "indentSize": 2
+  },
+  "stats": {
+    "users": 10000,
+    "rating": 4.8,
+    "isActive": true,
+    "lastUpdate": null
+  }
+}`;
+
+    document.getElementById('json-editor').value = sampleJSON;
+    updateCharCount();
+    showTextMode();
+    showStatusMessage('Sample JSON loaded');
+}
+
+// ===== CLEAR =====
+function clearEditor() {
+    document.getElementById('json-editor').value = '';
+    document.getElementById('tree-view').innerHTML = '';
+    updateCharCount();
+    showTextMode();
+    showStatusMessage('Editor cleared');
+}
+
+// ===== IMPORT/EXPORT =====
+function importJSON() {
+    document.getElementById('file-input').click();
+}
+
+function handleFileImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('json-editor').value = e.target.result;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage(`Imported ${file.name}`);
+    };
+    reader.onerror = function() {
+        showStatusMessage('Error reading file', 'error');
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+function exportJSON() {
+    const content = document.getElementById('json-editor').value;
+    if (!content.trim()) {
+        showStatusMessage('Nothing to export', 'error');
         return;
     }
 
-    copyToClipboard(text).then(() => {
-        showStatus('status-bar', '✓ Copied to clipboard', 'success');
-        // Visual feedback on button
-        const btn = document.querySelector('.copy-btn');
-        if (btn) {
-            btn.classList.add('copied');
-            const icon = btn.querySelector('.copy-icon');
-            if (icon) icon.textContent = '✓';
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                if (icon) icon.textContent = '📋';
-            }, 1500);
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showStatusMessage('JSON exported successfully');
+}
+
+// ===== COPY =====
+function copyContent() {
+    const editor = document.getElementById('json-editor');
+    const overlay = document.getElementById('fullscreen-overlay');
+    const isFullscreen = overlay && !overlay.hidden;
+
+    let content;
+    if (isFullscreen) {
+        // In fullscreen, get content from fullscreen area
+        const fsTreeView = document.querySelector('#fullscreen-content .tree-view');
+        const fsEditor = document.getElementById('json-editor-fs');
+        if (fsTreeView) {
+            content = editor.value; // Copy the actual JSON, not tree text
+        } else if (fsEditor) {
+            content = fsEditor.value;
+        } else {
+            content = editor.value;
         }
+    } else {
+        content = editor.value;
+    }
+
+    if (!content || !content.trim()) {
+        showStatusMessage('Nothing to copy', 'error');
+        return;
+    }
+
+    copyToClipboard(content).then(() => {
+        showStatusMessage('Copied to clipboard');
     }).catch(() => {
-        showStatus('status-bar', 'Failed to copy', 'error');
+        showStatusMessage('Failed to copy', 'error');
     });
 }
 
-// Toggle fullscreen for current output
-function toggleOutputFullscreen() {
-    const textOutput = document.getElementById('json-output');
-    const treeOutput = document.getElementById('tree-output');
+// ===== FULLSCREEN =====
+function isFullscreenActive() {
+    const overlay = document.getElementById('fullscreen-overlay');
+    return overlay && !overlay.hidden;
+}
 
-    if (textOutput.style.display !== 'none') {
-        toggleFullscreen('json-output');
-        // Hide tree buttons in fullscreen
-        document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
-        // Update character count
-        updateFullscreenOutputCount(textOutput.value.length);
+function toggleFullscreen() {
+    const overlay = document.getElementById('fullscreen-overlay');
+    const content = document.getElementById('fullscreen-content');
+    const editor = document.getElementById('json-editor');
+
+    if (overlay.hidden) {
+        content.innerHTML = '';
+
+        if (currentMode === 'tree') {
+            // Show tree view in fullscreen
+            const treeView = document.getElementById('tree-view');
+            const treeClone = document.createElement('div');
+            treeClone.className = 'tree-view active';
+            treeClone.innerHTML = treeView.innerHTML;
+            content.appendChild(treeClone);
+            // Re-add tree handlers to the cloned tree
+            addTreeHandlersToContainer(treeClone);
+        } else {
+            // Show textarea in fullscreen
+            createFullscreenTextarea(editor.value);
+        }
+
+        overlay.hidden = false;
+        document.body.classList.add('fullscreen-active');
     } else {
-        toggleFullscreen('tree-output');
-        // Show tree buttons in fullscreen
-        document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'flex');
-        // Re-attach tree handlers to cloned content
-        const fullscreenContent = document.getElementById('fullscreen-content');
-        setTimeout(() => addTreeHandlersToContainer(fullscreenContent), 0);
-        // Clear character count for tree view
-        updateFullscreenOutputCount(0);
-        document.getElementById('output-count-fs').textContent = '';
+        exitFullscreen();
     }
 }
 
-// Clear all
-function clearAll() {
-    document.getElementById('json-input').value = '';
-    document.getElementById('json-output').value = '';
-    document.getElementById('tree-output').innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
+function createFullscreenTextarea(value) {
+    const content = document.getElementById('fullscreen-content');
+    const editor = document.getElementById('json-editor');
 
-    showTextOutput();
-
-    document.getElementById('input-count').textContent = '0 characters';
-    document.getElementById('output-count').textContent = '0 characters';
-
-    showStatus('status-bar', '✓ Cleared all fields', 'success');
+    content.innerHTML = '';
+    const textarea = document.createElement('textarea');
+    textarea.id = 'json-editor-fs';
+    textarea.value = value;
+    textarea.addEventListener('input', function() {
+        editor.value = this.value;
+        updateCharCount();
+    });
+    content.appendChild(textarea);
 }
 
-// Clear output only
-function clearOutput() {
-    document.getElementById('json-output').value = '';
-    document.getElementById('tree-output').innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
-    showTextOutput();
-    document.getElementById('output-count').textContent = '0 characters';
-    showStatus('status-bar', '✓ Output cleared', 'success');
-}
-
-// Collapse all tree nodes
-function collapseAll() {
-    const treeOutput = document.getElementById('tree-output');
-    const nodes = treeOutput.querySelectorAll('.tree-node');
-    const toggles = treeOutput.querySelectorAll('.tree-toggle');
-
-    nodes.forEach(node => node.classList.add('tree-collapsed'));
-    toggles.forEach(toggle => toggle.textContent = '▶');
-
-    showStatus('status-bar', '✓ All nodes collapsed', 'success');
-}
-
-// Expand all tree nodes
-function expandAll() {
-    const treeOutput = document.getElementById('tree-output');
-    const nodes = treeOutput.querySelectorAll('.tree-node');
-    const toggles = treeOutput.querySelectorAll('.tree-toggle');
-
-    nodes.forEach(node => node.classList.remove('tree-collapsed'));
-    toggles.forEach(toggle => toggle.textContent = '▼');
-
-    showStatus('status-bar', '✓ All nodes expanded', 'success');
-}
-
-// Collapse all in fullscreen
-function collapseAllFullscreen() {
-    const fullscreenContent = document.getElementById('fullscreen-content');
-    const nodes = fullscreenContent.querySelectorAll('.tree-node');
-    const toggles = fullscreenContent.querySelectorAll('.tree-toggle');
-
-    nodes.forEach(node => node.classList.add('tree-collapsed'));
-    toggles.forEach(toggle => toggle.textContent = '▶');
-}
-
-// Expand all in fullscreen
-function expandAllFullscreen() {
-    const fullscreenContent = document.getElementById('fullscreen-content');
-    const nodes = fullscreenContent.querySelectorAll('.tree-node');
-    const toggles = fullscreenContent.querySelectorAll('.tree-toggle');
-
-    nodes.forEach(node => node.classList.remove('tree-collapsed'));
-    toggles.forEach(toggle => toggle.textContent = '▼');
-}
-
-// Add tree handlers to a container (used for fullscreen)
 function addTreeHandlersToContainer(container) {
     container.querySelectorAll('.tree-expandable').forEach(node => {
         node.addEventListener('click', function(e) {
-            if (e.target.classList.contains('tree-toggle') || e.target.closest('.tree-expandable')) {
-                const toggle = this.querySelector('.tree-toggle');
-                const treeNode = this.nextElementSibling;
-
-                if (treeNode && treeNode.classList.contains('tree-node')) {
-                    treeNode.classList.toggle('tree-collapsed');
-                    toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
-                }
+            e.stopPropagation();
+            const toggle = this.querySelector('.tree-toggle');
+            const treeNode = this.nextElementSibling;
+            if (treeNode && treeNode.classList.contains('tree-node')) {
+                treeNode.classList.toggle('tree-collapsed');
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
             }
         });
     });
 }
 
-// Format JSON in fullscreen
-function formatJSONFullscreen() {
-    const input = document.getElementById('json-input').value;
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to format', 'error');
+function exitFullscreen() {
+    const overlay = document.getElementById('fullscreen-overlay');
+    if (overlay) {
+        overlay.hidden = true;
+        document.body.classList.remove('fullscreen-active');
+    }
+}
+
+function showTreeModeFullscreen() {
+    if (!isFullscreenActive()) return;
+
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
+
+    if (!content) {
+        showStatusMessage('Please enter JSON to view as tree', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(input);
-        const formatted = JSON.stringify(parsed, null, 2);
-        // Update the main output
-        document.getElementById('json-output').value = formatted;
-        showTextOutput();
-        updateOutputCount(formatted.length);
-        // Update fullscreen content directly
-        const fullscreenContent = document.getElementById('fullscreen-content');
-        let textarea = fullscreenContent.querySelector('textarea');
-        if (!textarea) {
-            // Switch from tree view to textarea
-            fullscreenContent.innerHTML = '';
-            textarea = document.createElement('textarea');
-            textarea.id = 'json-output-fs';
-            textarea.readOnly = true;
-            fullscreenContent.appendChild(textarea);
-            // Hide tree buttons, show text buttons
-            document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
-        }
-        textarea.value = formatted;
-        updateFullscreenOutputCount(formatted.length);
-        showStatus('status-bar', '✓ JSON formatted successfully', 'success');
+        const parsed = JSON.parse(content);
+        const fsContent = document.getElementById('fullscreen-content');
+
+        // Create tree view in fullscreen
+        const treeClone = document.createElement('div');
+        treeClone.className = 'tree-view active';
+        treeClone.innerHTML = buildTree(parsed);
+
+        fsContent.innerHTML = '';
+        fsContent.appendChild(treeClone);
+        addTreeHandlersToContainer(treeClone);
+
+        currentMode = 'tree';
+        showStatusMessage('Tree view generated');
     } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
     }
 }
 
-// Minify JSON in fullscreen
-function minifyJSONFullscreen() {
-    const input = document.getElementById('json-input').value;
-    if (!input.trim()) {
-        showStatus('status-bar', 'Please enter JSON to minify', 'error');
-        return;
-    }
+function updateFullscreenContent() {
+    if (!isFullscreenActive()) return;
 
-    try {
-        const parsed = JSON.parse(input);
-        const minified = JSON.stringify(parsed);
-        // Update the main output
-        document.getElementById('json-output').value = minified;
-        showTextOutput();
-        updateOutputCount(minified.length);
-        // Update fullscreen content directly
-        const fullscreenContent = document.getElementById('fullscreen-content');
-        let textarea = fullscreenContent.querySelector('textarea');
-        if (!textarea) {
-            // Switch from tree view to textarea
-            fullscreenContent.innerHTML = '';
-            textarea = document.createElement('textarea');
-            textarea.id = 'json-output-fs';
-            textarea.readOnly = true;
-            fullscreenContent.appendChild(textarea);
-            // Hide tree buttons
-            document.querySelectorAll('.tree-only-btn-fs').forEach(btn => btn.style.display = 'none');
-        }
-        textarea.value = minified;
-        updateFullscreenOutputCount(minified.length);
-        showStatus('status-bar', '✓ JSON minified successfully', 'success');
-    } catch (error) {
-        showStatus('status-bar', 'Error: Invalid JSON - ' + error.message, 'error');
-    }
-}
+    const editor = document.getElementById('json-editor');
+    const content = document.getElementById('fullscreen-content');
+    const fsEditor = document.getElementById('json-editor-fs');
 
-// Clear output in fullscreen
-function clearOutputFullscreen() {
-    const fullscreenContent = document.getElementById('fullscreen-content');
-    const textarea = fullscreenContent.querySelector('textarea');
-    const treeView = fullscreenContent.querySelector('.tree-view');
-
-    if (textarea) {
-        textarea.value = '';
-        document.getElementById('json-output').value = '';
-    }
-    if (treeView) {
-        treeView.innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
-        document.getElementById('tree-output').innerHTML = '<div style="color: #718096; padding: 20px;">Click "Tree View" to visualize JSON structure</div>';
-    }
-
-    updateOutputCount(0);
-    updateFullscreenOutputCount(0);
-    showStatus('status-bar', '✓ Output cleared', 'success');
-}
-
-// Copy output in fullscreen
-function copyOutputFullscreen() {
-    const fullscreenContent = document.getElementById('fullscreen-content');
-    const textarea = fullscreenContent.querySelector('textarea');
-    const treeView = fullscreenContent.querySelector('.tree-view');
-
-    let text = '';
-    if (textarea) {
-        text = textarea.value;
-    } else if (treeView) {
-        text = treeView.textContent || treeView.innerText;
-    }
-
-    if (!text.trim()) {
-        showStatus('status-bar', 'Nothing to copy', 'error');
-        return;
-    }
-
-    copyToClipboard(text).then(() => {
-        showStatus('status-bar', '✓ Copied to clipboard', 'success');
-        // Visual feedback on button
-        const btn = document.querySelector('.fullscreen-actions .copy-btn');
-        if (btn) {
-            btn.classList.add('copied');
-            const icon = btn.querySelector('.copy-icon');
-            if (icon) icon.textContent = '✓';
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                if (icon) icon.textContent = '📋';
-            }, 1500);
-        }
-    }).catch(() => {
-        showStatus('status-bar', 'Failed to copy', 'error');
-    });
-}
-
-// Update fullscreen output character count
-function updateFullscreenOutputCount(length) {
-    const countEl = document.getElementById('output-count-fs');
-    if (countEl) {
-        countEl.textContent = `${length.toLocaleString()} characters`;
+    // If there's a textarea in fullscreen, update it
+    if (fsEditor) {
+        fsEditor.value = editor.value;
+    } else {
+        // If tree view was showing, switch to textarea with new content
+        createFullscreenTextarea(editor.value);
     }
 }

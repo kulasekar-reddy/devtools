@@ -7,6 +7,9 @@
             if (window.location.hostname === 'json.formatting.tech') {
                 window.location.replace('/tools/json-tools.html');
             }
+            if (window.location.hostname === 'xml.formatting.tech') {
+                window.location.replace('/tools/xml-tools.html');
+            }
         })();
     </script>
     <meta charset="UTF-8">
@@ -123,6 +126,7 @@
             <nav class="main-nav">
                 <a href="./" class="nav-link active">Home</a>
                 <a href="tools/json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="tools/xml-tools.html" class="nav-link">XML Tools</a>
             </nav>
         </div>
     </div>
@@ -139,26 +143,25 @@
                 <h3>JSON Tools</h3>
                 <p>Complete suite of JSON utilities for your daily development needs.</p>
                 <ul class="tool-features">
-                    <li>Escape & Unescape</li>
+                    <li>Stringify & Parse</li>
                     <li>Format & Minify</li>
-                    <li>String ↔ JSON Converter</li>
                     <li>JSON Validator</li>
                     <li>Interactive Tree View</li>
+                    <li>Import & Export</li>
                 </ul>
             </a>
 
-            <div class="tool-card coming-soon">
+            <a href="tools/xml-tools.html" class="tool-card">
                 <div class="tool-icon">&lt;/&gt;</div>
                 <h3>XML Tools</h3>
                 <p>Format, validate, and transform XML documents with ease.</p>
                 <ul class="tool-features">
                     <li>Format & Minify</li>
                     <li>XML Validator</li>
-                    <li>XPath Tester</li>
-                    <li>Tree View</li>
+                    <li>Import & Export</li>
+                    <li>Interactive Tree View</li>
                 </ul>
-                <span class="coming-soon-badge">Coming Soon</span>
-            </div>
+            </a>
         </div>
     </div>
 
