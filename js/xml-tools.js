@@ -330,7 +330,7 @@ function buildXMLTree(node, level = 0) {
             const text = node.textContent.trim();
             html += `<span class="tree-line">${indent}<span class="tree-bracket">&lt;</span>${formattedTagName}${attrsHtml}<span class="tree-bracket">&gt;</span><span class="tree-text">${escapeHtml(text)}</span><span class="tree-bracket">&lt;/</span>${formattedTagName}<span class="tree-bracket">&gt;</span></span>\n`;
         } else {
-            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">▼</span> <span class="tree-bracket">&lt;</span>${formattedTagName}${attrsHtml}<span class="tree-bracket">&gt;</span><span class="tree-child-count">${elementCount} child${elementCount !== 1 ? 'ren' : ''}</span></span>\n`;
+            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> <span class="tree-bracket">&lt;</span>${formattedTagName}${attrsHtml}<span class="tree-bracket">&gt;</span><span class="tree-child-count">${elementCount} child${elementCount !== 1 ? 'ren' : ''}</span></span>\n`;
             html += `<div class="tree-node">`;
             node.childNodes.forEach(child => {
                 html += buildXMLTree(child, level + 1);
@@ -380,7 +380,7 @@ function addTreeHandlers() {
             const treeNode = this.nextElementSibling;
             if (treeNode && treeNode.classList.contains('tree-node')) {
                 treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
             }
         });
     });
@@ -400,7 +400,7 @@ function collapseAll() {
     if (!container) return;
 
     container.querySelectorAll('.tree-node').forEach(node => node.classList.add('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▶');
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '+');
     showStatusMessage('All nodes collapsed');
 }
 
@@ -418,7 +418,7 @@ function expandAll() {
     if (!container) return;
 
     container.querySelectorAll('.tree-node').forEach(node => node.classList.remove('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▼');
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '-');
     showStatusMessage('All nodes expanded');
 }
 
@@ -598,7 +598,7 @@ function addTreeHandlersToContainer(container) {
             const treeNode = this.nextElementSibling;
             if (treeNode && treeNode.classList.contains('tree-node')) {
                 treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
             }
         });
     });

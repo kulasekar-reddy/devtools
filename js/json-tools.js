@@ -251,7 +251,7 @@ function buildTree(obj, key = null, level = 0) {
         if (obj.length === 0) {
             html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[]</span></span>\n`;
         } else {
-            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">▼</span> <span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
+            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">-</span> <span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
             html += `<div class="tree-node">`;
             obj.forEach((item) => {
                 html += buildTree(item, null, level + 1);
@@ -264,7 +264,7 @@ function buildTree(obj, key = null, level = 0) {
         if (keys.length === 0) {
             html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{}</span></span>\n`;
         } else {
-            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">▼</span> <span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
+            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">-</span> <span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
             html += `<div class="tree-node">`;
             keys.forEach((k) => {
                 html += buildTree(obj[k], k, level + 1);
@@ -284,7 +284,7 @@ function addTreeHandlers() {
             const treeNode = this.nextElementSibling;
             if (treeNode && treeNode.classList.contains('tree-node')) {
                 treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
             }
         });
     });
@@ -304,7 +304,7 @@ function collapseAll() {
     if (!container) return;
 
     container.querySelectorAll('.tree-node').forEach(node => node.classList.add('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▶');
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '+');
     showStatusMessage('All nodes collapsed');
 }
 
@@ -322,7 +322,7 @@ function expandAll() {
     if (!container) return;
 
     container.querySelectorAll('.tree-node').forEach(node => node.classList.remove('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '▼');
+    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '-');
     showStatusMessage('All nodes expanded');
 }
 
@@ -503,7 +503,7 @@ function addTreeHandlersToContainer(container) {
             const treeNode = this.nextElementSibling;
             if (treeNode && treeNode.classList.contains('tree-node')) {
                 treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '▶' : '▼';
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
             }
         });
     });
