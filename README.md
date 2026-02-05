@@ -133,6 +133,27 @@ To add a new tool category:
 6. **Update homepage** - Add tool card with features
 7. **Test thoroughly** - Verify all features work
 
+## 🌐 Deployment & Subdomains
+
+This project is configured to work with a custom domain (`formatting.tech`). The `CNAME` file in the root directory handles the main domain configuration for GitHub Pages.
+
+### Setting up Subdomains (json.formatting.tech & xml.formatting.tech)
+
+If you are hosting on **GitHub Pages**, there is a limitation: **GitHub Pages supports only one custom domain per repository.**
+
+To make the subdomains work, you have two options:
+
+#### Option 1: DNS Forwarding (Recommended for GitHub Pages)
+Configure "URL Redirect" or "Forwarding" rules in your DNS provider's dashboard (e.g., Namecheap, GoDaddy, Cloudflare):
+*   `json.formatting.tech` → `https://formatting.tech/tools/json-tools.html`
+*   `xml.formatting.tech` → `https://formatting.tech/tools/xml-tools.html`
+
+#### Option 2: Advanced Hosting (Netlify, Vercel, Cloudflare Pages)
+If you want to keep the subdomains in the address bar using a single repository, deploy this project to **Netlify** or **Vercel**. These platforms support "Domain Aliases" which allow multiple domains to serve the same site.
+1.  Connect your repo to Netlify/Vercel.
+2.  Add `json.formatting.tech` and `xml.formatting.tech` as domain aliases in the project settings.
+3.  The script in `index.html` will automatically detect the subdomain and redirect to the correct tool.
+
 ## 📄 License
 
 Free to use, modify, and distribute. No attribution required.
