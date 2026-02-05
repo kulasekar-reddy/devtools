@@ -251,7 +251,7 @@ function buildTree(obj, key = null, level = 0) {
         if (obj.length === 0) {
             html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[]</span></span>\n`;
         } else {
-            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">-</span> <span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
+            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
             html += `<div class="tree-node">`;
             obj.forEach((item) => {
                 html += buildTree(item, null, level + 1);
@@ -264,7 +264,7 @@ function buildTree(obj, key = null, level = 0) {
         if (keys.length === 0) {
             html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{}</span></span>\n`;
         } else {
-            html += `<span class="tree-line tree-expandable">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-toggle">-</span> <span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
+            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
             html += `<div class="tree-node">`;
             keys.forEach((k) => {
                 html += buildTree(obj[k], k, level + 1);

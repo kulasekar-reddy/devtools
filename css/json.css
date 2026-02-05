@@ -228,24 +228,14 @@
 .tree-toggle {
     cursor: pointer;
     user-select: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    border: 1px solid #c0c0c0;
-    border-radius: 2px;
-    background: #fff;
-    color: #333;
-    margin-right: 5px;
-    font-size: 11px;
-    line-height: 1;
-    vertical-align: middle;
+    display: inline-block;
+    margin-right: 4px;
+    color: #6a737d;
+    font-weight: bold;
 }
 
 .tree-toggle:hover {
-    border-color: #999;
-    color: #000;
+    color: var(--primary-color);
 }
 
 .tree-collapsed {
