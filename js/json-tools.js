@@ -1,5 +1,17 @@
 // JSON Tools JavaScript - Single Window In-Place Editing
 
+// Helper function to escape HTML entities
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 let currentMode = 'text'; // 'text' or 'tree'
 
 // Initialize on page load
@@ -257,7 +269,7 @@ function buildTree(obj, key = null, level = 0) {
                 html += buildTree(item, null, level + 1);
             });
             html += `</div>`;
-            html += `<span class="tree-line">${indent}<span class="tree-bracket">]</span></span>\n`;
+            html += `<span class="tree-line tree-closing-delimiter">${indent}<span class="tree-bracket">]</span></span>\n`;
         }
     } else if (typeof obj === 'object') {
         const keys = Object.keys(obj);
@@ -270,7 +282,7 @@ function buildTree(obj, key = null, level = 0) {
                 html += buildTree(obj[k], k, level + 1);
             });
             html += `</div>`;
-            html += `<span class="tree-line">${indent}<span class="tree-bracket">}</span></span>\n`;
+            html += `<span class="tree-line tree-closing-delimiter">${indent}<span class="tree-bracket">}</span></span>\n`;
         }
     }
 

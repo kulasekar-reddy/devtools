@@ -266,6 +266,14 @@
     background: rgba(49, 130, 206, 0.1);
 }
 
+/* Specific styling for the closing bracket/brace to appear on the same line visually */
+.tree-closing-delimiter {
+    margin-top: -1.6em; /* Pull it up by one line-height */
+    text-align: right;  /* Push the content to the right */
+    padding-right: 20px; /* Ensure it's not cut off by tree-view padding */
+}
+
+
 /* Hidden file input */
 .hidden-input {
     display: none;
