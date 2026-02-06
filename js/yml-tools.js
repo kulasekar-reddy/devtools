@@ -1,4 +1,4 @@
-// JSON Tools JavaScript - Single Window In-Place Editing
+// YAML Tools JavaScript - Single Window In-Place Editing
 
 // Helper function to escape HTML entities
 function escapeHtml(text) {
@@ -9,20 +9,20 @@ function escapeHtml(text) {
         '"': '&quot;',
         "'": '&#039;'
     };
-    return text.replace(/[&<>'"']/g, function(m) { return map[m]; });
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
 
 let currentMode = 'text'; // 'text' or 'tree'
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    setActiveNav('json-tools.html');
+    setActiveNav('yml-tools.html');
 
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     if (editor) {
         editor.addEventListener('input', updateCharCount);
         updateCharCount();
-        initHighlightSync('json-editor');
+        initHighlightSync('yaml-editor');
     }
 
     // Keyboard shortcuts
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== CHARACTER COUNT =====
 function updateCharCount() {
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     const count = document.getElementById('char-count');
     const countFs = document.getElementById('char-count-fs');
     const length = editor ? editor.value.length : 0;
@@ -79,24 +79,32 @@ function showStatusMessage(message, type = 'success') {
 // ===== MODE SWITCHING =====
 function showTextMode() {
     currentMode = 'text';
-    document.getElementById('json-editor').style.display = 'block';
+    document.getElementById('yaml-editor').style.display = 'block';
     document.getElementById('tree-view').classList.remove('active');
     document.getElementById('text-mode-btn').classList.add('active');
     document.getElementById('tree-mode-btn').classList.remove('active');
 }
 
+// Helper to safely get jsyaml instance
+function getJsYaml() {
+    if (typeof jsyaml !== 'undefined') return jsyaml;
+    if (window.jsyaml) return window.jsyaml;
+    throw new Error('YAML library not loaded. Please check your internet connection or refresh.');
+}
+
 function showTreeMode() {
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     const content = editor.value.trim();
     clearHighlights();
 
     if (!content) {
-        showStatusMessage('Please enter JSON to view as tree', 'error');
+        showStatusMessage('Please enter YAML to view as tree', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(content);
+        const yaml = getJsYaml();
+        const parsed = yaml.load(content);
         const treeView = document.getElementById('tree-view');
         treeView.innerHTML = buildTree(parsed);
         addTreeHandlers();
@@ -108,154 +116,120 @@ function showTreeMode() {
         document.getElementById('tree-mode-btn').classList.add('active');
         showStatusMessage('Tree view generated');
     } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
+        showStatusMessage('Error: ' + error.message, 'error');
+        const line = getYamlErrorLine(error, content);
         if (line) highlightError(line);
     }
 }
 
-// ===== FORMAT JSON =====
-function formatJSON() {
-    const editor = document.getElementById('json-editor');
+// ===== FORMAT YAML =====
+function formatYAML() {
+    const editor = document.getElementById('yaml-editor');
     const content = editor.value.trim();
     clearHighlights();
 
     if (!content) {
-        showStatusMessage('Please enter JSON to format', 'error');
+        showStatusMessage('Please enter YAML to format', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(content);
-        const formatted = JSON.stringify(parsed, null, 2);
+        const yaml = getJsYaml();
+        const parsed = yaml.load(content);
+        const formatted = yaml.dump(parsed, { indent: 2 });
         editor.value = formatted;
         updateCharCount();
         showTextMode();
-        showStatusMessage('JSON formatted successfully');
+        showStatusMessage('YAML formatted successfully');
         updateFullscreenContent();
     } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
+        showStatusMessage('Error: ' + error.message, 'error');
+        const line = getYamlErrorLine(error, content);
         if (line) highlightError(line);
     }
 }
 
-// ===== MINIFY JSON =====
-function minifyJSON() {
-    const editor = document.getElementById('json-editor');
+// ===== YAML TO JSON =====
+function yamlToJson() {
+    const editor = document.getElementById('yaml-editor');
     const content = editor.value.trim();
     clearHighlights();
 
     if (!content) {
-        showStatusMessage('Please enter JSON to minify', 'error');
+        showStatusMessage('Please enter YAML to convert', 'error');
         return;
     }
 
     try {
+        const yaml = getJsYaml();
+        const parsed = yaml.load(content);
+        const json = JSON.stringify(parsed, null, 2);
+        editor.value = json;
+        updateCharCount();
+        showTextMode();
+        showStatusMessage('Converted to JSON successfully');
+        updateFullscreenContent();
+    } catch (error) {
+        showStatusMessage('Error: ' + error.message, 'error');
+        const line = getYamlErrorLine(error, content);
+        if (line) highlightError(line);
+    }
+}
+
+// ===== JSON TO YAML =====
+function jsonToYaml() {
+    const editor = document.getElementById('yaml-editor');
+    const content = editor.value.trim();
+    clearHighlights();
+
+    if (!content) {
+        showStatusMessage('Please enter JSON to convert', 'error');
+        return;
+    }
+
+    try {
+        const yaml = getJsYaml();
         const parsed = JSON.parse(content);
-        const minified = JSON.stringify(parsed);
-        editor.value = minified;
+        const yamlStr = yaml.dump(parsed, { indent: 2 });
+        editor.value = yamlStr;
         updateCharCount();
         showTextMode();
-        showStatusMessage('JSON minified successfully');
+        showStatusMessage('Converted to YAML successfully');
         updateFullscreenContent();
     } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
-        if (line) highlightError(line);
+        showStatusMessage('Error: ' + error.message, 'error');
+        // JSON parse error, reuse getJsonErrorLine? 
+        // We are in yml-tools.js, so we don't have getJsonErrorLine unless I copy it or use the one from utils if I had put it there.
+        // I didn't put getJsonErrorLine in utils. I'll just leave it for now or implement a simple version.
     }
 }
 
-// ===== STRINGIFY (Object to JSON String) =====
-function stringifyJSON() {
-    const editor = document.getElementById('json-editor');
+// ===== VALIDATE YAML =====
+function validateYAML() {
+    const editor = document.getElementById('yaml-editor');
     const content = editor.value.trim();
     clearHighlights();
 
     if (!content) {
-        showStatusMessage('Please enter content to stringify', 'error');
+        showStatusMessage('Please enter YAML to validate', 'error');
         return;
     }
 
     try {
-        // First try to evaluate as JavaScript (handles unquoted keys, single quotes, etc.)
-        let obj;
-        try {
-            // Use Function constructor to safely evaluate JS object literals
-            obj = (new Function('return ' + content))();
-        } catch (e) {
-            // If that fails, try parsing as JSON
-            obj = JSON.parse(content);
-        }
-
-        // Convert to escaped JSON string (without formatting)
-        const stringified = JSON.stringify(JSON.stringify(obj));
-        editor.value = stringified;
-        updateCharCount();
-        showTextMode();
-        showStatusMessage('Content stringified successfully');
-        updateFullscreenContent();
-    } catch (error) {
-        showStatusMessage('Invalid input: ' + error.message, 'error');
-        // Evaluating JS might not give clean line numbers for input content
-    }
-}
-
-// ===== PARSE (JSON String to Object) =====
-function parseJSON() {
-    const editor = document.getElementById('json-editor');
-    const content = editor.value.trim();
-    clearHighlights();
-
-    if (!content) {
-        showStatusMessage('Please enter a JSON string to parse', 'error');
-        return;
-    }
-
-    try {
-        // First parse the outer string (removes escaping)
-        let parsed = JSON.parse(content);
-
-        // If the result is still a string, parse it again
-        if (typeof parsed === 'string') {
-            parsed = JSON.parse(parsed);
-        }
-
-        // Output without formatting - preserve the structure as-is
-        const result = JSON.stringify(parsed);
-        editor.value = result;
-        updateCharCount();
-        showTextMode();
-        showStatusMessage('JSON string parsed successfully');
-        updateFullscreenContent();
-    } catch (error) {
-        showStatusMessage('Invalid JSON string: ' + error.message, 'error');
-        const line = getJsonErrorLine(error.message, content);
-        if (line) highlightError(line);
-    }
-}
-
-// ===== VALIDATE JSON =====
-function validateJSON() {
-    const editor = document.getElementById('json-editor');
-    const content = editor.value.trim();
-    clearHighlights();
-
-    if (!content) {
-        showStatusMessage('Please enter JSON to validate', 'error');
-        return;
-    }
-
-    try {
-        const parsed = JSON.parse(content);
+        const yaml = getJsYaml();
+        const parsed = yaml.load(content);
         const type = Array.isArray(parsed) ? 'Array' : typeof parsed;
         const keys = typeof parsed === 'object' && parsed !== null ? Object.keys(parsed).length : 0;
 
-        let message = `Valid JSON - Type: ${type}`;
+        let message = `Valid YAML - Type: ${type}`;
         if (type === 'object' || type === 'Array') {
             message += `, Keys/Items: ${keys}`;
         }
         message += `, Size: ${content.length.toLocaleString()} chars`;
         showStatusMessage(message, 'success');
     } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
+        showStatusMessage('Invalid YAML: ' + error.message, 'error');
+        const line = getYamlErrorLine(error, content);
         if (line) highlightError(line);
     }
 }
@@ -355,42 +329,38 @@ function expandAll() {
 // ===== SAMPLE DATA =====
 function loadSample() {
     clearHighlights();
-    const sampleJSON = `{ 
-  "name": "DevTools",
-  "version": "1.0.0",
-  "description": "Free developer utilities",
-  "features": [
-    "JSON formatting",
-    "XML tools",
-    "Tree view"
-  ],
-  "author": {
-    "name": "Developer",
-    "email": "dev@example.com"
-  },
-  "settings": {
-    "theme": "light",
-    "autoFormat": true,
-    "indentSize": 2
-  },
-  "stats": {
-    "users": 10000,
-    "rating": 4.8,
-    "isActive": true,
-    "lastUpdate": null
-  }
-}`;
+    const sampleYAML = `name: DevTools
+version: 1.0.0
+description: Free developer utilities
+features:
+  - JSON formatting
+  - XML tools
+  - YAML tools
+  - Tree view
+author:
+  name: Developer
+  email: dev@example.com
+settings:
+  theme: light
+  autoFormat: true
+  indentSize: 2
+stats:
+  users: 10000
+  rating: 4.8
+  isActive: true
+  lastUpdate: null
+`;
 
-    document.getElementById('json-editor').value = sampleJSON;
+    document.getElementById('yaml-editor').value = sampleYAML;
     updateCharCount();
     showTextMode();
-    showStatusMessage('Sample JSON loaded');
+    showStatusMessage('Sample YAML loaded');
 }
 
 // ===== CLEAR =====
 function clearEditor() {
     clearHighlights();
-    document.getElementById('json-editor').value = '';
+    document.getElementById('yaml-editor').value = '';
     document.getElementById('tree-view').innerHTML = '';
     updateCharCount();
     showTextMode();
@@ -398,7 +368,7 @@ function clearEditor() {
 }
 
 // ===== IMPORT/EXPORT =====
-function importJSON() {
+function importFile() {
     document.getElementById('file-input').click();
 }
 
@@ -409,7 +379,7 @@ function handleFileImport(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         clearHighlights();
-        document.getElementById('json-editor').value = e.target.result;
+        document.getElementById('yaml-editor').value = e.target.result;
         updateCharCount();
         showTextMode();
         showStatusMessage(`Imported ${file.name}`);
@@ -421,28 +391,28 @@ function handleFileImport(event) {
     event.target.value = '';
 }
 
-function exportJSON() {
-    const content = document.getElementById('json-editor').value;
+function exportYAML() {
+    const content = document.getElementById('yaml-editor').value;
     if (!content.trim()) {
         showStatusMessage('Nothing to export', 'error');
         return;
     }
 
-    const blob = new Blob([content], { type: 'application/json' });
+    const blob = new Blob([content], { type: 'application/x-yaml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'data.json';
+    a.download = 'data.yaml';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showStatusMessage('JSON exported successfully');
+    showStatusMessage('YAML exported successfully');
 }
 
 // ===== COPY =====
 function copyContent() {
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     const overlay = document.getElementById('fullscreen-overlay');
     const isFullscreen = overlay && !overlay.hidden;
 
@@ -450,9 +420,9 @@ function copyContent() {
     if (isFullscreen) {
         // In fullscreen, get content from fullscreen area
         const fsTreeView = document.querySelector('#fullscreen-content .tree-view');
-        const fsEditor = document.getElementById('json-editor-fs');
+        const fsEditor = document.getElementById('yaml-editor-fs');
         if (fsTreeView) {
-            content = editor.value; // Copy the actual JSON, not tree text
+            content = editor.value; // Copy the actual YAML, not tree text
         } else if (fsEditor) {
             content = fsEditor.value;
         } else {
@@ -483,7 +453,7 @@ function isFullscreenActive() {
 function toggleFullscreen() {
     const overlay = document.getElementById('fullscreen-overlay');
     const content = document.getElementById('fullscreen-content');
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
 
     if (overlay.hidden) {
         content.innerHTML = '';
@@ -511,7 +481,7 @@ function toggleFullscreen() {
 
 function createFullscreenTextarea(value) {
     const content = document.getElementById('fullscreen-content');
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
 
     content.innerHTML = '';
     
@@ -528,7 +498,7 @@ function createFullscreenTextarea(value) {
     inputContainer.appendChild(backdrop);
     
     const textarea = document.createElement('textarea');
-    textarea.id = 'json-editor-fs';
+    textarea.id = 'yaml-editor-fs';
     textarea.value = value;
     textarea.addEventListener('input', function() {
         editor.value = this.value;
@@ -538,7 +508,7 @@ function createFullscreenTextarea(value) {
     inputContainer.appendChild(textarea);
     content.appendChild(inputContainer);
     
-    initHighlightSync('json-editor-fs');
+    initHighlightSync('yaml-editor-fs');
 }
 
 function addTreeHandlersToContainer(container) {
@@ -566,17 +536,18 @@ function exitFullscreen() {
 function showTreeModeFullscreen() {
     if (!isFullscreenActive()) return;
 
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     const content = editor.value.trim();
     clearHighlights();
 
     if (!content) {
-        showStatusMessage('Please enter JSON to view as tree', 'error');
+        showStatusMessage('Please enter YAML to view as tree', 'error');
         return;
     }
 
     try {
-        const parsed = JSON.parse(content);
+        const yaml = getJsYaml();
+        const parsed = yaml.load(content);
         const fsContent = document.getElementById('fullscreen-content');
 
         // Create tree view in fullscreen
@@ -591,7 +562,8 @@ function showTreeModeFullscreen() {
         currentMode = 'tree';
         showStatusMessage('Tree view generated');
     } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
+        showStatusMessage('Invalid YAML: ' + error.message, 'error');
+        const line = getYamlErrorLine(error);
         if (line) highlightError(line);
     }
 }
@@ -599,9 +571,9 @@ function showTreeModeFullscreen() {
 function updateFullscreenContent() {
     if (!isFullscreenActive()) return;
 
-    const editor = document.getElementById('json-editor');
+    const editor = document.getElementById('yaml-editor');
     const content = document.getElementById('fullscreen-content');
-    const fsEditor = document.getElementById('json-editor-fs');
+    const fsEditor = document.getElementById('yaml-editor-fs');
 
     // If there's a textarea in fullscreen, update it
     if (fsEditor) {
@@ -612,43 +584,9 @@ function updateFullscreenContent() {
     }
 }
 
-function getJsonErrorLine(errorMessage, jsonContent) {
-    // Try to parse "at position " (Chrome/V8/Node)
-    const positionMatch = errorMessage.match(/position (\d+)/);
-    if (positionMatch) {
-        const position = parseInt(positionMatch[1], 10);
-        
-        // --- Heuristic for missing comma ---
-        // Scan backwards from error position to find the previous non-whitespace character
-        let i = position - 1;
-        while (i >= 0 && /\s/.test(jsonContent[i])) {
-            i--;
-        }
-
-        if (i >= 0) {
-            const prevChar = jsonContent[i];
-            const currChar = jsonContent[position];
-            
-            // Check if previous char is a value ender (", digit, }, ], l (null), e (true/false))
-            // And current char is a value starter (", {, [, digit, t, f, n)
-            // If so, it's highly likely a missing comma on the previous line/token
-            if (/[0-9"}\]le]/.test(prevChar) && /["{\[\dxfnt]/.test(currChar)) {
-                // Return line number of the *previous* character (where the comma should be)
-                const substring = jsonContent.substring(0, i + 1);
-                return substring.split('\n').length;
-            }
-        }
-        // -----------------------------------
-
-        const substring = jsonContent.substring(0, position);
-        return substring.split('\n').length;
+function getYamlErrorLine(error, content) {
+    if (error && error.mark && typeof error.mark.line === 'number') {
+        return error.mark.line + 1; // js-yaml is 0-based
     }
-    
-    // Try to parse "line " (Firefox style)
-    const lineMatch = errorMessage.match(/line (\d+)/);
-    if (lineMatch) {
-        return parseInt(lineMatch[1], 10);
-    }
-    
     return null;
 }

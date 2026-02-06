@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (editor) {
         editor.addEventListener('input', updateCharCount);
         updateCharCount();
+        initHighlightSync('xml-editor');
     }
 
     // Keyboard shortcuts
@@ -55,11 +56,11 @@ function showStatusMessage(message, type = 'success') {
     const statusBar = document.getElementById('status-bar');
     if (statusBar) {
         statusBar.textContent = message;
-        statusBar.className = 'status-bar ' + type;
+        statusBar.className = 'status-bar show ' + type;
         setTimeout(() => {
             statusBar.textContent = '';
             statusBar.className = 'status-bar';
-        }, 3000);
+        }, 7000);
     }
 }
 
@@ -75,6 +76,7 @@ function showTextMode() {
 function showTreeMode() {
     const editor = document.getElementById('xml-editor');
     const content = editor.value.trim();
+    clearHighlights();
 
     if (!content) {
         showStatusMessage('Please enter XML to view as tree', 'error');
@@ -92,9 +94,10 @@ function showTreeMode() {
         treeView.classList.add('active');
         document.getElementById('text-mode-btn').classList.remove('active');
         document.getElementById('tree-mode-btn').classList.add('active');
-        showStatusMessage('Tree view generated');
     } catch (error) {
         showStatusMessage('Invalid XML: ' + error.message, 'error');
+        const line = getXmlErrorLine(error.message, content);
+        if (line) highlightError(line);
     }
 }
 
@@ -114,6 +117,7 @@ function parseXML(xmlString) {
 function formatXML() {
     const editor = document.getElementById('xml-editor');
     const content = editor.value.trim();
+    clearHighlights();
 
     if (!content) {
         showStatusMessage('Please enter XML to format', 'error');
@@ -132,6 +136,8 @@ function formatXML() {
         updateFullscreenContent();
     } catch (error) {
         showStatusMessage('Invalid XML: ' + error.message, 'error');
+        const line = getXmlErrorLine(error.message, content);
+        if (line) highlightError(line);
     }
 }
 
@@ -225,6 +231,7 @@ function formatXMLString(xml) {
 function minifyXML() {
     const editor = document.getElementById('xml-editor');
     const content = editor.value.trim();
+    clearHighlights();
 
     if (!content) {
         showStatusMessage('Please enter XML to minify', 'error');
@@ -241,6 +248,8 @@ function minifyXML() {
         updateFullscreenContent();
     } catch (error) {
         showStatusMessage('Invalid XML: ' + error.message, 'error');
+        const line = getXmlErrorLine(error.message, content);
+        if (line) highlightError(line);
     }
 }
 
@@ -248,6 +257,7 @@ function minifyXML() {
 function validateXML() {
     const editor = document.getElementById('xml-editor');
     const content = editor.value.trim();
+    clearHighlights();
 
     if (!content) {
         showStatusMessage('Please enter XML to validate', 'error');
@@ -263,6 +273,8 @@ function validateXML() {
         showStatusMessage(message, 'success');
     } catch (error) {
         showStatusMessage('Invalid XML: ' + error.message, 'error');
+        const line = getXmlErrorLine(error.message, content);
+        if (line) highlightError(line);
     }
 }
 
@@ -335,7 +347,7 @@ function buildXMLTree(node, level = 0) {
             node.childNodes.forEach(child => {
                 html += buildXMLTree(child, level + 1);
             });
-            html += `</div>`;
+            html += `</div>`
             html += `<span class="tree-line">${indent}<span class="tree-bracket">&lt;/</span>${formattedTagName}<span class="tree-bracket">&gt;</span></span>\n`;
         }
     } else if (node.nodeType === Node.TEXT_NODE) {
@@ -424,6 +436,7 @@ function expandAll() {
 
 // ===== SAMPLE DATA =====
 function loadSample() {
+    clearHighlights();
     const sampleXML = `<?xml version="1.0" encoding="UTF-8"?>
 <bookstore xmlns:bk="http://example.com/books">
     <bk:book category="fiction" isbn="978-0-13-468599-1">
@@ -457,6 +470,7 @@ function loadSample() {
 
 // ===== CLEAR =====
 function clearEditor() {
+    clearHighlights();
     document.getElementById('xml-editor').value = '';
     document.getElementById('tree-view').innerHTML = '';
     updateCharCount();
@@ -475,6 +489,7 @@ function handleFileImport(event) {
 
     const reader = new FileReader();
     reader.onload = function(e) {
+        clearHighlights();
         document.getElementById('xml-editor').value = e.target.result;
         updateCharCount();
         showTextMode();
@@ -580,6 +595,19 @@ function createFullscreenTextarea(value) {
     const editor = document.getElementById('xml-editor');
 
     content.innerHTML = '';
+    
+    const inputContainer = document.createElement('div');
+    inputContainer.className = 'input-container';
+    
+    const backdrop = document.createElement('div');
+    backdrop.className = 'highlight-backdrop';
+    
+    const highlights = document.createElement('div');
+    highlights.className = 'highlights';
+    
+    backdrop.appendChild(highlights);
+    inputContainer.appendChild(backdrop);
+    
     const textarea = document.createElement('textarea');
     textarea.id = 'xml-editor-fs';
     textarea.value = value;
@@ -587,7 +615,11 @@ function createFullscreenTextarea(value) {
         editor.value = this.value;
         updateCharCount();
     });
-    content.appendChild(textarea);
+    
+    inputContainer.appendChild(textarea);
+    content.appendChild(inputContainer);
+    
+    initHighlightSync('xml-editor-fs');
 }
 
 function addTreeHandlersToContainer(container) {
@@ -617,6 +649,7 @@ function showTreeModeFullscreen() {
 
     const editor = document.getElementById('xml-editor');
     const content = editor.value.trim();
+    clearHighlights();
 
     if (!content) {
         showStatusMessage('Please enter XML to view as tree', 'error');
@@ -661,4 +694,12 @@ function updateFullscreenContent() {
         // If tree view was showing, switch to textarea with new content
         createFullscreenTextarea(editor.value);
     }
+}
+
+function getXmlErrorLine(errorMessage, xmlContent) {
+    const lineMatch = errorMessage.match(/line (\d+)/i) || errorMessage.match(/Line Number (\d+)/i);
+    if (lineMatch) {
+        return parseInt(lineMatch[1], 10);
+    }
+    return null;
 }

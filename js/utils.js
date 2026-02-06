@@ -194,3 +194,74 @@ function initFullscreenClickHandler() {
         });
     }
 }
+
+// ===== HIGHLIGHTING =====
+function clearHighlights() {
+    document.querySelectorAll('.highlights').forEach(container => {
+        container.innerHTML = '';
+    });
+}
+
+function highlightError(line) {
+    // line is 1-based index
+    clearHighlights();
+    
+    // Determine active context (fullscreen vs normal)
+    const overlay = document.getElementById('fullscreen-overlay');
+    const isFullscreen = overlay && !overlay.hidden;
+    
+    let container, textarea;
+    
+    if (isFullscreen) {
+        const fsContent = document.getElementById('fullscreen-content');
+        if (fsContent) {
+            container = fsContent.querySelector('.highlights');
+            textarea = fsContent.querySelector('textarea');
+        }
+    }
+    
+    // Fallback to main editor
+    if (!container || !textarea) {
+        container = document.querySelector('.editor-content .highlights');
+        textarea = document.querySelector('.editor-content textarea');
+    }
+    
+    if (!container || !textarea || !line || line < 1) return;
+
+    const computedStyle = getComputedStyle(textarea);
+    const lineHeight = parseFloat(computedStyle.lineHeight);
+    const paddingTop = parseFloat(computedStyle.paddingTop);
+    
+    // Calculate top position
+    const top = paddingTop + (line - 1) * lineHeight;
+    
+    const row = document.createElement('div');
+    row.className = 'highlight-row';
+    row.style.top = `${top}px`;
+    row.style.height = `${lineHeight}px`;
+    
+    container.appendChild(row);
+}
+
+function initHighlightSync(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (!textarea) return;
+    
+    // Find the closest input-container to get the correct highlights sibling
+    const inputContainer = textarea.closest('.input-container');
+    if (!inputContainer) return;
+    
+    const highlights = inputContainer.querySelector('.highlights');
+    
+    if (highlights) {
+        // Sync vertical scroll
+        textarea.addEventListener('scroll', () => {
+            highlights.style.transform = `translateY(-${textarea.scrollTop}px)`;
+        });
+        
+        // Clear highlights on input
+        textarea.addEventListener('input', () => {
+            clearHighlights();
+        });
+    }
+}
