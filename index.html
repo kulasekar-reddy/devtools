@@ -19,17 +19,6 @@
 
         })();
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-B4LNPCXR9M');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
-        crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -46,11 +35,15 @@
     <meta property="og:title" content="Free JSON Formatter & XML Tools Online - DevTools">
     <meta property="og:description" content="Free developer tools for JSON formatting, XML validation, and more. Works offline, no data collection.">
     <meta property="og:site_name" content="DevTools">
+    <meta property="og:image" content="https://formatting.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Free JSON Formatter & XML Tools Online - DevTools">
     <meta name="twitter:description" content="Free developer tools for JSON formatting, XML validation, and more. Works offline, no data collection.">
+    <meta name="twitter:image" content="https://formatting.tech/images/og-image.png">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -106,35 +99,38 @@
     }
     </script>
 
-    <!-- Font Preloading -->
+    <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="css/main.css">
     <style>
         .hero {
             text-align: center;
-            padding: 30px 0;
+            padding: 40px 0 20px;
         }
 
         .hero h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
             color: #1a202c;
+            letter-spacing: -0.5px;
         }
 
         .hero p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #718096;
             max-width: 600px;
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
         }
 
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .tool-card {
@@ -148,17 +144,25 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            min-height: 220px;
         }
 
         .tool-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             border-color: #3182ce;
         }
 
         .tool-icon {
             font-size: 2rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            background: #f7fafc;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
         }
 
         .tool-card h3 {
@@ -171,20 +175,22 @@
             color: #718096;
             font-size: 0.85rem;
             line-height: 1.4;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             flex-grow: 1;
         }
 
         .tool-features {
             list-style: none;
             padding: 0;
-            margin-top: auto;
+            margin-top: 15px;
+            border-top: 1px solid #edf2f7;
+            padding-top: 12px;
         }
 
         .tool-features li {
             font-size: 0.8rem;
             color: #4a5568;
-            padding: 3px 0;
+            padding: 4px 0;
             display: flex;
             align-items: center;
         }
@@ -193,28 +199,13 @@
             content: "✓";
             color: #3182ce;
             font-weight: bold;
-            margin-right: 6px;
-        }
-
-        .coming-soon {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .coming-soon-badge {
-            display: inline-block;
-            background: #edf2f7;
-            color: #4a5568;
-            padding: 2px 8px;
-            border-radius: 12px;
+            margin-right: 8px;
             font-size: 0.7rem;
-            font-weight: 600;
-            margin-top: 8px;
         }
 
         @media (max-width: 1200px) {
             .tools-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
         }
     </style>
@@ -231,28 +222,46 @@
                 <a href="tools/json-tools.html" class="nav-link">JSON Tools</a>
                 <a href="tools/xml-tools.html" class="nav-link">XML Tools</a>
                 <a href="tools/yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="tools/diff-tools.html" class="nav-link">Diff Tool</a>
                 <a href="tools/timestamp-tools.html" class="nav-link">Timestamp</a>
                 <a href="tools/url-tools.html" class="nav-link">URL Tools</a>
-
             </nav>
         </div>
     </div>
 
-    <div class="container">
+    <main class="container">
         <div class="hero">
-            <h2>Developer Tools Made Simple</h2>
-            <p>A collection of free, fast, and easy-to-use tools for developers. No signup, no tracking, works completely offline.</p>
+            <h2>Essential Tools for Modern Developers</h2>
+            <p>A suite of fast, secure, and privacy-focused utilities. Process data locally in your browser with zero server lag.</p>
+        </div>
+
+        <div class="features-section">
+            <div class="feature-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span>100% Privacy - Data never leaves your browser</span>
+            </div>
+            <div class="feature-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span>Instant Processing - No server latency</span>
+            </div>
+            <div class="feature-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Works Offline - No internet required</span>
+            </div>
         </div>
 
         <div class="tools-grid">
             <a href="tools/json-tools.html" class="tool-card">
                 <div class="tool-icon">{ }</div>
+                <div class="card-badges">
+                    <span class="feature-badge badge-blue">Format</span>
+                    <span class="feature-badge badge-green">Validate</span>
+                    <span class="feature-badge badge-purple">Minify</span>
+                </div>
                 <h3>JSON Tools</h3>
                 <p>Complete suite of JSON utilities for your daily development needs.</p>
                 <ul class="tool-features">
                     <li>Stringify & Parse</li>
-                    <li>Format & Minify</li>
-                    <li>JSON Validator</li>
                     <li>Interactive Tree View</li>
                     <li>Import & Export</li>
                 </ul>
@@ -260,55 +269,81 @@
 
             <a href="tools/xml-tools.html" class="tool-card">
                 <div class="tool-icon">&lt;/&gt;</div>
+                <div class="card-badges">
+                    <span class="feature-badge badge-blue">Format</span>
+                    <span class="feature-badge badge-green">Validate</span>
+                    <span class="feature-badge badge-teal">Tree View</span>
+                </div>
                 <h3>XML Tools</h3>
                 <p>Format, validate, and transform XML documents with ease.</p>
                 <ul class="tool-features">
                     <li>Format & Minify</li>
-                    <li>XML Validator</li>
                     <li>Import & Export</li>
-                    <li>Interactive Tree View</li>
+                    <li>Tree Visualization</li>
                 </ul>
             </a>
 
             <a href="tools/yml-tools.html" class="tool-card">
                 <div class="tool-icon">---</div>
+                <div class="card-badges">
+                    <span class="feature-badge badge-orange">Convert</span>
+                    <span class="feature-badge badge-green">Validate</span>
+                </div>
                 <h3>YAML Tools</h3>
                 <p>Validate, format, and convert YAML data online.</p>
                 <ul class="tool-features">
-                    <li>Validate & Format</li>
                     <li>YAML to JSON</li>
                     <li>JSON to YAML</li>
                     <li>Interactive Tree View</li>
                 </ul>
             </a>
 
+            <a href="tools/diff-tools.html" class="tool-card">
+                <div class="tool-icon">&#8800;</div>
+                <div class="card-badges">
+                    <span class="feature-badge badge-purple">Compare</span>
+                    <span class="feature-badge badge-blue">Diff</span>
+                </div>
+                <h3>Diff Tool</h3>
+                <p>Compare text, JSON, XML, or YAML to find differences.</p>
+                <ul class="tool-features">
+                    <li>Side-by-side view</li>
+                    <li>Highlight changes</li>
+                    <li>Ignore whitespace</li>
+                </ul>
+            </a>
+
             <a href="tools/timestamp-tools.html" class="tool-card">
                 <div class="tool-icon">&#9201;</div>
-                <h3>Timestamp Converter</h3>
-                <p>Convert between Unix epoch timestamps and human-readable dates.</p>
+                <div class="card-badges">
+                    <span class="feature-badge badge-teal">Convert</span>
+                    <span class="feature-badge badge-orange">Timezones</span>
+                </div>
+                <h3>Timestamp</h3>
+                <p>Convert between Unix epoch timestamps and human dates.</p>
                 <ul class="tool-features">
-                    <li>Epoch to Human Readable</li>
-                    <li>Multiple Timezone Support (IST, UTC, EST)</li>
-                    <li>ISO 8601 & RFC 2822 Formats</li>
-                    <li>Shareable Permalinks</li>
+                    <li>Epoch to Human</li>
+                    <li>Multiple Timezones</li>
+                    <li>Shareable Links</li>
                 </ul>
             </a>
 
             <a href="tools/url-tools.html" class="tool-card">
                 <div class="tool-icon">&#128279;</div>
-                <h3>URL Encoder / Decoder</h3>
+                <div class="card-badges">
+                    <span class="feature-badge badge-blue">Encode</span>
+                    <span class="feature-badge badge-green">Decode</span>
+                </div>
+                <h3>URL Encoder</h3>
                 <p>Encode, decode URLs and build query strings with ease.</p>
                 <ul class="tool-features">
-                    <li>URL Encode & Decode</li>
-                    <li>Component Encoding</li>
-                    <li>Parse URL into Components</li>
-                    <li>Query String Builder</li>
+                    <li>Parse Components</li>
+                    <li>Query Builder</li>
+                    <li>Safe Encoding</li>
                 </ul>
             </a>
-
-
         </div>
-    </div>
+    </main>
 
     <footer>
         <p>DevTools - Free and open source • No data collected • Works offline</p>
@@ -318,5 +353,15 @@
     <script>
         setActiveNav('./');
     </script>
+
+    <!-- Analytics (moved to end for better performance) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449" crossorigin="anonymous"></script>
 </body>
 </html>

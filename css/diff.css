@@ -1,0 +1,70 @@
+.diff-output {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: pre;
+    padding: 0;
+}
+
+.diff-line {
+    display: flex;
+    width: 100%;
+    min-width: fit-content;
+}
+
+.diff-line-number {
+    width: 40px;
+    text-align: right;
+    padding-right: 10px;
+    color: #a0aec0;
+    user-select: none;
+    background: #f7fafc;
+    border-right: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.diff-content {
+    padding-left: 10px;
+    flex: 1;
+}
+
+.diff-added {
+    background-color: #e6fffa;
+}
+
+.diff-added .diff-content {
+    color: #2c7a7b;
+}
+
+.diff-removed {
+    background-color: #fff5f5;
+}
+
+.diff-removed .diff-content {
+    color: #c53030;
+}
+
+.diff-header {
+    padding: 10px;
+    background: #f7fafc;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.format-controls {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.format-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}

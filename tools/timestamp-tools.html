@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-B4LNPCXR9M');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
-        crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -28,11 +17,15 @@
     <meta property="og:title" content="Epoch Timestamp Converter - Unix Time to Date Online">
     <meta property="og:description" content="Free online epoch timestamp converter with timezone support. Convert Unix timestamps to human-readable dates instantly.">
     <meta property="og:site_name" content="DevTools">
+    <meta property="og:image" content="https://formatting.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Epoch Timestamp Converter - Unix Time to Date Online">
     <meta name="twitter:description" content="Free online epoch timestamp converter with timezone support.">
+    <meta name="twitter:image" content="https://formatting.tech/images/og-image.png">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -125,10 +118,11 @@
     }
     </script>
 
-    <!-- Font Preloading -->
+    <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/json.css">
     <style>
@@ -307,13 +301,14 @@
                 <a href="json-tools.html" class="nav-link">JSON Tools</a>
                 <a href="xml-tools.html" class="nav-link">XML Tools</a>
                 <a href="yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="diff-tools.html" class="nav-link">Diff Tool</a>
                 <a href="timestamp-tools.html" class="nav-link active">Timestamp</a>
                 <a href="url-tools.html" class="nav-link">URL Tools</a>
             </nav>
         </div>
     </div>
 
-    <div class="container">
+    <main class="container">
         <div class="editor-container">
             <!-- Sidebar -->
             <div class="sidebar">
@@ -473,7 +468,7 @@
                 <div class="status-bar" id="status-bar"></div>
             </div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <p>DevTools - Free and open source | No data collected | Works offline</p>
@@ -481,5 +476,15 @@
 
     <script src="../js/utils.js"></script>
     <script src="../js/timestamp-tools.js"></script>
+
+    <!-- Analytics (moved to end for better performance) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449" crossorigin="anonymous"></script>
 </body>
 </html>

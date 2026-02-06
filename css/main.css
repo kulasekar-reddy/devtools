@@ -102,6 +102,54 @@ body {
     padding: 20px;
 }
 
+/* Features Section (New) */
+.features-section {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.feature-item svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-color);
+}
+
+/* Tool Badges (New) */
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.feature-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-blue { background: #ebf8ff; color: #2b6cb0; }
+.badge-green { background: #f0fff4; color: #2f855a; }
+.badge-purple { background: #faf5ff; color: #6b46c1; }
+.badge-orange { background: #fffaf0; color: #c05621; }
+.badge-teal { background: #e6fffa; color: #2c7a7b; }
+
 /* Workspace */
 .workspace {
     background: white;
@@ -207,7 +255,7 @@ button:disabled {
 
 .char-count {
     font-size: 0.75rem;
-    color: #a0aec0;
+    color: #64748b;
     font-family: 'Fira Code', monospace;
 }
 
