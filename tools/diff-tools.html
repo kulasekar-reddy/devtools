@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
+        crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Text & JSON Diff Tool - Compare Two Files Online | DevTools</title>
+    <meta name="description" content="Free online Diff Tool. Compare text, JSON, XML, or YAML files side-by-side. Highlight differences, additions, and removals. No signup required.">
+    <meta name="keywords" content="diff tool, text compare, json compare, xml compare, yaml compare, file difference, online diff, code compare, free developer tools">
+    <meta name="author" content="DevTools">
+    <link rel="canonical" href="https://formatting.tech/tools/diff-tools.html">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://formatting.tech/tools/diff-tools.html">
+    <meta property="og:title" content="Text & JSON Diff Tool - Compare Two Files Online">
+    <meta property="og:description" content="Free online Diff Tool. Compare text, JSON, XML, or YAML files side-by-side.">
+    <meta property="og:site_name" content="DevTools">
+
+    <!-- Font Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/diff.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <h1>DevTools</h1>
+                <div class="logo-subtitle">Free utilities for developers</div>
+            </a>
+            <nav class="main-nav">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="xml-tools.html" class="nav-link">XML Tools</a>
+                <a href="yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="diff-tools.html" class="nav-link active">Diff Tool</a>
+                <a href="timestamp-tools.html" class="nav-link">Timestamp</a>
+                <a href="url-tools.html" class="nav-link">URL Tools</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="workspace">
+            <div class="workspace-header">
+                <h2 class="workspace-title">Text & Code Diff Tool</h2>
+                <p class="workspace-description">Compare two text snippets (JSON, XML, YAML, etc.) to find differences.</p>
+            </div>
+
+            <div class="controls">
+                <button onclick="computeDiff()">Compare</button>
+                <button class="secondary" onclick="clearAll()">Clear All</button>
+                <button class="secondary" onclick="swapContent()">Swap Sides</button>
+                
+                <div class="format-controls" style="margin-left: auto; margin-bottom: 0;">
+                    <span class="format-label">Pre-Format:</span>
+                    <button class="secondary" onclick="formatBoth('json')" title="Format both inputs as JSON">JSON</button>
+                    <!-- XML formatting requires the XML parser which is in xml-tools.js, we might need to duplicate or load it -->
+                    <button class="secondary" onclick="formatBoth('xml')" title="Format both inputs as XML">XML</button>
+                </div>
+            </div>
+            
+            <div class="status-bar" id="status-bar"></div>
+
+            <div class="editor-layout">
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">Original Text</span>
+                        <span class="char-count" id="char-count-1">0 chars</span>
+                    </div>
+                    <textarea id="input-original" placeholder="Paste original text here..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <span class="panel-label">Modified Text</span>
+                        <span class="char-count" id="char-count-2">0 chars</span>
+                    </div>
+                    <textarea id="input-modified" placeholder="Paste modified text here..."></textarea>
+                </div>
+            </div>
+
+            <div id="diff-results" style="display: none;">
+                <div class="workspace-header" style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <h3 class="workspace-title" style="font-size: 1.2rem;">Comparison Result</h3>
+                </div>
+                <div class="diff-output" id="diff-output"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DevTools - Free and open source • No data collected • Works offline</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <!-- We need xml-tools.js for formatting XML if we want that feature -->
+    <script src="../js/xml-tools.js"></script> 
+    <script src="../js/diff-tools.js"></script>
+    <script>
+        // Initialize character counters
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharCounter('input-original', 'char-count-1');
+            initCharCounter('input-modified', 'char-count-2');
+            setActiveNav('diff-tools.html');
+        });
+    </script>
+</body>
+</html>
