@@ -13,6 +13,7 @@ function escapeHtml(text) {
 }
 
 let currentMode = 'text'; // 'text' or 'tree'
+let searchReplace = null;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -23,6 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
         editor.addEventListener('input', updateCharCount);
         updateCharCount();
         initHighlightSync('yaml-editor');
+        
+        if (typeof SearchReplace !== 'undefined') {
+            searchReplace = new SearchReplace();
+            const searchContainer = document.getElementById('yml-search-container');
+            if (searchContainer) {
+                searchReplace.init(editor, searchContainer);
+            }
+        }
     }
 
     // Keyboard shortcuts
@@ -85,6 +94,14 @@ function showTextMode() {
     document.getElementById('tree-view').classList.remove('active');
     document.getElementById('text-mode-btn').classList.add('active');
     document.getElementById('tree-mode-btn').classList.remove('active');
+
+    const searchContainer = document.getElementById('yml-search-container');
+    if (searchContainer) {
+        searchContainer.style.display = 'block';
+        if (searchReplace) {
+            searchReplace.init(document.getElementById('yaml-editor'), searchContainer);
+        }
+    }
 }
 
 // Helper to safely get jsyaml instance
@@ -119,6 +136,9 @@ function showTreeMode() {
         document.getElementById('text-mode-btn').classList.remove('active');
         document.getElementById('tree-mode-btn').classList.add('active');
         showStatusMessage('Tree view generated');
+        
+        const searchContainer = document.getElementById('yml-search-container');
+        if (searchContainer) searchContainer.style.display = 'none';
     } catch (error) {
         showStatusMessage('Error: ' + error.message, 'error');
         const line = getYamlErrorLine(error, content);
@@ -478,6 +498,18 @@ function toggleFullscreen() {
 
         overlay.hidden = false;
         document.body.classList.add('fullscreen-active');
+
+        if (currentMode === 'text' && searchReplace) {
+            const fsContainer = document.getElementById('fullscreen-search-container');
+            const fsEditor = document.getElementById('yaml-editor-fs'); // This ID is created by createFullscreenTextarea
+            if (fsContainer && fsEditor) {
+                fsContainer.style.display = 'block';
+                searchReplace.init(fsEditor, fsContainer);
+            }
+        } else if (currentMode === 'tree') {
+            const fsContainer = document.getElementById('fullscreen-search-container');
+            if (fsContainer) fsContainer.style.display = 'none';
+        }
     } else {
         exitFullscreen();
     }
@@ -534,20 +566,25 @@ function exitFullscreen() {
     if (overlay) {
         overlay.hidden = true;
         document.body.classList.remove('fullscreen-active');
+        
+        if (searchReplace && currentMode === 'text') {
+            const normalContainer = document.getElementById('yml-search-container');
+            const normalEditor = document.getElementById('yaml-editor');
+            if (normalContainer && normalEditor) {
+                searchReplace.init(normalEditor, normalContainer);
+            }
+        }
     }
 }
 
 function showTreeModeFullscreen() {
-    if (!isFullscreenActive()) return;
-
-    const editor = document.getElementById('yaml-editor');
-    const content = editor.value.trim();
-    clearHighlights();
-
     if (!content) {
         showStatusMessage('Please enter YAML to view as tree', 'error');
         return;
     }
+
+    const fsSearchContainer = document.getElementById('fullscreen-search-container');
+    if (fsSearchContainer) fsSearchContainer.style.display = 'none';
 
     try {
         const yaml = getJsYaml();

@@ -421,3 +421,92 @@ footer {
     white-space: pre;
     overflow-x: auto;
 }
+
+/* Search & Replace Styles */
+.search-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+.search-group, .replace-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-input {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    min-width: 150px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.search-options {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.search-options label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.search-toolbar button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    background: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.search-toolbar button:hover {
+    background: var(--secondary-hover);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.search-status {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    min-width: 60px;
+    text-align: right;
+}
+
+/* Highlight Styles */
+.search-highlight {
+    position: absolute;
+    background-color: rgba(255, 235, 59, 0.4); /* Yellow transparent */
+    border-bottom: 2px solid rgba(255, 235, 59, 0.8);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.search-highlight.current-match {
+    background-color: rgba(255, 152, 0, 0.5); /* Orange transparent */
+    border-bottom: 2px solid rgba(255, 152, 0, 1);
+    z-index: 6;
+}
