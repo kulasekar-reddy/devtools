@@ -228,6 +228,8 @@
                         <span class="char-count" id="char-count">0 characters</span>
                     </div>
                 </div>
+
+
                 <div class="editor-content">
                     <div class="input-container">
                         <div class="highlight-backdrop"><div class="highlights"></div></div>
@@ -239,6 +241,12 @@
             </div>
         </div>
         <input type="file" id="file-input" class="hidden-input" accept=".json,.txt" onchange="handleFileImport(event)">
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing JSON...</div>
+        </div>
     </main>
 
     <footer>
