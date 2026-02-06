@@ -840,10 +840,10 @@ function toggleFullscreen() {
 
         if (currentMode === 'tree') {
             const treeView = document.getElementById('tree-view');
-            const treeClone = document.createElement('div');
-            treeClone.className = 'tree-view active';
-            treeClone.innerHTML = treeView.innerHTML;
-            content.appendChild(treeClone);
+            // Move tree view to fullscreen content to preserve event listeners and state
+            content.appendChild(treeView);
+            // Trigger render to update viewport dimensions
+            requestAnimationFrame(() => renderVirtualTree());
         } else {
             createFullscreenTextarea(editor.value);
         }
@@ -890,6 +890,17 @@ function createFullscreenTextarea(value) {
 function exitFullscreen() {
     const overlay = document.getElementById('fullscreen-overlay');
     if (overlay) {
+        // Move tree view back if it's in fullscreen
+        const treeView = document.getElementById('tree-view');
+        const editorContent = document.querySelector('.editor-content');
+        const fullscreenContent = document.getElementById('fullscreen-content');
+
+        if (treeView && fullscreenContent.contains(treeView) && editorContent) {
+            editorContent.appendChild(treeView);
+            // Trigger render to update viewport dimensions
+            requestAnimationFrame(() => renderVirtualTree());
+        }
+
         overlay.hidden = true;
         document.body.classList.remove('fullscreen-active');
     }
@@ -912,12 +923,12 @@ function showTreeModeFullscreen() {
         const treeView = document.getElementById('tree-view');
         const fsContent = document.getElementById('fullscreen-content');
 
-        const treeClone = document.createElement('div');
-        treeClone.className = 'tree-view active';
-        treeClone.innerHTML = treeView.innerHTML;
-
+        // Move tree view to fullscreen
         fsContent.innerHTML = '';
-        fsContent.appendChild(treeClone);
+        fsContent.appendChild(treeView);
+        
+        // Trigger render to update viewport dimensions
+        requestAnimationFrame(() => renderVirtualTree());
     });
 }
 

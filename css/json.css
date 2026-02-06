@@ -159,6 +159,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    min-height: 0;
 }
 
 .editor-content textarea {
@@ -371,6 +372,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 .fullscreen-content textarea {
