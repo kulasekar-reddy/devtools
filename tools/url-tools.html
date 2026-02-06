@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
+        crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>URL Encoder Decoder - Query String Builder Online | DevTools</title>
+    <meta name="description" content="Free online URL encoder and decoder. Encode/decode URLs, parse URL components, build query strings. Supports encodeURIComponent for safe parameter encoding.">
+    <meta name="keywords" content="url encoder, url decoder, query string builder, encodeURIComponent, decodeURIComponent, parse url, url components, percent encoding, query params, url escape">
+    <meta name="author" content="DevTools">
+    <link rel="canonical" href="https://url.formatting.tech/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://url.formatting.tech/">
+    <meta property="og:title" content="URL Encoder Decoder - Query String Builder Online">
+    <meta property="og:description" content="Free online URL encoder and decoder. Parse URLs, build query strings, encode special characters.">
+    <meta property="og:site_name" content="DevTools">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="URL Encoder Decoder - Query String Builder Online">
+    <meta name="twitter:description" content="Free online URL encoder and decoder with query string builder.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "URL Encoder / Decoder",
+        "description": "Free online URL encoder and decoder with query string builder",
+        "url": "https://url.formatting.tech/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "URL encode with encodeURI",
+            "URL decode with decodeURI",
+            "Component encode with encodeURIComponent",
+            "Component decode with decodeURIComponent",
+            "Parse URL into components",
+            "Build query strings",
+            "Extract query parameters"
+        ]
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://formatting.tech/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "URL Tools",
+                "item": "https://url.formatting.tech/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is URL encoding?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "URL encoding (also called percent-encoding) converts special characters into a format that can be transmitted over the Internet. For example, spaces become %20 and ampersands become %26."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is the difference between encodeURI and encodeURIComponent?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "encodeURI encodes a complete URL but preserves characters that are valid in URLs (like : / ? #). encodeURIComponent encodes everything except letters, digits, and - _ . ~ making it safe for query parameter values."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I parse a URL?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Enter your URL and click 'Parse URL' to break it down into protocol, host, port, path, query parameters, and hash fragment. Each component is displayed separately for easy analysis."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I build a query string?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Use the Query Builder section to add key-value pairs. Enter the key and value for each parameter, click 'Add Parameter', then click 'Build Query String' to generate the properly encoded query string."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Font Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/json.css">
+    <style>
+        /* Compact two-column layout */
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            height: calc(100vh - 200px);
+            min-height: 400px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+        }
+        .url-section {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .url-section h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .url-textarea {
+            width: 100%;
+            flex: 1;
+            min-height: 60px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            resize: none;
+            background: white;
+        }
+        .url-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .parsed-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .parsed-header {
+            background: var(--secondary-bg);
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .parsed-body {
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .parsed-row {
+            display: flex;
+            padding: 6px 12px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+        .parsed-row:last-child {
+            border-bottom: none;
+        }
+        .parsed-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 70px;
+        }
+        .parsed-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            flex: 1;
+            word-break: break-all;
+        }
+        .parsed-value.empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .query-params-list {
+            margin-top: 5px;
+        }
+        .query-param-item {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 4px 8px;
+            background: var(--secondary-bg);
+            border-radius: 3px;
+            margin-bottom: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+        }
+        .query-param-key {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        .query-param-value {
+            color: #22863a;
+            flex: 1;
+            word-break: break-all;
+        }
+        .query-builder {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .query-builder h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .query-builder-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .query-builder-input {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+        .query-builder-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .query-builder-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .query-builder-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .query-builder-btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .query-builder-btn.primary:hover {
+            background: var(--primary-hover);
+        }
+        .query-builder-btn.danger {
+            color: white;
+            border-color: white;
+        }
+        .query-builder-btn.danger:hover {
+            background: #dc3545;
+            color: white;
+        }
+        .builder-params-list {
+            margin-top: 8px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .builder-param-item {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 4px 8px;
+            background: var(--secondary-bg);
+            border-radius: 3px;
+            margin-bottom: 4px;
+            font-size: 0.75rem;
+        }
+        .builder-param-item .query-param-key {
+            min-width: 80px;
+        }
+        .result-output {
+            margin-top: 8px;
+            padding: 8px;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+        .copy-btn-small {
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-btn-small:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        @media (max-width: 900px) {
+            .two-column-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .column {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <h1>DevTools</h1>
+                <div class="logo-subtitle">Free utilities for developers</div>
+            </a>
+            <nav class="main-nav">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="xml-tools.html" class="nav-link">XML Tools</a>
+                <a href="yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="timestamp-tools.html" class="nav-link">Timestamp</a>
+                <a href="url-tools.html" class="nav-link active">URL Tools</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="editor-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">URL Tools</h2>
+                </div>
+                <div class="sidebar-buttons">
+                    <button class="sidebar-btn" onclick="encodeURL()">
+                        <span class="btn-icon">&#128274;</span>
+                        <span>Encode URL</span>
+                    </button>
+                    <button class="sidebar-btn" onclick="decodeURL()">
+                        <span class="btn-icon">&#128275;</span>
+                        <span>Decode URL</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-btn" onclick="encodeComponent()">
+                        <span class="btn-icon">&#128274;</span>
+                        <span>Encode Component</span>
+                    </button>
+                    <button class="sidebar-btn" onclick="decodeComponent()">
+                        <span class="btn-icon">&#128275;</span>
+                        <span>Decode Component</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-btn" onclick="parseURL()">
+                        <span class="btn-icon">&#128269;</span>
+                        <span>Parse URL</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-btn" onclick="loadSample()">
+                        <span class="btn-icon">&#128196;</span>
+                        <span>Sample</span>
+                    </button>
+                    <button class="sidebar-btn" onclick="clearAll()">
+                        <span class="btn-icon">&#128465;</span>
+                        <span>Clear</span>
+                    </button>
+                </div>
+                <div class="sidebar-footer">
+                    <p class="sidebar-footer-text">DevTools<br><a href="../index.html">More Tools</a></p>
+                </div>
+            </div>
+
+            <!-- Main Editor -->
+            <div class="editor-main">
+                <div class="editor-toolbar">
+                    <div class="toolbar-left">
+                        <span style="font-weight: 500; color: var(--text-secondary);">URL Encoder / Decoder</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="toolbar-btn" onclick="copyOutput()" title="Copy Output">
+                            &#128203; Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-content" style="padding: 12px; overflow: hidden;">
+                    <div class="two-column-layout">
+                        <!-- Left Column: Input/Output -->
+                        <div class="column">
+                            <!-- Input Section -->
+                            <div class="url-section">
+                                <h3>Input URL or Text</h3>
+                                <textarea id="url-input" class="url-textarea" placeholder="Enter URL or text to encode/decode..."></textarea>
+                            </div>
+
+                            <!-- Output Section -->
+                            <div class="url-section">
+                                <h3>Output</h3>
+                                <textarea id="url-output" class="url-textarea" placeholder="Result will appear here..." readonly></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Parsed URL + Query Builder -->
+                        <div class="column">
+                            <!-- Parsed URL Section -->
+                            <div class="parsed-section" id="parsed-section">
+                                <div class="parsed-header">Parsed URL Components</div>
+                                <div class="parsed-body">
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Protocol</span>
+                                        <span class="parsed-value" id="parsed-protocol">-</span>
+                                    </div>
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Host</span>
+                                        <span class="parsed-value" id="parsed-host">-</span>
+                                    </div>
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Port</span>
+                                        <span class="parsed-value" id="parsed-port">-</span>
+                                    </div>
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Path</span>
+                                        <span class="parsed-value" id="parsed-path">-</span>
+                                    </div>
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Query</span>
+                                        <span class="parsed-value" id="parsed-query">-</span>
+                                    </div>
+                                    <div class="parsed-row">
+                                        <span class="parsed-label">Hash</span>
+                                        <span class="parsed-value" id="parsed-hash">-</span>
+                                    </div>
+                                    <div class="parsed-row" style="flex-direction: column; align-items: flex-start;">
+                                        <span class="parsed-label" style="margin-bottom: 5px;">Params</span>
+                                        <div class="query-params-list" id="parsed-params"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Query Builder Section -->
+                            <div class="query-builder">
+                                <h3>Query String Builder</h3>
+                                <div class="query-builder-row">
+                                    <input type="text" id="builder-key" class="query-builder-input" placeholder="Key">
+                                    <span style="color: var(--text-muted);">=</span>
+                                    <input type="text" id="builder-value" class="query-builder-input" placeholder="Value">
+                                    <button class="query-builder-btn primary" onclick="addBuilderParam()">+</button>
+                                </div>
+                                <div class="query-builder-row">
+                                    <input type="text" id="builder-base-url" class="query-builder-input" placeholder="Base URL (optional)" style="flex: 2;">
+                                    <button class="query-builder-btn primary" onclick="buildQueryString()">Build</button>
+                                    <button class="query-builder-btn danger" onclick="clearBuilderParams()">Clear</button>
+                                </div>
+                                <div class="builder-params-list" id="builder-params-list"></div>
+                                <div class="result-output" id="builder-output" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-bar" id="status-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DevTools - Free and open source | No data collected | Works offline</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/url-tools.js"></script>
+</body>
+</html>

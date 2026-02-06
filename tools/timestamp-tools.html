@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
+        crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Epoch Timestamp Converter - Unix Time to Date Online | DevTools</title>
+    <meta name="description" content="Free online epoch timestamp converter. Convert Unix timestamps to human-readable dates and vice versa. Supports multiple timezones including IST, UTC, EST. Generate shareable permalinks.">
+    <meta name="keywords" content="epoch converter, unix timestamp, timestamp to date, date to timestamp, timezone converter, IST time, UTC converter, epoch time, unix time converter, milliseconds converter">
+    <meta name="author" content="DevTools">
+    <link rel="canonical" href="https://timestamp.formatting.tech/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://timestamp.formatting.tech/">
+    <meta property="og:title" content="Epoch Timestamp Converter - Unix Time to Date Online">
+    <meta property="og:description" content="Free online epoch timestamp converter with timezone support. Convert Unix timestamps to human-readable dates instantly.">
+    <meta property="og:site_name" content="DevTools">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Epoch Timestamp Converter - Unix Time to Date Online">
+    <meta name="twitter:description" content="Free online epoch timestamp converter with timezone support.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Timestamp Converter",
+        "description": "Free online epoch timestamp converter for converting Unix timestamps to human-readable dates",
+        "url": "https://timestamp.formatting.tech/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Convert Unix epoch to human-readable date",
+            "Convert date to Unix timestamp",
+            "Multiple timezone support",
+            "ISO 8601 format output",
+            "RFC 2822 format output",
+            "Shareable permalinks",
+            "Live clock display"
+        ]
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://formatting.tech/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Timestamp Converter",
+                "item": "https://timestamp.formatting.tech/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is a Unix timestamp?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A Unix timestamp (also called Epoch time) is the number of seconds that have elapsed since January 1, 1970 (midnight UTC). It's a standard way to represent time in computing systems."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I convert epoch to date?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Enter your Unix timestamp in the input field, select your timezone, and the tool will instantly convert it to a human-readable date in multiple formats including ISO 8601 and RFC 2822."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What timezones are supported?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our converter supports all major timezones including UTC, IST (India), EST/EDT (US Eastern), PST/PDT (US Pacific), GMT, CET, JST (Japan), and many more."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I share a specific timestamp?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Click the 'Copy Permalink' button to generate a shareable URL that includes your timestamp and timezone. Anyone opening the link will see the same conversion."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Font Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/json.css">
+    <style>
+        .timestamp-input-section {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .timestamp-input-section h3 {
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-row {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            background: white;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+        .results-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .results-header {
+            background: var(--secondary-bg);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .results-body {
+            padding: 0;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        .result-row:hover {
+            background: var(--secondary-bg);
+        }
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 120px;
+        }
+        .result-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            flex: 1;
+            text-align: right;
+            word-break: break-all;
+        }
+        .result-copy-btn {
+            padding: 4px 10px;
+            margin-left: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .result-copy-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .live-clock {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .live-clock-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        .live-clock-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .date-time-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .date-time-inputs .input-group {
+            min-width: auto;
+        }
+        .convert-btn {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .convert-btn:hover {
+            background: var(--primary-hover);
+        }
+        @media (max-width: 900px) {
+            .two-column-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <h1>DevTools</h1>
+                <div class="logo-subtitle">Free utilities for developers</div>
+            </a>
+            <nav class="main-nav">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="xml-tools.html" class="nav-link">XML Tools</a>
+                <a href="yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="timestamp-tools.html" class="nav-link active">Timestamp</a>
+                <a href="url-tools.html" class="nav-link">URL Tools</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="editor-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Timestamp</h2>
+                </div>
+                <div class="sidebar-buttons">
+                    <button class="sidebar-btn" onclick="loadCurrentTime()">
+                        <span class="btn-icon">&#128337;</span>
+                        <span>Current Time</span>
+                    </button>
+                    <button class="sidebar-btn" onclick="copyPermalink()">
+                        <span class="btn-icon">&#128279;</span>
+                        <span>Copy Permalink</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-btn" onclick="loadSample()">
+                        <span class="btn-icon">&#128196;</span>
+                        <span>Sample</span>
+                    </button>
+                    <button class="sidebar-btn" onclick="clearAll()">
+                        <span class="btn-icon">&#128465;</span>
+                        <span>Clear</span>
+                    </button>
+                </div>
+                <div class="sidebar-footer">
+                    <p class="sidebar-footer-text">DevTools<br><a href="../index.html">More Tools</a></p>
+                </div>
+            </div>
+
+            <!-- Main Editor -->
+            <div class="editor-main">
+                <div class="editor-toolbar">
+                    <div class="toolbar-left">
+                        <span style="font-weight: 500; color: var(--text-secondary);">Epoch / Timestamp Converter</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="toolbar-btn" onclick="copyAllResults()" title="Copy All Results">
+                            &#128203; Copy All
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-content" style="padding: 15px; overflow-y: auto;">
+                    <!-- Live Clock -->
+                    <div class="live-clock">
+                        <span class="live-clock-label">Current Unix Timestamp</span>
+                        <span class="live-clock-value" id="live-clock">Loading...</span>
+                    </div>
+
+                    <div class="two-column-layout">
+                        <!-- Left Column: Epoch to Human -->
+                        <div class="column">
+                            <div class="timestamp-input-section" style="margin-bottom: 10px; padding: 15px;">
+                                <h3 style="margin-bottom: 10px;">Timestamp to Date</h3>
+                                <div class="input-group" style="margin-bottom: 10px;">
+                                    <label for="epoch-input">Unix Timestamp</label>
+                                    <input type="text" id="epoch-input" placeholder="e.g., 1707235200" oninput="convertEpochToHuman()">
+                                </div>
+                                <div class="input-group">
+                                    <label for="timezone-select">Timezone</label>
+                                    <select id="timezone-select" onchange="convertEpochToHuman()">
+                                        <option value="UTC">UTC</option>
+                                        <option value="Asia/Kolkata">IST (India)</option>
+                                        <option value="America/New_York">EST/EDT (US Eastern)</option>
+                                        <option value="America/Chicago">CST/CDT (US Central)</option>
+                                        <option value="America/Los_Angeles">PST/PDT (US Pacific)</option>
+                                        <option value="Europe/London">GMT/BST (UK)</option>
+                                        <option value="Europe/Paris">CET (Europe)</option>
+                                        <option value="Asia/Tokyo">JST (Japan)</option>
+                                        <option value="Asia/Shanghai">CST (China)</option>
+                                        <option value="Asia/Singapore">SGT (Singapore)</option>
+                                        <option value="Australia/Sydney">AEST (Australia)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Results -->
+                            <div class="results-section" id="results-section" style="flex: 1;">
+                                <div class="results-header" style="padding: 8px 15px;">Results</div>
+                                <div class="results-body">
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">Human</span>
+                                        <span class="result-value" id="result-human" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-human')">Copy</button>
+                                    </div>
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">ISO 8601</span>
+                                        <span class="result-value" id="result-iso" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-iso')">Copy</button>
+                                    </div>
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">RFC 2822</span>
+                                        <span class="result-value" id="result-rfc" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-rfc')">Copy</button>
+                                    </div>
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">Relative</span>
+                                        <span class="result-value" id="result-relative" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-relative')">Copy</button>
+                                    </div>
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">Seconds</span>
+                                        <span class="result-value" id="result-seconds" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-seconds')">Copy</button>
+                                    </div>
+                                    <div class="result-row" style="padding: 8px 15px;">
+                                        <span class="result-label">Milliseconds</span>
+                                        <span class="result-value" id="result-milliseconds" style="font-size: 0.85rem;">-</span>
+                                        <button class="result-copy-btn" onclick="copyResult('result-milliseconds')">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Date to Epoch -->
+                        <div class="column">
+                            <div class="timestamp-input-section" style="padding: 15px; height: 100%;">
+                                <h3 style="margin-bottom: 10px;">Date to Timestamp</h3>
+                                <div class="date-time-inputs">
+                                    <div class="input-group">
+                                        <label for="date-year">Year</label>
+                                        <input type="number" id="date-year" placeholder="2024" min="1970" max="2100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="date-month">Month</label>
+                                        <input type="number" id="date-month" placeholder="1-12" min="1" max="12">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="date-day">Day</label>
+                                        <input type="number" id="date-day" placeholder="1-31" min="1" max="31">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="date-hour">Hour</label>
+                                        <input type="number" id="date-hour" placeholder="0-23" min="0" max="23">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="date-minute">Minute</label>
+                                        <input type="number" id="date-minute" placeholder="0-59" min="0" max="59">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="date-second">Second</label>
+                                        <input type="number" id="date-second" placeholder="0-59" min="0" max="59">
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px;">
+                                    <button class="convert-btn" onclick="convertDateToEpoch()">Convert to Timestamp</button>
+                                </div>
+                                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+                                    Uses the timezone selected on the left. Leave fields empty for defaults (current year, month 1, day 1, time 00:00:00).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-bar" id="status-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DevTools - Free and open source | No data collected | Works offline</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/timestamp-tools.js"></script>
+</body>
+</html>
