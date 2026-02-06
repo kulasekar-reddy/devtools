@@ -1,6 +1,27 @@
-// JSON Tools JavaScript - Single Window In-Place Editing
+// JSON Tools JavaScript - Large File Support with Virtual Tree
 
-// Helper function to escape HTML entities
+// ===== GLOBALS =====
+let currentMode = 'text'; // 'text' or 'tree'
+let jsonWorker = null;
+let workerCallbacks = new Map();
+let callbackId = 0;
+
+// Parsed JSON state
+let parsedJson = null;
+let jsonStats = null;
+
+// Virtual tree state
+const treeState = {
+    nodes: new Map(),          // id -> node data
+    visibleNodeIds: [],        // IDs of visible nodes (in order)
+    expandedNodes: new Set(),  // IDs of expanded nodes
+    rowHeight: 24,
+    viewportHeight: 500,
+    scrollTop: 0,
+    bufferSize: 10
+};
+
+// ===== HELPER FUNCTIONS =====
 function escapeHtml(text) {
     const map = {
         '&': '&amp;',
@@ -9,20 +30,108 @@ function escapeHtml(text) {
         '"': '&quot;',
         "'": '&#039;'
     };
-    return text.replace(/[&<>'"']/g, function(m) { return map[m]; });
+    return String(text).replace(/[&<>'"]/g, m => map[m]);
 }
 
-let currentMode = 'text'; // 'text' or 'tree'
+function generateId() {
+    return 'node_' + (++callbackId);
+}
 
-// Initialize on page load
+// ===== WEB WORKER =====
+function initWorker() {
+    if (jsonWorker) return;
+
+    try {
+        jsonWorker = new Worker('../js/json-worker.js');
+        jsonWorker.onmessage = handleWorkerMessage;
+        jsonWorker.onerror = (e) => {
+            console.error('Worker error:', e);
+            showStatusMessage('Worker error: ' + e.message, 'error');
+        };
+    } catch (e) {
+        console.warn('Web Worker not supported, falling back to main thread');
+    }
+}
+
+function handleWorkerMessage(e) {
+    const { type, id, success, result, error, stats } = e.data;
+    const callback = workerCallbacks.get(id);
+
+    if (callback) {
+        workerCallbacks.delete(id);
+        if (success) {
+            callback.resolve({ result, stats });
+        } else {
+            callback.reject(error);
+        }
+    }
+}
+
+function workerRequest(type, data) {
+    return new Promise((resolve, reject) => {
+        if (!jsonWorker) {
+            // Fallback for browsers without Worker support
+            return fallbackOperation(type, data).then(resolve).catch(reject);
+        }
+
+        const id = 'req_' + (++callbackId);
+        workerCallbacks.set(id, { resolve, reject });
+        jsonWorker.postMessage({ type, id, data });
+
+        // Timeout after 30 seconds
+        setTimeout(() => {
+            if (workerCallbacks.has(id)) {
+                workerCallbacks.delete(id);
+                reject({ message: 'Operation timed out' });
+            }
+        }, 30000);
+    });
+}
+
+// Fallback for main thread processing
+function fallbackOperation(type, data) {
+    return new Promise((resolve, reject) => {
+        try {
+            switch (type) {
+                case 'parse':
+                    const parsed = JSON.parse(data);
+                    resolve({ result: parsed, stats: { type: typeof parsed } });
+                    break;
+                case 'format':
+                    resolve({ result: JSON.stringify(JSON.parse(data), null, 2) });
+                    break;
+                case 'minify':
+                    resolve({ result: JSON.stringify(JSON.parse(data)) });
+                    break;
+                case 'validate':
+                    JSON.parse(data);
+                    resolve({ result: { valid: true } });
+                    break;
+                default:
+                    reject({ message: 'Unknown operation' });
+            }
+        } catch (e) {
+            reject({ message: e.message });
+        }
+    });
+}
+
+// ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     setActiveNav('json-tools.html');
+    initWorker();
 
     const editor = document.getElementById('json-editor');
     if (editor) {
         editor.addEventListener('input', updateCharCount);
         updateCharCount();
         initHighlightSync('json-editor');
+    }
+
+    // Tree view scroll handler
+    const treeView = document.getElementById('tree-view');
+    if (treeView) {
+        treeView.addEventListener('scroll', handleTreeScroll);
     }
 
     // Keyboard shortcuts
@@ -42,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Explicitly handle close button click
     const closeBtn = document.querySelector('.fullscreen-close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', function(e) {
@@ -76,16 +184,35 @@ function showStatusMessage(message, type = 'success') {
     }
 }
 
+// ===== LOADING OVERLAY =====
+function showLoading(message = 'Processing JSON...') {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        const text = overlay.querySelector('.loading-text');
+        if (text) text.textContent = message;
+        overlay.classList.remove('hidden');
+    }
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
 // ===== MODE SWITCHING =====
 function showTextMode() {
     currentMode = 'text';
+    const inputContainer = document.querySelector('.input-container');
+    if (inputContainer) inputContainer.style.display = 'flex';
     document.getElementById('json-editor').style.display = 'block';
     document.getElementById('tree-view').classList.remove('active');
     document.getElementById('text-mode-btn').classList.add('active');
     document.getElementById('tree-mode-btn').classList.remove('active');
 }
 
-function showTreeMode() {
+async function showTreeMode() {
     const editor = document.getElementById('json-editor');
     const content = editor.value.trim();
     clearHighlights();
@@ -95,26 +222,335 @@ function showTreeMode() {
         return;
     }
 
+    showLoading('Parsing JSON...');
+
     try {
-        const parsed = JSON.parse(content);
+        const { result, stats } = await workerRequest('parse', content);
+        parsedJson = result;
+        jsonStats = stats;
+
+        // Initialize virtual tree
+        initVirtualTree(parsedJson);
+
         const treeView = document.getElementById('tree-view');
-        treeView.innerHTML = buildTree(parsed);
-        addTreeHandlers();
+        renderVirtualTree();
 
         currentMode = 'tree';
+        const inputContainer = document.querySelector('.input-container');
+        if (inputContainer) inputContainer.style.display = 'none';
         editor.style.display = 'none';
         treeView.classList.add('active');
         document.getElementById('text-mode-btn').classList.remove('active');
         document.getElementById('tree-mode-btn').classList.add('active');
-        showStatusMessage('Tree view generated');
+
+        const nodeCount = stats?.totalNodes || treeState.nodes.size;
+        showStatusMessage(`Tree view: ${nodeCount.toLocaleString()} nodes, depth ${stats?.maxDepth || 0}`);
     } catch (error) {
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
         const line = getJsonErrorLine(error.message, content);
         if (line) highlightError(line);
+    } finally {
+        hideLoading();
     }
 }
 
-// ===== FORMAT JSON =====
-function formatJSON() {
+// ===== VIRTUAL TREE =====
+function initVirtualTree(json) {
+    treeState.nodes.clear();
+    treeState.visibleNodeIds = [];
+    treeState.expandedNodes.clear();
+    treeState.scrollTop = 0;
+
+    // Create root nodes
+    if (Array.isArray(json)) {
+        json.forEach((item, index) => {
+            const nodeId = `[${index}]`;
+            createTreeNode(nodeId, `[${index}]`, null, index, item, 0);
+        });
+    } else if (typeof json === 'object' && json !== null) {
+        Object.keys(json).forEach((key, index) => {
+            const nodeId = key;
+            createTreeNode(nodeId, key, key, null, json[key], 0);
+        });
+    }
+
+    updateVisibleNodes();
+}
+
+function createTreeNode(id, path, key, arrayIndex, value, depth) {
+    const type = getValueType(value);
+    const childCount = type === 'object' ? Object.keys(value).length :
+                       type === 'array' ? value.length : 0;
+
+    const node = {
+        id,
+        path,
+        key,
+        arrayIndex,
+        value,
+        type,
+        depth,
+        childCount,
+        childrenLoaded: false,
+        childIds: []
+    };
+
+    treeState.nodes.set(id, node);
+    return node;
+}
+
+function getValueType(value) {
+    if (value === null) return 'null';
+    if (Array.isArray(value)) return 'array';
+    return typeof value;
+}
+
+function updateVisibleNodes() {
+    treeState.visibleNodeIds = [];
+
+    // Get all root nodes (depth 0)
+    const rootNodes = [];
+    treeState.nodes.forEach(node => {
+        if (node.depth === 0) rootNodes.push(node);
+    });
+
+    // Sort root nodes by their original order
+    rootNodes.sort((a, b) => {
+        if (a.arrayIndex !== null && b.arrayIndex !== null) {
+            return a.arrayIndex - b.arrayIndex;
+        }
+        return 0;
+    });
+
+    // Traverse and collect visible nodes
+    for (const root of rootNodes) {
+        collectVisibleNodes(root);
+    }
+}
+
+function collectVisibleNodes(node) {
+    treeState.visibleNodeIds.push(node.id);
+
+    // If expanded and has children
+    if (treeState.expandedNodes.has(node.id) && (node.type === 'object' || node.type === 'array')) {
+        // Load children if not loaded
+        if (!node.childrenLoaded) {
+            loadNodeChildren(node);
+        }
+
+        // Collect visible children
+        for (const childId of node.childIds) {
+            const childNode = treeState.nodes.get(childId);
+            if (childNode) {
+                collectVisibleNodes(childNode);
+            }
+        }
+    }
+}
+
+function loadNodeChildren(node) {
+    if (node.childrenLoaded) return;
+
+    const value = node.value;
+    node.childIds = [];
+
+    if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+            const childPath = `${node.path}[${index}]`;
+            const childId = childPath;
+            createTreeNode(childId, childPath, null, index, item, node.depth + 1);
+            node.childIds.push(childId);
+        });
+    } else if (typeof value === 'object' && value !== null) {
+        Object.keys(value).forEach((key, index) => {
+            const childPath = node.path ? `${node.path}.${key}` : key;
+            const childId = childPath;
+            createTreeNode(childId, childPath, key, null, value[key], node.depth + 1);
+            node.childIds.push(childId);
+        });
+    }
+
+    node.childrenLoaded = true;
+}
+
+function renderVirtualTree() {
+    const treeView = document.getElementById('tree-view');
+    if (!treeView) return;
+
+    const totalHeight = treeState.visibleNodeIds.length * treeState.rowHeight;
+    const startIndex = Math.max(0, Math.floor(treeState.scrollTop / treeState.rowHeight) - treeState.bufferSize);
+    const endIndex = Math.min(
+        treeState.visibleNodeIds.length,
+        Math.ceil((treeState.scrollTop + treeState.viewportHeight) / treeState.rowHeight) + treeState.bufferSize
+    );
+
+    // Get or create content container
+    let content = treeView.querySelector('.virtual-tree-content');
+    if (!content) {
+        treeView.innerHTML = '';
+        content = document.createElement('div');
+        content.className = 'virtual-tree-content';
+        content.style.position = 'relative';
+        treeView.appendChild(content);
+    }
+    content.style.height = `${totalHeight}px`;
+
+    // Get or create viewport
+    let viewport = content.querySelector('.virtual-tree-viewport');
+    if (!viewport) {
+        viewport = document.createElement('div');
+        viewport.className = 'virtual-tree-viewport';
+        viewport.style.position = 'absolute';
+        viewport.style.left = '0';
+        viewport.style.right = '0';
+        content.appendChild(viewport);
+    }
+    
+    viewport.style.transform = `translateY(${startIndex * treeState.rowHeight}px)`;
+
+    let html = '';
+    for (let i = startIndex; i < endIndex; i++) {
+        const nodeId = treeState.visibleNodeIds[i];
+        const node = treeState.nodes.get(nodeId);
+        if (node) {
+            html += renderTreeNode(node);
+        }
+    }
+
+    // Only update if content changed (to avoid unnecessary reflows)
+    if (viewport.innerHTML !== html) {
+        viewport.innerHTML = html;
+        // Re-attach handlers to new elements
+        addVirtualTreeHandlers();
+    }
+}
+
+function renderTreeNode(node) {
+    const indent = node.depth * 20;
+    const isExpanded = treeState.expandedNodes.has(node.id);
+
+    let html = `<div class="virtual-tree-row" data-node-id="${node.id}" style="padding-left: ${indent}px;">`;
+
+    // Key or index display
+    const keyDisplay = node.key !== null
+        ? `<span class="tree-key">${escapeHtml(node.key)}</span>: `
+        : (node.arrayIndex !== null ? `<span class="tree-index">[${node.arrayIndex}]</span> ` : '');
+
+    if (node.type === 'object' || node.type === 'array') {
+        const bracket = node.type === 'object' ? '{' : '[';
+        const closeBracket = node.type === 'object' ? '}' : ']';
+        const toggle = node.childCount > 0
+            ? `<span class="tree-toggle" data-action="toggle">${isExpanded ? '−' : '+'}</span> `
+            : '';
+
+        if (isExpanded || node.childCount === 0) {
+            html += `${toggle}${keyDisplay}<span class="tree-bracket">${bracket}</span>`;
+            if (node.childCount === 0) {
+                html += `<span class="tree-bracket">${closeBracket}</span>`;
+            } else {
+                html += ` <span class="tree-info">${node.childCount} ${node.type === 'array' ? 'items' : 'keys'}</span>`;
+            }
+        } else {
+            html += `${toggle}${keyDisplay}<span class="tree-bracket">${bracket}</span>`;
+            html += `<span class="tree-collapsed-preview">...${node.childCount} ${node.type === 'array' ? 'items' : 'keys'}...</span>`;
+            html += `<span class="tree-bracket">${closeBracket}</span>`;
+        }
+    } else {
+        html += keyDisplay;
+        html += renderValue(node.value, node.type);
+    }
+
+    html += '</div>';
+    return html;
+}
+
+function renderValue(value, type) {
+    switch (type) {
+        case 'string':
+            const displayValue = value.length > 100 ? value.substring(0, 100) + '...' : value;
+            return `<span class="tree-string">"${escapeHtml(displayValue)}"</span>`;
+        case 'number':
+            return `<span class="tree-number">${value}</span>`;
+        case 'boolean':
+            return `<span class="tree-boolean">${value}</span>`;
+        case 'null':
+            return `<span class="tree-null">null</span>`;
+        default:
+            return `<span>${escapeHtml(String(value))}</span>`;
+    }
+}
+
+function addVirtualTreeHandlers() {
+    const treeView = document.getElementById('tree-view');
+    if (!treeView) return;
+
+    treeView.querySelectorAll('.virtual-tree-row').forEach(row => {
+        row.addEventListener('click', (e) => {
+            const toggle = e.target.closest('[data-action="toggle"]');
+            if (toggle) {
+                const nodeId = row.dataset.nodeId;
+                toggleTreeNode(nodeId);
+            }
+        });
+
+        // Double-click to copy path
+        row.addEventListener('dblclick', () => {
+            const nodeId = row.dataset.nodeId;
+            const node = treeState.nodes.get(nodeId);
+            if (node) {
+                copyToClipboard(node.path).then(() => {
+                    showStatusMessage(`Copied path: ${node.path}`);
+                });
+            }
+        });
+    });
+}
+
+function toggleTreeNode(nodeId) {
+    if (treeState.expandedNodes.has(nodeId)) {
+        treeState.expandedNodes.delete(nodeId);
+    } else {
+        treeState.expandedNodes.add(nodeId);
+    }
+    updateVisibleNodes();
+    renderVirtualTree();
+}
+
+function handleTreeScroll() {
+    const treeView = document.getElementById('tree-view');
+    if (!treeView) return;
+
+    treeState.scrollTop = treeView.scrollTop;
+    treeState.viewportHeight = treeView.clientHeight;
+
+    requestAnimationFrame(() => renderVirtualTree());
+}
+
+function expandAll() {
+    treeState.nodes.forEach(node => {
+        if (node.type === 'object' || node.type === 'array') {
+            if (node.childCount > 0) {
+                treeState.expandedNodes.add(node.id);
+                if (!node.childrenLoaded) {
+                    loadNodeChildren(node);
+                }
+            }
+        }
+    });
+    updateVisibleNodes();
+    renderVirtualTree();
+    showStatusMessage('All nodes expanded');
+}
+
+function collapseAll() {
+    treeState.expandedNodes.clear();
+    updateVisibleNodes();
+    renderVirtualTree();
+    showStatusMessage('All nodes collapsed');
+}
+
+// ===== JSON OPERATIONS =====
+async function formatJSON() {
     const editor = document.getElementById('json-editor');
     const content = editor.value.trim();
     clearHighlights();
@@ -124,22 +560,26 @@ function formatJSON() {
         return;
     }
 
+    const isLargeFile = content.length > 500 * 1024;
+    if (isLargeFile) showLoading('Formatting large JSON...');
+
     try {
-        const parsed = JSON.parse(content);
-        const formatted = JSON.stringify(parsed, null, 2);
-        editor.value = formatted;
+        const { result } = await workerRequest('format', content);
+        editor.value = result;
         updateCharCount();
         showTextMode();
         showStatusMessage('JSON formatted successfully');
         updateFullscreenContent();
     } catch (error) {
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
         const line = getJsonErrorLine(error.message, content);
         if (line) highlightError(line);
+    } finally {
+        hideLoading();
     }
 }
 
-// ===== MINIFY JSON =====
-function minifyJSON() {
+async function minifyJSON() {
     const editor = document.getElementById('json-editor');
     const content = editor.value.trim();
     clearHighlights();
@@ -149,21 +589,58 @@ function minifyJSON() {
         return;
     }
 
+    const isLargeFile = content.length > 500 * 1024;
+    if (isLargeFile) showLoading('Minifying large JSON...');
+
     try {
-        const parsed = JSON.parse(content);
-        const minified = JSON.stringify(parsed);
-        editor.value = minified;
+        const { result } = await workerRequest('minify', content);
+        editor.value = result;
         updateCharCount();
         showTextMode();
         showStatusMessage('JSON minified successfully');
         updateFullscreenContent();
     } catch (error) {
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
         const line = getJsonErrorLine(error.message, content);
         if (line) highlightError(line);
+    } finally {
+        hideLoading();
     }
 }
 
-// ===== STRINGIFY (Object to JSON String) =====
+async function validateJSON() {
+    const editor = document.getElementById('json-editor');
+    const content = editor.value.trim();
+    clearHighlights();
+
+    if (!content) {
+        showStatusMessage('Please enter JSON to validate', 'error');
+        return;
+    }
+
+    const isLargeFile = content.length > 500 * 1024;
+    if (isLargeFile) showLoading('Validating large JSON...');
+
+    try {
+        const { result } = await workerRequest('validate', content);
+        let message = `Valid JSON - Type: ${result.type}`;
+        if (result.topLevelKeys) {
+            message += `, ${result.topLevelKeys.toLocaleString()} keys`;
+        }
+        if (result.totalNodes) {
+            message += `, ${result.totalNodes.toLocaleString()} nodes`;
+        }
+        message += `, ${content.length.toLocaleString()} chars`;
+        showStatusMessage(message, 'success');
+    } catch (error) {
+        showStatusMessage('Invalid JSON: ' + error.message, 'error');
+        const line = getJsonErrorLine(error.message, content);
+        if (line) highlightError(line);
+    } finally {
+        hideLoading();
+    }
+}
+
 function stringifyJSON() {
     const editor = document.getElementById('json-editor');
     const content = editor.value.trim();
@@ -175,17 +652,13 @@ function stringifyJSON() {
     }
 
     try {
-        // First try to evaluate as JavaScript (handles unquoted keys, single quotes, etc.)
         let obj;
         try {
-            // Use Function constructor to safely evaluate JS object literals
             obj = (new Function('return ' + content))();
         } catch (e) {
-            // If that fails, try parsing as JSON
             obj = JSON.parse(content);
         }
 
-        // Convert to escaped JSON string (without formatting)
         const stringified = JSON.stringify(JSON.stringify(obj));
         editor.value = stringified;
         updateCharCount();
@@ -194,11 +667,9 @@ function stringifyJSON() {
         updateFullscreenContent();
     } catch (error) {
         showStatusMessage('Invalid input: ' + error.message, 'error');
-        // Evaluating JS might not give clean line numbers for input content
     }
 }
 
-// ===== PARSE (JSON String to Object) =====
 function parseJSON() {
     const editor = document.getElementById('json-editor');
     const content = editor.value.trim();
@@ -210,15 +681,10 @@ function parseJSON() {
     }
 
     try {
-        // First parse the outer string (removes escaping)
         let parsed = JSON.parse(content);
-
-        // If the result is still a string, parse it again
         if (typeof parsed === 'string') {
             parsed = JSON.parse(parsed);
         }
-
-        // Output without formatting - preserve the structure as-is
         const result = JSON.stringify(parsed);
         editor.value = result;
         updateCharCount();
@@ -232,130 +698,10 @@ function parseJSON() {
     }
 }
 
-// ===== VALIDATE JSON =====
-function validateJSON() {
-    const editor = document.getElementById('json-editor');
-    const content = editor.value.trim();
-    clearHighlights();
-
-    if (!content) {
-        showStatusMessage('Please enter JSON to validate', 'error');
-        return;
-    }
-
-    try {
-        const parsed = JSON.parse(content);
-        const type = Array.isArray(parsed) ? 'Array' : typeof parsed;
-        const keys = typeof parsed === 'object' && parsed !== null ? Object.keys(parsed).length : 0;
-
-        let message = `Valid JSON - Type: ${type}`;
-        if (type === 'object' || type === 'Array') {
-            message += `, Keys/Items: ${keys}`;
-        }
-        message += `, Size: ${content.length.toLocaleString()} chars`;
-        showStatusMessage(message, 'success');
-    } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
-        if (line) highlightError(line);
-    }
-}
-
-// ===== TREE VIEW =====
-function buildTree(obj, key = null, level = 0) {
-    const indent = '  '.repeat(level);
-    let html = '';
-
-    if (obj === null) {
-        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-null">null</span></span>\n`;
-    } else if (typeof obj === 'boolean') {
-        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-boolean">${obj}</span></span>\n`;
-    } else if (typeof obj === 'number') {
-        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-number">${obj}</span></span>\n`;
-    } else if (typeof obj === 'string') {
-        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-string">"${escapeHtml(obj)}"</span></span>\n`;
-    } else if (Array.isArray(obj)) {
-        if (obj.length === 0) {
-            html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[]</span></span>\n`;
-        } else {
-            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
-            html += `<div class="tree-node">`;
-            obj.forEach((item) => {
-                html += buildTree(item, null, level + 1);
-            });
-            html += `</div>`;
-            html += `<span class="tree-line tree-closing-delimiter">${indent}<span class="tree-bracket">]</span></span>\n`;
-        }
-    } else if (typeof obj === 'object') {
-        const keys = Object.keys(obj);
-        if (keys.length === 0) {
-            html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{}</span></span>\n`;
-        } else {
-            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
-            html += `<div class="tree-node">`;
-            keys.forEach((k) => {
-                html += buildTree(obj[k], k, level + 1);
-            });
-            html += `</div>`;
-            html += `<span class="tree-line tree-closing-delimiter">${indent}<span class="tree-bracket">}</span></span>\n`;
-        }
-    }
-
-    return html;
-}
-
-function addTreeHandlers() {
-    document.querySelectorAll('.tree-expandable').forEach(node => {
-        node.addEventListener('click', function(e) {
-            const toggle = this.querySelector('.tree-toggle');
-            const treeNode = this.nextElementSibling;
-            if (treeNode && treeNode.classList.contains('tree-node')) {
-                treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
-            }
-        });
-    });
-}
-
-function collapseAll() {
-    const overlay = document.getElementById('fullscreen-overlay');
-    const isFullscreen = overlay && !overlay.hidden;
-
-    let container;
-    if (isFullscreen) {
-        container = document.getElementById('fullscreen-content');
-    } else if (currentMode === 'tree') {
-        container = document.getElementById('tree-view');
-    }
-
-    if (!container) return;
-
-    container.querySelectorAll('.tree-node').forEach(node => node.classList.add('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '+');
-    showStatusMessage('All nodes collapsed');
-}
-
-function expandAll() {
-    const overlay = document.getElementById('fullscreen-overlay');
-    const isFullscreen = overlay && !overlay.hidden;
-
-    let container;
-    if (isFullscreen) {
-        container = document.getElementById('fullscreen-content');
-    } else if (currentMode === 'tree') {
-        container = document.getElementById('tree-view');
-    }
-
-    if (!container) return;
-
-    container.querySelectorAll('.tree-node').forEach(node => node.classList.remove('tree-collapsed'));
-    container.querySelectorAll('.tree-toggle').forEach(toggle => toggle.textContent = '-');
-    showStatusMessage('All nodes expanded');
-}
-
 // ===== SAMPLE DATA =====
 function loadSample() {
     clearHighlights();
-    const sampleJSON = `{ 
+    const sampleJSON = `{
   "name": "DevTools",
   "version": "1.0.0",
   "description": "Free developer utilities",
@@ -392,6 +738,11 @@ function clearEditor() {
     clearHighlights();
     document.getElementById('json-editor').value = '';
     document.getElementById('tree-view').innerHTML = '';
+    parsedJson = null;
+    jsonStats = null;
+    treeState.nodes.clear();
+    treeState.visibleNodeIds = [];
+    treeState.expandedNodes.clear();
     updateCharCount();
     showTextMode();
     showStatusMessage('Editor cleared');
@@ -406,16 +757,23 @@ function handleFileImport(event) {
     const file = event.target.files[0];
     if (!file) return;
 
+    const fileSizeKB = file.size / 1024;
+    if (fileSizeKB > 500) {
+        showLoading(`Loading ${file.name} (${(fileSizeKB / 1024).toFixed(1)} MB)...`);
+    }
+
     const reader = new FileReader();
     reader.onload = function(e) {
         clearHighlights();
         document.getElementById('json-editor').value = e.target.result;
         updateCharCount();
         showTextMode();
-        showStatusMessage(`Imported ${file.name}`);
+        showStatusMessage(`Imported ${file.name} (${fileSizeKB > 1024 ? (fileSizeKB / 1024).toFixed(1) + ' MB' : Math.round(fileSizeKB) + ' KB'})`);
+        hideLoading();
     };
     reader.onerror = function() {
         showStatusMessage('Error reading file', 'error');
+        hideLoading();
     };
     reader.readAsText(file);
     event.target.value = '';
@@ -448,16 +806,8 @@ function copyContent() {
 
     let content;
     if (isFullscreen) {
-        // In fullscreen, get content from fullscreen area
-        const fsTreeView = document.querySelector('#fullscreen-content .tree-view');
         const fsEditor = document.getElementById('json-editor-fs');
-        if (fsTreeView) {
-            content = editor.value; // Copy the actual JSON, not tree text
-        } else if (fsEditor) {
-            content = fsEditor.value;
-        } else {
-            content = editor.value;
-        }
+        content = fsEditor ? fsEditor.value : editor.value;
     } else {
         content = editor.value;
     }
@@ -489,16 +839,12 @@ function toggleFullscreen() {
         content.innerHTML = '';
 
         if (currentMode === 'tree') {
-            // Show tree view in fullscreen
             const treeView = document.getElementById('tree-view');
             const treeClone = document.createElement('div');
             treeClone.className = 'tree-view active';
             treeClone.innerHTML = treeView.innerHTML;
             content.appendChild(treeClone);
-            // Re-add tree handlers to the cloned tree
-            addTreeHandlersToContainer(treeClone);
         } else {
-            // Show textarea in fullscreen
             createFullscreenTextarea(editor.value);
         }
 
@@ -514,19 +860,19 @@ function createFullscreenTextarea(value) {
     const editor = document.getElementById('json-editor');
 
     content.innerHTML = '';
-    
+
     const inputContainer = document.createElement('div');
     inputContainer.className = 'input-container';
-    
+
     const backdrop = document.createElement('div');
     backdrop.className = 'highlight-backdrop';
-    
+
     const highlights = document.createElement('div');
     highlights.className = 'highlights';
-    
+
     backdrop.appendChild(highlights);
     inputContainer.appendChild(backdrop);
-    
+
     const textarea = document.createElement('textarea');
     textarea.id = 'json-editor-fs';
     textarea.value = value;
@@ -534,25 +880,11 @@ function createFullscreenTextarea(value) {
         editor.value = this.value;
         updateCharCount();
     });
-    
+
     inputContainer.appendChild(textarea);
     content.appendChild(inputContainer);
-    
-    initHighlightSync('json-editor-fs');
-}
 
-function addTreeHandlersToContainer(container) {
-    container.querySelectorAll('.tree-expandable').forEach(node => {
-        node.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const toggle = this.querySelector('.tree-toggle');
-            const treeNode = this.nextElementSibling;
-            if (treeNode && treeNode.classList.contains('tree-node')) {
-                treeNode.classList.toggle('tree-collapsed');
-                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
-            }
-        });
-    });
+    initHighlightSync('json-editor-fs');
 }
 
 function exitFullscreen() {
@@ -575,51 +907,39 @@ function showTreeModeFullscreen() {
         return;
     }
 
-    try {
-        const parsed = JSON.parse(content);
+    // For fullscreen tree, trigger the normal tree mode first
+    showTreeMode().then(() => {
+        const treeView = document.getElementById('tree-view');
         const fsContent = document.getElementById('fullscreen-content');
 
-        // Create tree view in fullscreen
         const treeClone = document.createElement('div');
         treeClone.className = 'tree-view active';
-        treeClone.innerHTML = buildTree(parsed);
+        treeClone.innerHTML = treeView.innerHTML;
 
         fsContent.innerHTML = '';
         fsContent.appendChild(treeClone);
-        addTreeHandlersToContainer(treeClone);
-
-        currentMode = 'tree';
-        showStatusMessage('Tree view generated');
-    } catch (error) {
-        const line = getJsonErrorLine(error.message, content);
-        if (line) highlightError(line);
-    }
+    });
 }
 
 function updateFullscreenContent() {
     if (!isFullscreenActive()) return;
 
     const editor = document.getElementById('json-editor');
-    const content = document.getElementById('fullscreen-content');
     const fsEditor = document.getElementById('json-editor-fs');
 
-    // If there's a textarea in fullscreen, update it
     if (fsEditor) {
         fsEditor.value = editor.value;
     } else {
-        // If tree view was showing, switch to textarea with new content
         createFullscreenTextarea(editor.value);
     }
 }
 
+// ===== ERROR HANDLING =====
 function getJsonErrorLine(errorMessage, jsonContent) {
-    // Try to parse "at position " (Chrome/V8/Node)
     const positionMatch = errorMessage.match(/position (\d+)/);
     if (positionMatch) {
         const position = parseInt(positionMatch[1], 10);
-        
-        // --- Heuristic for missing comma ---
-        // Scan backwards from error position to find the previous non-whitespace character
+
         let i = position - 1;
         while (i >= 0 && /\s/.test(jsonContent[i])) {
             i--;
@@ -628,27 +948,92 @@ function getJsonErrorLine(errorMessage, jsonContent) {
         if (i >= 0) {
             const prevChar = jsonContent[i];
             const currChar = jsonContent[position];
-            
-            // Check if previous char is a value ender (", digit, }, ], l (null), e (true/false))
-            // And current char is a value starter (", {, [, digit, t, f, n)
-            // If so, it's highly likely a missing comma on the previous line/token
+
             if (/[0-9"}\]le]/.test(prevChar) && /["{\[\dxfnt]/.test(currChar)) {
-                // Return line number of the *previous* character (where the comma should be)
                 const substring = jsonContent.substring(0, i + 1);
                 return substring.split('\n').length;
             }
         }
-        // -----------------------------------
 
         const substring = jsonContent.substring(0, position);
         return substring.split('\n').length;
     }
-    
-    // Try to parse "line " (Firefox style)
+
     const lineMatch = errorMessage.match(/line (\d+)/);
     if (lineMatch) {
         return parseInt(lineMatch[1], 10);
     }
-    
+
     return null;
+}
+
+// Legacy tree functions for backwards compatibility
+function buildTree(obj, key = null, level = 0) {
+    // This is now replaced by virtual tree, but kept for fullscreen compatibility
+    const indent = '  '.repeat(level);
+    let html = '';
+
+    if (obj === null) {
+        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-null">null</span></span>\n`;
+    } else if (typeof obj === 'boolean') {
+        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-boolean">${obj}</span></span>\n`;
+    } else if (typeof obj === 'number') {
+        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-number">${obj}</span></span>\n`;
+    } else if (typeof obj === 'string') {
+        html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-string">"${escapeHtml(obj)}"</span></span>\n`;
+    } else if (Array.isArray(obj)) {
+        if (obj.length === 0) {
+            html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[]</span></span>\n`;
+        } else {
+            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">[</span> <span style="color: #718096;">${obj.length} items</span></span>\n`;
+            html += `<div class="tree-node">`;
+            obj.forEach((item) => {
+                html += buildTree(item, null, level + 1);
+            });
+            html += `</div>`;
+            html += `<span class="tree-line">${indent}<span class="tree-bracket">]</span></span>\n`;
+        }
+    } else if (typeof obj === 'object') {
+        const keys = Object.keys(obj);
+        if (keys.length === 0) {
+            html += `<span class="tree-line">${indent}${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{}</span></span>\n`;
+        } else {
+            html += `<span class="tree-line tree-expandable">${indent}<span class="tree-toggle">-</span> ${key ? `<span class="tree-key">${escapeHtml(key)}</span>: ` : ''}<span class="tree-bracket">{</span> <span style="color: #718096;">${keys.length} keys</span></span>\n`;
+            html += `<div class="tree-node">`;
+            keys.forEach((k) => {
+                html += buildTree(obj[k], k, level + 1);
+            });
+            html += `</div>`;
+            html += `<span class="tree-line">${indent}<span class="tree-bracket">}</span></span>\n`;
+        }
+    }
+
+    return html;
+}
+
+function addTreeHandlers() {
+    document.querySelectorAll('.tree-expandable').forEach(node => {
+        node.addEventListener('click', function(e) {
+            const toggle = this.querySelector('.tree-toggle');
+            const treeNode = this.nextElementSibling;
+            if (treeNode && treeNode.classList.contains('tree-node')) {
+                treeNode.classList.toggle('tree-collapsed');
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
+            }
+        });
+    });
+}
+
+function addTreeHandlersToContainer(container) {
+    container.querySelectorAll('.tree-expandable').forEach(node => {
+        node.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const toggle = this.querySelector('.tree-toggle');
+            const treeNode = this.nextElementSibling;
+            if (treeNode && treeNode.classList.contains('tree-node')) {
+                treeNode.classList.toggle('tree-collapsed');
+                toggle.textContent = treeNode.classList.contains('tree-collapsed') ? '+' : '-';
+            }
+        });
+    });
 }

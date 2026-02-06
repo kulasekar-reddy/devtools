@@ -79,6 +79,8 @@ function showStatusMessage(message, type = 'success') {
 // ===== MODE SWITCHING =====
 function showTextMode() {
     currentMode = 'text';
+    const inputContainer = document.querySelector('.input-container');
+    if (inputContainer) inputContainer.style.display = 'flex';
     document.getElementById('yaml-editor').style.display = 'block';
     document.getElementById('tree-view').classList.remove('active');
     document.getElementById('text-mode-btn').classList.add('active');
@@ -110,6 +112,8 @@ function showTreeMode() {
         addTreeHandlers();
 
         currentMode = 'tree';
+        const inputContainer = document.querySelector('.input-container');
+        if (inputContainer) inputContainer.style.display = 'none';
         editor.style.display = 'none';
         treeView.classList.add('active');
         document.getElementById('text-mode-btn').classList.remove('active');
