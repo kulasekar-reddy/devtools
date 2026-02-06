@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-B4LNPCXR9M');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
-        crossorigin="anonymous"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-4697643139994449",
-            enable_page_level_ads: true
-        });
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -134,10 +117,11 @@
     }
     </script>
 
-    <!-- Font Preloading -->
+    <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/xml.css">
 </head>
@@ -160,7 +144,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <main class="container">
         <div class="editor-container">
             <!-- Sidebar -->
             <div class="sidebar">
@@ -243,7 +227,7 @@
             </div>
         </div>
         <input type="file" id="file-input" class="hidden-input" accept=".xml,.xsd,.xsl,.xslt,.svg,.html,.htm" onchange="handleFileImport(event)">
-    </div>
+    </main>
 
     <footer>
         <p>DevTools - Free and open source • No data collected • Works offline • <a href="json-tools.html">JSON Tools</a></p>
@@ -271,5 +255,15 @@
 
     <script src="../js/utils.js"></script>
     <script src="../js/xml-tools.js"></script>
+
+    <!-- Analytics (moved to end for better performance) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449" crossorigin="anonymous"></script>
 </body>
 </html>
