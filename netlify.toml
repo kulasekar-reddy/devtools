@@ -12,6 +12,16 @@
   to = "/tools/xml-tools.html"
   status = 200
 
+[[redirects]]
+  from = "https://timestamp.formatting.tech/*"
+  to = "/tools/timestamp-tools.html"
+  status = 200
+
+[[redirects]]
+  from = "https://url.formatting.tech/*"
+  to = "/tools/url-tools.html"
+  status = 200
+
 # Security and caching headers
 [[headers]]
   for = "/*"
