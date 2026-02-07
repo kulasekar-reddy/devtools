@@ -27,105 +27,41 @@
     <meta name="twitter:description" content="Free online YAML tools - Validate, format, convert YAML to JSON, and visualize data.">
     <meta name="twitter:image" content="https://formatting.tech/images/og-image.png">
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Consolidated Structured Data (JSON-LD) -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "YAML Tools",
-        "description": "Free online YAML tools for validating, formatting, and converting YAML data",
-        "url": "https://formatting.tech/tools/yml-tools.html",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Validate YAML syntax",
-            "Format YAML with indentation",
-            "Convert YAML to JSON",
-            "Convert JSON to YAML",
-            "Interactive tree view",
-            "Import/Export files",
-            "Search and replace text in YAML",
-            "Find and replace with regex support"
-        ]
-    }
+    {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"YAML Tools","description":"Free online YAML tools for validating, formatting, and converting YAML data","url":"https://formatting.tech/tools/yml-tools.html","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Validate YAML syntax","Format YAML with indentation","Convert YAML to JSON","Convert JSON to YAML","Interactive tree view","Import/Export files","Search and replace text in YAML","Find and replace with regex support"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://formatting.tech/"},{"@type":"ListItem","position":2,"name":"YAML Tools","item":"https://formatting.tech/tools/yml-tools.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is YAML used for?","acceptedAnswer":{"@type":"Answer","text":"YAML is primarily used for configuration files in DevOps tools including Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, and CI/CD pipeline configurations. Its human-readable syntax makes it ideal for configs that need to be reviewed and edited frequently."}},{"@type":"Question","name":"Can I convert YAML to JSON?","acceptedAnswer":{"@type":"Answer","text":"Yes! Our YAML Tools include bidirectional conversion. Click YAML to JSON to convert, or JSON to YAML for the reverse. This is useful when working with APIs that require JSON but you prefer YAML for readability."}},{"@type":"Question","name":"What's the difference between YAML and JSON?","acceptedAnswer":{"@type":"Answer","text":"YAML is more human-readable with minimal punctuation, using indentation for structure. JSON is more compact and widely supported but harder to read. YAML supports comments and multiline strings, while JSON does not. YAML is preferred for configs, JSON for APIs and data interchange."}},{"@type":"Question","name":"Why does indentation matter in YAML?","acceptedAnswer":{"@type":"Answer","text":"Indentation defines the structure and nesting in YAML. Unlike JSON which uses braces, YAML relies entirely on consistent spacing to determine hierarchy. Incorrect indentation can change the meaning of your config or cause parsing errors. Always use 2 spaces per level."}}]}]}
     </script>
 
-    <!-- Breadcrumb Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "YAML Tools",
-                "item": "https://formatting.tech/tools/yml-tools.html"
-            }
-        ]
-    }
-    </script>
+    <!-- DNS Prefetch for external domains -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
 
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "What is YAML used for?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "YAML is primarily used for configuration files in DevOps tools including Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, and CI/CD pipeline configurations. Its human-readable syntax makes it ideal for configs that need to be reviewed and edited frequently."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Can I convert YAML to JSON?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes! Our YAML Tools include bidirectional conversion. Click YAML to JSON to convert, or JSON to YAML for the reverse. This is useful when working with APIs that require JSON but you prefer YAML for readability."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What's the difference between YAML and JSON?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "YAML is more human-readable with minimal punctuation, using indentation for structure. JSON is more compact and widely supported but harder to read. YAML supports comments and multiline strings, while JSON does not. YAML is preferred for configs, JSON for APIs and data interchange."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Why does indentation matter in YAML?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Indentation defines the structure and nesting in YAML. Unlike JSON which uses braces, YAML relies entirely on consistent spacing to determine hierarchy. Incorrect indentation can change the meaning of your config or cause parsing errors. Always use 2 spaces per level."
-                }
-            }
-        ]
-    }
-    </script>
+    <!-- Critical CSS - Inline for instant render -->
+    <style>*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#3182ce;--primary-hover:#2c5aa0;--secondary-bg:#f7fafc;--secondary-hover:#edf2f7;--border-color:#e2e8f0;--text-primary:#2d3748;--text-secondary:#4a5568;--text-muted:#718096;--success-bg:#d4edda;--success-text:#155724;--success-border:#c3e6cb;--error-bg:#f8d7da;--error-text:#721c24;--error-border:#f5c6cb;--info-bg:#d1ecf1;--info-text:#0c5460;--info-border:#bee5eb}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:var(--text-primary);min-height:100vh}.header{background:#fff;border-bottom:2px solid var(--border-color);padding:20px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}.header-content{max-width:1600px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}.logo{text-decoration:none}.logo h1{font-size:1.5rem;font-weight:600;color:#1a202c;margin:0}.logo-subtitle{font-size:.85rem;color:var(--text-muted);font-weight:400}.main-nav{display:flex;gap:20px;align-items:center}.nav-link{color:var(--text-secondary);text-decoration:none;font-weight:500;font-size:.95rem;padding:8px 16px;border-radius:6px;transition:all .2s}.nav-link:hover{background:var(--secondary-bg);color:var(--primary-color)}.nav-link.active{color:var(--primary-color);background:var(--secondary-bg)}.container{max-width:1600px;margin:0 auto;padding:20px}</style>
 
     <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/yml.css">
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="../css/main.css" as="style">
+    <link rel="preload" href="../css/yml.css" as="style">
+
+    <!-- Async CSS Loading - Non-blocking -->
+    <link rel="stylesheet" href="../css/main.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/yml.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="../css/main.css">
+        <link rel="stylesheet" href="../css/yml.css">
+    </noscript>
+
+    <!-- Deferred Scripts - Non-blocking -->
+    <script defer src="../js/utils.js"></script>
+    <script defer src="../js/js-yaml.min.js"></script>
+    <script defer src="../js/search-replace.js"></script>
+    <script defer src="../js/yml-tools.js"></script>
 </head>
 <body>
     <div class="header">
@@ -388,12 +324,7 @@
         <div class="fullscreen-content" id="fullscreen-content"></div>
     </div>
 
-    <script src="../js/utils.js"></script>
-    <script src="../js/js-yaml.min.js"></script>
-    <script src="../js/search-replace.js"></script>
-    <script src="../js/yml-tools.js"></script>
-
-    <!-- Analytics (moved to end for better performance) -->
+    <!-- Analytics (async, non-blocking) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

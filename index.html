@@ -1,30 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-        // Subdomain redirect - executes immediately before page renders
-        (function() {
-            if (window.location.hostname === 'json.formatting.tech') {
-                window.location.replace('/tools/json-tools.html');
-            }
-            if (window.location.hostname === 'xml.formatting.tech') {
-                window.location.replace('/tools/xml-tools.html');
-            }
-            if (window.location.hostname === 'timestamp.formatting.tech') {
-                window.location.replace('/tools/timestamp-tools.html');
-            }
-            if (window.location.hostname === 'url.formatting.tech') {
-                window.location.replace('/tools/url-tools.html');
-            }
-            if (window.location.hostname === 'yml.formatting.tech') {
-                window.location.replace('/tools/yml-tools.html');
-            }
-            if (window.location.hostname === 'diff.formatting.tech') {
-                window.location.replace('/tools/diff-tools.html');
-            }
-
-        })();
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -51,78 +27,35 @@
     <meta name="twitter:description" content="Free developer tools for JSON formatting, XML validation, and more. Works offline, no data collection.">
     <meta name="twitter:image" content="https://formatting.tech/images/og-image.png">
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Consolidated Structured Data (JSON-LD) -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "DevTools - formatting.tech",
-        "description": "Free online developer tools for JSON and XML formatting, validation, and transformation",
-        "url": "https://formatting.tech/"
-    }
+    {"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"DevTools - formatting.tech","description":"Free online developer tools for JSON and XML formatting, validation, and transformation","url":"https://formatting.tech/"},{"@type":"Organization","name":"DevTools","url":"https://formatting.tech/","description":"Free developer utilities for JSON and XML processing"},{"@type":"ItemList","name":"Developer Tools","description":"Collection of free developer tools","itemListElement":[{"@type":"ListItem","position":1,"name":"JSON Tools","url":"https://json.formatting.tech/"},{"@type":"ListItem","position":2,"name":"XML Tools","url":"https://xml.formatting.tech/"},{"@type":"ListItem","position":3,"name":"Timestamp Converter","url":"https://timestamp.formatting.tech/"},{"@type":"ListItem","position":4,"name":"URL Encoder / Decoder","url":"https://url.formatting.tech/"},{"@type":"ListItem","position":5,"name":"YAML Tools","url":"https://yml.formatting.tech/"},{"@type":"ListItem","position":6,"name":"Diff Tools","url":"https://diff.formatting.tech/"}]}]}
     </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "DevTools",
-        "url": "https://formatting.tech/",
-        "description": "Free developer utilities for JSON and XML processing"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Developer Tools",
-        "description": "Collection of free developer tools",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "JSON Tools",
-                "url": "https://json.formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "XML Tools",
-                "url": "https://xml.formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Timestamp Converter",
-                "url": "https://timestamp.formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 4,
-                "name": "URL Encoder / Decoder",
-                "url": "https://url.formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 5,
-                "name": "YAML Tools",
-                "url": "https://yml.formatting.tech/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 6,
-                "name": "Diff Tools",
-                "url": "https://diff.formatting.tech/"
-            }
-        ]
-    }
-    </script>
+
+    <!-- DNS Prefetch for external domains -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+
+    <!-- Critical CSS - Inline for instant render -->
+    <style>*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#3182ce;--primary-hover:#2c5aa0;--secondary-bg:#f7fafc;--secondary-hover:#edf2f7;--border-color:#e2e8f0;--text-primary:#2d3748;--text-secondary:#4a5568;--text-muted:#718096;--success-bg:#d4edda;--success-text:#155724;--success-border:#c3e6cb;--error-bg:#f8d7da;--error-text:#721c24;--error-border:#f5c6cb;--info-bg:#d1ecf1;--info-text:#0c5460;--info-border:#bee5eb}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:var(--text-primary);min-height:100vh}.header{background:#fff;border-bottom:2px solid var(--border-color);padding:20px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}.header-content{max-width:1600px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}.logo{text-decoration:none}.logo h1{font-size:1.5rem;font-weight:600;color:#1a202c;margin:0}.logo-subtitle{font-size:.85rem;color:var(--text-muted);font-weight:400}.main-nav{display:flex;gap:20px;align-items:center}.nav-link{color:var(--text-secondary);text-decoration:none;font-weight:500;font-size:.95rem;padding:8px 16px;border-radius:6px;transition:all .2s}.nav-link:hover{background:var(--secondary-bg);color:var(--primary-color)}.nav-link.active{color:var(--primary-color);background:var(--secondary-bg)}.container{max-width:1600px;margin:0 auto;padding:20px}</style>
 
     <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="css/main.css" as="style">
+
+    <!-- Async CSS Loading - Non-blocking -->
+    <link rel="stylesheet" href="css/main.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="css/main.css">
+    </noscript>
+
+    <!-- Deferred Scripts - Non-blocking -->
+    <script defer src="js/utils.js"></script>
     <style>
         .hero {
             text-align: center;
@@ -473,12 +406,13 @@
         <p>DevTools - Free and open source • No data collected • Works offline</p>
     </footer>
 
-    <script src="js/utils.js"></script>
     <script>
-        setActiveNav('./');
+        document.addEventListener('DOMContentLoaded', function() {
+            setActiveNav('./');
+        });
     </script>
 
-    <!-- Analytics (moved to end for better performance) -->
+    <!-- Analytics (async, non-blocking) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
