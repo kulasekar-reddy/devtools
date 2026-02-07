@@ -2,7 +2,6 @@
 
 let currentMode = 'text'; // 'text' or 'tree'
 let searchReplace = null;
-let searchReplace = null;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {

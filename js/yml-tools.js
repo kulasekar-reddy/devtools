@@ -578,6 +578,12 @@ function exitFullscreen() {
 }
 
 function showTreeModeFullscreen() {
+    if (!isFullscreenActive()) return;
+
+    const editor = document.getElementById('yaml-editor');
+    const content = editor.value.trim();
+    clearHighlights();
+
     if (!content) {
         showStatusMessage('Please enter YAML to view as tree', 'error');
         return;
@@ -604,7 +610,7 @@ function showTreeModeFullscreen() {
         showStatusMessage('Tree view generated');
     } catch (error) {
         showStatusMessage('Invalid YAML: ' + error.message, 'error');
-        const line = getYamlErrorLine(error);
+        const line = getYamlErrorLine(error, content);
         if (line) highlightError(line);
     }
 }

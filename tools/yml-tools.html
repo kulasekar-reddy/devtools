@@ -6,8 +6,8 @@
 
     <!-- SEO Meta Tags -->
     <title>YAML Tools Online - Validator, Converter, Formatter | DevTools</title>
-    <meta name="description" content="Free online YAML tools - Validate, format, convert YAML to JSON, convert JSON to YAML, and visualize data. Interactive tree view. No signup required.">
-    <meta name="keywords" content="YAML validator, YAML converter, YAML formatter, JSON to YAML, YAML to JSON, YAML viewer, YAML tree view, online YAML tools">
+    <meta name="description" content="Free online YAML tools - Validate, format, search and replace, convert YAML to JSON, convert JSON to YAML, and visualize data. Interactive tree view. No signup required.">
+    <meta name="keywords" content="YAML validator, YAML converter, YAML formatter, JSON to YAML, YAML to JSON, YAML viewer, YAML tree view, online YAML tools, yaml search replace, find replace yaml, yaml regex search">
     <meta name="author" content="DevTools">
     <link rel="canonical" href="https://formatting.tech/tools/yml-tools.html">
 
@@ -48,7 +48,9 @@
             "Convert YAML to JSON",
             "Convert JSON to YAML",
             "Interactive tree view",
-            "Import/Export files"
+            "Import/Export files",
+            "Search and replace text in YAML",
+            "Find and replace with regex support"
         ]
     }
     </script>
@@ -253,6 +255,8 @@
                     <p><strong>Tree View:</strong> Visualize YAML structure as an interactive tree. This is invaluable for large Kubernetes manifests with dozens of nested fields, or Docker Compose files with multiple services. Click to expand or collapse sections, making it easy to navigate complex configurations.</p>
 
                     <p><strong>Import/Export:</strong> Load YAML files (.yaml, .yml) from your computer or save processed YAML to a file. Import supports both YAML and JSON files, automatically detecting the format. Export creates properly formatted .yaml files ready for use in production.</p>
+
+                    <p><strong>Search & Replace:</strong> Use the search toolbar to find and replace text within your YAML. Supports case-sensitive search and regex patterns. This feature helps when you need to update configuration values, rename keys across Kubernetes manifests, or modify environment variables in Docker Compose files. Replace individual matches or use Replace All for bulk updates.</p>
                 </div>
             </details>
 
@@ -304,6 +308,12 @@
 
                     <p><strong>Can I use tabs in YAML?</strong><br>
                     No! YAML explicitly forbids tabs. You must use spaces for indentation. Tabs will cause parsing errors. Configure your code editor to convert tabs to spaces (typically 2 spaces per indent level) when working with YAML files.</p>
+
+                    <p><strong>How do I search and replace in YAML files?</strong><br>
+                    Use the search toolbar that appears above the editor in text mode. Enter your search term, use the arrows or Enter key to navigate matches, then click Replace for individual replacements or Replace All for bulk updates. Perfect for updating environment variables or changing image tags across Kubernetes manifests.</p>
+
+                    <p><strong>Does search and replace work with regex in YAML?</strong><br>
+                    Yes! Enable the regex option (.* checkbox) to use regular expression patterns. This is useful for finding and replacing version numbers, updating multiple similar configuration values, or matching specific patterns in your YAML files.</p>
                 </div>
             </details>
         </div>
