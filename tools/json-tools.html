@@ -36,8 +36,8 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
 
-    <!-- Critical CSS - Inline for instant render -->
-    <style>*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#3182ce;--primary-hover:#2c5aa0;--secondary-bg:#f7fafc;--secondary-hover:#edf2f7;--border-color:#e2e8f0;--text-primary:#2d3748;--text-secondary:#4a5568;--text-muted:#718096;--success-bg:#d4edda;--success-text:#155724;--success-border:#c3e6cb;--error-bg:#f8d7da;--error-text:#721c24;--error-border:#f5c6cb;--info-bg:#d1ecf1;--info-text:#0c5460;--info-border:#bee5eb}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:var(--text-primary);min-height:100vh}.header{background:#fff;border-bottom:2px solid var(--border-color);padding:20px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}.header-content{max-width:1600px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}.logo{text-decoration:none}.logo h1{font-size:1.5rem;font-weight:600;color:#1a202c;margin:0}.logo-subtitle{font-size:.85rem;color:var(--text-muted);font-weight:400}.main-nav{display:flex;gap:20px;align-items:center}.nav-link{color:var(--text-secondary);text-decoration:none;font-weight:500;font-size:.95rem;padding:8px 16px;border-radius:6px;transition:all .2s}.nav-link:hover{background:var(--secondary-bg);color:var(--primary-color)}.nav-link.active{color:var(--primary-color);background:var(--secondary-bg)}.container{max-width:1600px;margin:0 auto;padding:20px}</style>
+    <!-- Critical CSS - Minimal inline for instant render -->
+    <style>*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#3182ce;--secondary-bg:#f7fafc;--border-color:#e2e8f0;--text-primary:#2d3748;--text-secondary:#4a5568}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:var(--text-primary);min-height:100vh}.header{background:#fff;border-bottom:2px solid var(--border-color);padding:20px 0;position:sticky;top:0;z-index:100}.header-content{max-width:1600px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}.logo{text-decoration:none}.logo h1{font-size:1.5rem;font-weight:600;color:#1a202c;margin:0}.container{max-width:1600px;margin:0 auto;padding:20px}</style>
 
     <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,17 +45,12 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
 
-    <!-- Preload Critical Assets -->
-    <link rel="preload" href="../css/main.css" as="style">
-    <link rel="preload" href="../css/json.css" as="style">
+    <!-- Main CSS - Load synchronously (small file, critical for layout) -->
+    <link rel="stylesheet" href="../css/main.css">
 
-    <!-- Async CSS Loading - Non-blocking -->
-    <link rel="stylesheet" href="../css/main.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/json.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="../css/main.css">
-        <link rel="stylesheet" href="../css/json.css">
-    </noscript>
+    <!-- Tool-specific CSS - Load async to avoid blocking -->
+    <link rel="preload" href="../css/json.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/json.css"></noscript>
 
     <!-- Deferred Scripts - Non-blocking -->
     <script defer src="../js/utils.js"></script>
@@ -138,18 +133,6 @@
                     <p class="sidebar-footer-text">DevTools<br><a href="xml-tools.html" style="color: #718096;">XML Tools</a></p>
                 </div>
 
-                <!-- AdSense Ad - Sidebar Bottom -->
-                <div class="ad-container" style="text-align: center; margin: 20px 0;">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-4697643139994449"
-                         data-ad-slot="SLOT_ID_HERE"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
             </div>
 
             <!-- Main Editor -->
@@ -197,18 +180,6 @@
             <div class="loading-text">Processing JSON...</div>
         </div>
 
-        <!-- AdSense Ad - Below Editor -->
-        <div class="ad-container" style="text-align: center; margin: 40px 0;">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-4697643139994449"
-                 data-ad-slot="SLOT_ID_HERE"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
 
         <!-- Educational Content Sections -->
         <div class="content-sections">
@@ -332,14 +303,21 @@
         <div class="fullscreen-content" id="fullscreen-content"></div>
     </div>
 
-    <!-- Analytics (async, non-blocking) -->
+    <!-- Analytics (deferred for better performance) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-B4LNPCXR9M');
+      window.addEventListener('load', function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-B4LNPCXR9M');
+      });
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449" crossorigin="anonymous"></script>
+
+    <!-- Auto Ads with frequency hint for better CLS -->
+    <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
+            crossorigin="anonymous"
+            data-ad-frequency-hint="30s"></script>
 </body>
 </html>
