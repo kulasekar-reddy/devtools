@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Page Not Found - DevTools | formatting.tech</title>
+    <meta name="description" content="Page not found. Browse our free developer tools for JSON, XML, YAML, timestamps, URLs, and diffs.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Font Preloading - Non-blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 600;
+            color: #e53e3e;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            margin: 20px 0 10px;
+            color: #1a202c;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .tools-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .tool-link {
+            display: block;
+            padding: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .tool-link:hover {
+            border-color: #4299e1;
+            background: #ebf8ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #4299e1;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .home-button:hover {
+            background: #3182ce;
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .tools-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <h1>DevTools</h1>
+                <div class="logo-subtitle">Free utilities for developers</div>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="tools/json-tools.html" class="nav-link">JSON Tools</a>
+                <a href="tools/xml-tools.html" class="nav-link">XML Tools</a>
+                <a href="tools/yml-tools.html" class="nav-link">YAML Tools</a>
+                <a href="tools/diff-tools.html" class="nav-link">Diff Tool</a>
+                <a href="tools/timestamp-tools.html" class="nav-link">Timestamp</a>
+                <a href="tools/url-tools.html" class="nav-link">URL Tools</a>
+            </nav>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Page Not Found</h2>
+            <p class="error-message">The page you're looking for doesn't exist or has been moved. Try one of our developer tools below:</p>
+
+            <div class="tools-links">
+                <a href="tools/json-tools.html" class="tool-link">
+                    <span class="tool-icon">{}</span>
+                    JSON Tools
+                </a>
+                <a href="tools/xml-tools.html" class="tool-link">
+                    <span class="tool-icon">&lt;/&gt;</span>
+                    XML Tools
+                </a>
+                <a href="tools/yml-tools.html" class="tool-link">
+                    <span class="tool-icon">📝</span>
+                    YAML Tools
+                </a>
+                <a href="tools/diff-tools.html" class="tool-link">
+                    <span class="tool-icon">⇄</span>
+                    Diff Tool
+                </a>
+                <a href="tools/timestamp-tools.html" class="tool-link">
+                    <span class="tool-icon">⏰</span>
+                    Timestamp
+                </a>
+                <a href="tools/url-tools.html" class="tool-link">
+                    <span class="tool-icon">🔗</span>
+                    URL Tools
+                </a>
+            </div>
+
+            <a href="index.html" class="home-button">← Back to Home</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>DevTools - Free and open source • No data collected • Works offline</p>
+    </footer>
+
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B4LNPCXR9M');
+    </script>
+</body>
+</html>

@@ -9,11 +9,11 @@
     <meta name="description" content="Free online Diff Tool. Compare text, JSON, XML, or YAML files side-by-side. Highlight differences, additions, and removals. No signup required.">
     <meta name="keywords" content="diff tool, text compare, json compare, xml compare, yaml compare, file difference, online diff, code compare, free developer tools">
     <meta name="author" content="DevTools">
-    <link rel="canonical" href="https://formatting.tech/tools/diff-tools.html">
+    <link rel="canonical" href="https://diff.formatting.tech/">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://formatting.tech/tools/diff-tools.html">
+    <meta property="og:url" content="https://diff.formatting.tech/">
     <meta property="og:title" content="Text & JSON Diff Tool - Compare Two Files Online">
     <meta property="og:description" content="Free online Diff Tool. Compare text, JSON, XML, or YAML files side-by-side.">
     <meta property="og:site_name" content="DevTools">
@@ -68,6 +68,48 @@
                 "position": 2,
                 "name": "Diff Tool",
                 "item": "https://formatting.tech/tools/diff-tools.html"
+            }
+        ]
+    }
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How does the diff algorithm work?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Diff tools use algorithms like Myers' diff to find the longest common subsequence between two texts, then determine the minimal set of changes needed to transform one into the other. Our tool compares line-by-line, identifying additions, deletions, and unchanged lines."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I compare JSON files?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Click the JSON pre-format button to format both inputs before comparing. This ensures consistent indentation so you're comparing actual data differences rather than formatting variations."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What do the colors mean in the diff?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Red lines with a minus prefix indicate content removed from the original. Green lines with a plus prefix indicate content added in the modified version. White or uncolored lines appear in both versions unchanged."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What file formats can I compare?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "You can compare any text-based format: plain text, JSON, XML, YAML, JavaScript, Python, HTML, CSS, configuration files, log files, CSV, Markdown, and more. The tool treats all input as text."
+                }
             }
         ]
     }

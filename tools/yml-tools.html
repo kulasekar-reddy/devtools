@@ -9,11 +9,11 @@
     <meta name="description" content="Free online YAML tools - Validate, format, search and replace, convert YAML to JSON, convert JSON to YAML, and visualize data. Interactive tree view. No signup required.">
     <meta name="keywords" content="YAML validator, YAML converter, YAML formatter, JSON to YAML, YAML to JSON, YAML viewer, YAML tree view, online YAML tools, yaml search replace, find replace yaml, yaml regex search">
     <meta name="author" content="DevTools">
-    <link rel="canonical" href="https://formatting.tech/tools/yml-tools.html">
+    <link rel="canonical" href="https://yml.formatting.tech/">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://formatting.tech/tools/yml-tools.html">
+    <meta property="og:url" content="https://yml.formatting.tech/">
     <meta property="og:title" content="YAML Tools - Validate, Convert, Format YAML Online">
     <meta property="og:description" content="Free online YAML tools - Validate, format, convert YAML to JSON, and visualize data.">
     <meta property="og:site_name" content="DevTools">
@@ -72,6 +72,48 @@
                 "position": 2,
                 "name": "YAML Tools",
                 "item": "https://formatting.tech/tools/yml-tools.html"
+            }
+        ]
+    }
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is YAML used for?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "YAML is primarily used for configuration files in DevOps tools including Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, and CI/CD pipeline configurations. Its human-readable syntax makes it ideal for configs that need to be reviewed and edited frequently."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I convert YAML to JSON?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Our YAML Tools include bidirectional conversion. Click YAML to JSON to convert, or JSON to YAML for the reverse. This is useful when working with APIs that require JSON but you prefer YAML for readability."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What's the difference between YAML and JSON?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "YAML is more human-readable with minimal punctuation, using indentation for structure. JSON is more compact and widely supported but harder to read. YAML supports comments and multiline strings, while JSON does not. YAML is preferred for configs, JSON for APIs and data interchange."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Why does indentation matter in YAML?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Indentation defines the structure and nesting in YAML. Unlike JSON which uses braces, YAML relies entirely on consistent spacing to determine hierarchy. Incorrect indentation can change the meaning of your config or cause parsing errors. Always use 2 spaces per level."
+                }
             }
         ]
     }
