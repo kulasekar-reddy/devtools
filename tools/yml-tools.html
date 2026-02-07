@@ -157,6 +157,19 @@
                 <div class="sidebar-footer">
                     <p class="sidebar-footer-text">DevTools<br><a href="json-tools.html" style="color: #718096;">JSON Tools</a></p>
                 </div>
+
+                <!-- AdSense Ad - Sidebar Bottom -->
+                <div class="ad-container" style="text-align: center; margin: 20px 0;">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4697643139994449"
+                         data-ad-slot="SLOT_ID_HERE"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
 
             <!-- Main Editor -->
@@ -183,6 +196,7 @@
                         <span class="char-count" id="char-count">0 characters</span>
                     </div>
                 </div>
+                <div id="yml-search-container"></div>
                 <div class="editor-content">
                     <div class="input-container">
                         <div class="highlight-backdrop"><div class="highlights"></div></div>
@@ -194,6 +208,105 @@
             </div>
         </div>
         <input type="file" id="file-input" class="hidden-input" accept=".yaml,.yml,.json,.txt" onchange="handleFileImport(event)">
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About YAML Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>YAML (YAML Ain't Markup Language) is a human-readable data serialization format that has become the standard for configuration files in modern DevOps, cloud infrastructure, and containerization. Originally designed to be more readable than XML and JSON, YAML uses indentation and minimal syntax to represent complex data structures, making it perfect for Kubernetes manifests, Docker Compose files, CI/CD pipelines, and application configurations.</p>
+                    <p>Our YAML Tools provide everything you need to work with YAML data efficiently. Convert between YAML and JSON formats for API compatibility, validate syntax before deployment, or visualize complex configurations using tree view. The browser-based processing ensures your sensitive Kubernetes secrets, deployment configurations, and infrastructure-as-code files never leave your device.</p>
+                    <p>The interactive tree view is especially valuable for understanding large YAML files like Kubernetes deployments with multiple containers, services, and config maps. You can expand and collapse sections to focus on specific resources, making it easier to debug configuration issues or review infrastructure changes before applying them to production clusters.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use YAML Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>YAML to JSON:</strong> Convert YAML configuration files to JSON format for use with REST APIs or JavaScript applications. This is useful when you have Kubernetes configs in YAML but need JSON for API requests, or when integrating with systems that only accept JSON input.</p>
+
+                    <p><strong>JSON to YAML:</strong> Convert JSON data to YAML format for more readable configuration files. Many developers prefer YAML for configs because it's less verbose and easier to read than JSON. Use this when converting API responses to config files or creating Kubernetes manifests from JSON schemas.</p>
+
+                    <p><strong>Format YAML:</strong> Add consistent indentation and structure to YAML files. Proper formatting is critical in YAML since indentation defines the data structure—incorrect spacing can completely change the meaning or cause parsing errors. Our formatter uses 2-space indentation, the standard for Kubernetes and Docker.</p>
+
+                    <p><strong>Validate:</strong> Check YAML syntax for errors before deployment. Common issues include incorrect indentation, tabs instead of spaces, invalid characters, and anchor/alias problems. Our validator provides detailed error messages with line numbers, helping you fix issues before they break your deployments.</p>
+
+                    <p><strong>Tree View:</strong> Visualize YAML structure as an interactive tree. This is invaluable for large Kubernetes manifests with dozens of nested fields, or Docker Compose files with multiple services. Click to expand or collapse sections, making it easy to navigate complex configurations.</p>
+
+                    <p><strong>Import/Export:</strong> Load YAML files (.yaml, .yml) from your computer or save processed YAML to a file. Import supports both YAML and JSON files, automatically detecting the format. Export creates properly formatted .yaml files ready for use in production.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for YAML</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Use Spaces, Never Tabs:</strong> YAML does not allow tabs for indentation—only spaces. Mixing tabs and spaces will cause parsing errors. Configure your editor to convert tabs to spaces. The standard is 2-space indentation for each nesting level, which is what Kubernetes and most CI/CD tools expect.</p>
+
+                    <p><strong>Quote Strings When Ambiguous:</strong> While YAML allows unquoted strings, you should quote values that could be misinterpreted as numbers, booleans, or special syntax. For example, version numbers like "3.9" should be quoted to prevent being parsed as floats. Quote strings containing special characters like colons, hashes, or brackets.</p>
+
+                    <p><strong>Use Anchors and Aliases to Avoid Repetition:</strong> YAML anchors (&amp;) and aliases (*) let you reuse configuration blocks. This is useful in Docker Compose for sharing environment variables across services, or in Kubernetes for common pod specifications. However, use them sparingly—too many anchors make YAML harder to read.</p>
+
+                    <p><strong>Document Separators for Multi-Document Files:</strong> Use three dashes (---) to separate multiple YAML documents in a single file. This is common in Kubernetes where a single file might contain multiple resources (Deployment, Service, ConfigMap). Each document should start with --- for clarity.</p>
+
+                    <p><strong>Comments for Clarity:</strong> Use # for comments to explain non-obvious configurations. This is especially important in Kubernetes manifests where resource limits, probe settings, or security contexts might need explanation. Comments are preserved when formatting YAML but stripped when converting to JSON.</p>
+
+                    <p><strong>Consistent Key Naming:</strong> Use consistent naming conventions for keys. Kubernetes uses camelCase (containerPort, serviceAccount), while Docker Compose uses snake_case (build_context). Stick to the convention used by your platform to avoid confusion.</p>
+
+                    <p><strong>Validate Before Deploying:</strong> Always validate YAML before applying it to production. A single indentation error in a Kubernetes manifest can crash pods or create security vulnerabilities. Use our validator or kubectl dry-run to catch errors before they affect production systems.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>What is YAML used for?</strong><br>
+                    YAML is primarily used for configuration files in DevOps tools. Common uses include Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, CI/CD pipeline configurations (CircleCI, GitLab CI), and application config files (Rails, Spring Boot). Its human-readable syntax makes it ideal for configs that need to be reviewed and edited frequently.</p>
+
+                    <p><strong>Can I convert YAML to JSON?</strong><br>
+                    Yes! Our YAML Tools include bidirectional conversion. Click "To JSON" to convert YAML to JSON, or "To YAML" to convert JSON to YAML. This is useful when working with APIs that require JSON but you prefer YAML for readability, or when converting Kubernetes configs for use with REST APIs.</p>
+
+                    <p><strong>What's the difference between YAML and JSON?</strong><br>
+                    YAML is more human-readable with minimal punctuation, using indentation for structure. JSON is more compact and widely supported but harder to read with nested braces and brackets. YAML supports comments and multiline strings, while JSON does not. YAML is preferred for configs, JSON for APIs and data interchange.</p>
+
+                    <p><strong>How do I handle multiline strings in YAML?</strong><br>
+                    YAML supports two multiline string styles: literal (|) preserves line breaks, and folded (&gt;) converts line breaks to spaces. Use | for multi-line scripts or text where formatting matters. Use &gt; for long descriptions where line breaks are just for readability. Both prevent the need for escape characters.</p>
+
+                    <p><strong>Why does indentation matter in YAML?</strong><br>
+                    Indentation defines the structure and nesting in YAML. Unlike JSON which uses braces, YAML relies entirely on consistent spacing to determine which items belong to which parent. Incorrect indentation can completely change the meaning of your config or cause parsing errors. Always use 2 spaces per level.</p>
+
+                    <p><strong>What are YAML anchors and aliases?</strong><br>
+                    Anchors (&amp;name) let you mark a section for reuse, and aliases (*name) let you reference it elsewhere. This avoids duplication in configs. For example, you can define common environment variables once with an anchor, then reuse them across multiple services with aliases. This keeps large configs DRY (Don't Repeat Yourself).</p>
+
+                    <p><strong>Can I use tabs in YAML?</strong><br>
+                    No! YAML explicitly forbids tabs. You must use spaces for indentation. Tabs will cause parsing errors. Configure your code editor to convert tabs to spaces (typically 2 spaces per indent level) when working with YAML files.</p>
+                </div>
+            </details>
+        </div>
     </main>
 
     <footer>
@@ -219,11 +332,13 @@
                 </button>
             </div>
         </div>
+        <div id="fullscreen-search-container" style="background: white; padding: 0 10px;"></div>
         <div class="fullscreen-content" id="fullscreen-content"></div>
     </div>
 
     <script src="../js/utils.js"></script>
     <script src="../js/js-yaml.min.js"></script>
+    <script src="../js/search-replace.js"></script>
     <script src="../js/yml-tools.js"></script>
 
     <!-- Analytics (moved to end for better performance) -->

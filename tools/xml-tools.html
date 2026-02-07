@@ -190,6 +190,19 @@
                 <div class="sidebar-footer">
                     <p class="sidebar-footer-text">DevTools<br><a href="json-tools.html" style="color: #718096;">JSON Tools</a></p>
                 </div>
+
+                <!-- AdSense Ad - Sidebar Bottom -->
+                <div class="ad-container" style="text-align: center; margin: 20px 0;">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4697643139994449"
+                         data-ad-slot="SLOT_ID_HERE"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
 
             <!-- Main Editor -->
@@ -216,6 +229,7 @@
                         <span class="char-count" id="char-count">0 characters</span>
                     </div>
                 </div>
+                <div id="xml-search-container"></div>
                 <div class="editor-content">
                     <div class="input-container">
                         <div class="highlight-backdrop"><div class="highlights"></div></div>
@@ -227,6 +241,105 @@
             </div>
         </div>
         <input type="file" id="file-input" class="hidden-input" accept=".xml,.xsd,.xsl,.xslt,.svg,.html,.htm" onchange="handleFileImport(event)">
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About XML Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>XML (eXtensible Markup Language) is a versatile markup language designed to store and transport structured data in a human-readable and machine-parsable format. Despite the rise of JSON, XML remains essential for many enterprise applications, legacy systems, SOAP web services, RSS feeds, SVG graphics, and configuration files in Java and .NET frameworks.</p>
+                    <p>Our XML Tools provide a complete suite for formatting, validating, and visualizing XML documents. Whether you're working with SOAP API responses, Android layout files, Maven POM files, or RSS feeds, our browser-based tools handle XML processing instantly without sending any data to external servers. This ensures complete privacy when working with sensitive configuration data or proprietary XML schemas.</p>
+                    <p>The tree view feature is particularly valuable for understanding complex XML documents with multiple namespaces, nested elements, and extensive attribute lists. You can expand and collapse nodes to focus on specific sections, making it easier to debug XSLT transformations or validate schema compliance. All processing happens locally using modern JavaScript parsers, ensuring fast performance and data security.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use XML Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Format (Beautify):</strong> Add proper indentation and line breaks to minified or compact XML. Our formatter creates well-structured XML with consistent indentation, making it easy to read and understand. This is essential when working with XML from APIs, databases, or code generators that output minified XML.</p>
+
+                    <p><strong>Minify:</strong> Remove all unnecessary whitespace, line breaks, and indentation to reduce file size. Minified XML is ideal for network transmission, especially for SOAP web services where bandwidth matters. You can minify XML before embedding it in HTTP requests or storing it in databases.</p>
+
+                    <p><strong>Validate:</strong> Check XML syntax for well-formedness errors. Our validator identifies unclosed tags, invalid characters, attribute issues, and namespace problems. It provides detailed error messages with line numbers, helping you quickly fix issues before deploying XML configurations or sending SOAP requests.</p>
+
+                    <p><strong>Tree View:</strong> Visualize XML structure as an interactive hierarchical tree. Click on elements to expand or collapse their children. This view is invaluable for exploring complex XML documents like Maven POM files, Spring configurations, or XSLT stylesheets with multiple levels of nesting.</p>
+
+                    <p><strong>Import/Export:</strong> Load XML files from your computer (.xml, .xsd, .xsl, .svg, .html) or save formatted XML to a file. The Import button accepts various XML-based formats, making it easy to work with schema definitions, XSLT transformations, SVG graphics, or XHTML documents.</p>
+
+                    <p><strong>Search & Replace:</strong> Find and replace text within your XML document. Supports case-sensitive search and regex patterns. Useful for bulk updating attribute values, changing namespace URIs, or modifying element names across large XML files.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for XML</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Always Close Tags Properly:</strong> Every opening tag must have a corresponding closing tag, or use self-closing syntax for empty elements (&lt;element/&gt;). Unclosed tags are the most common source of XML validation errors and can break parsers or cause unexpected behavior in applications.</p>
+
+                    <p><strong>Use CDATA for Special Content:</strong> When including text that contains special characters like &lt;, &gt;, or &amp;, wrap it in CDATA sections: &lt;![CDATA[your content here]]&gt;. This is especially important for embedding code snippets, HTML content, or JSON within XML elements.</p>
+
+                    <p><strong>Namespace Best Practices:</strong> Use XML namespaces to avoid element name conflicts, especially when combining XML from multiple sources. Define namespaces at the root element and use prefixes consistently throughout the document. This is crucial for SOAP messages, XML Schema definitions, and compound documents.</p>
+
+                    <p><strong>Attribute vs Element Decision:</strong> Use attributes for metadata about an element (like ID, type, or status) and child elements for actual content or complex data. Attributes should be simple values (strings, numbers, booleans), while elements can contain nested structures or CDATA sections.</p>
+
+                    <p><strong>Schema Validation:</strong> Define and validate against XML Schema (XSD) or DTD to ensure data integrity and enforce structure. Schema validation catches data type errors, missing required elements, and constraint violations before they cause runtime issues in production systems.</p>
+
+                    <p><strong>Escape Special Characters:</strong> The five characters that must be escaped in XML are: &lt; (&amp;lt;), &gt; (&amp;gt;), &amp; (&amp;amp;), ' (&amp;apos;), and " (&amp;quot;). Always escape these characters when they appear in element text or attribute values to prevent parsing errors.</p>
+
+                    <p><strong>Use Consistent Indentation:</strong> Format XML with 2-space or 4-space indentation for better readability. Consistent formatting makes code reviews easier and helps teams maintain large XML configuration files or XSLT stylesheets.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>What is XML formatting?</strong><br>
+                    XML formatting (also called XML beautifying) is the process of adding proper indentation, line breaks, and spacing to XML data to make it human-readable. Our formatter structures XML with consistent indentation, making it easy to understand element hierarchies and nested structures.</p>
+
+                    <p><strong>Is this XML formatter free?</strong><br>
+                    Yes, our XML formatter is completely free with no signup required. It works offline in your browser, and we never store or collect your data. All XML processing happens locally on your device.</p>
+
+                    <p><strong>How do I validate XML online?</strong><br>
+                    Paste your XML into the editor and click the Validate button. Our tool checks for well-formedness errors like unclosed tags, invalid attributes, and namespace issues. You'll see detailed error messages with line numbers if any problems are found.</p>
+
+                    <p><strong>What's the difference between XML and JSON?</strong><br>
+                    XML uses tags (&lt;element&gt;) while JSON uses braces and brackets ({ }). XML supports attributes, namespaces, and comments, making it more verbose but also more flexible for document-oriented data. JSON is simpler and more compact, making it better for APIs. XML is still preferred for configuration files, SOAP services, and document markup.</p>
+
+                    <p><strong>What are XML namespaces?</strong><br>
+                    XML namespaces are a way to avoid element name conflicts by qualifying names with a URI. For example, &lt;book:title&gt; and &lt;library:title&gt; can coexist in the same document. Namespaces are essential for SOAP, XSLT, and combining XML from multiple schemas.</p>
+
+                    <p><strong>How do I handle XML special characters?</strong><br>
+                    Escape the five special characters: &lt; becomes &amp;lt;, &gt; becomes &amp;gt;, &amp; becomes &amp;amp;, ' becomes &amp;apos;, and " becomes &amp;quot;. Alternatively, wrap content containing multiple special characters in a CDATA section to avoid individual escaping.</p>
+
+                    <p><strong>Can I convert XML to JSON?</strong><br>
+                    While our current tool focuses on XML formatting and validation, you can manually restructure XML data as JSON. For automated conversion, you'll need specialized tools or libraries that handle the structural differences between XML attributes/elements and JSON key-value pairs.</p>
+                </div>
+            </details>
+        </div>
     </main>
 
     <footer>
@@ -250,10 +363,12 @@
                 </button>
             </div>
         </div>
+        <div id="fullscreen-search-container" style="background: white; padding: 0 10px;"></div>
         <div class="fullscreen-content" id="fullscreen-content"></div>
     </div>
 
     <script src="../js/utils.js"></script>
+    <script src="../js/search-replace.js"></script>
     <script src="../js/xml-tools.js"></script>
 
     <!-- Analytics (moved to end for better performance) -->

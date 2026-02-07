@@ -9,6 +9,7 @@ let callbackId = 0;
 // Parsed JSON state
 let parsedJson = null;
 let jsonStats = null;
+let searchReplace = null;
 
 // Virtual tree state
 const treeState = {
@@ -126,6 +127,14 @@ document.addEventListener('DOMContentLoaded', function() {
         editor.addEventListener('input', updateCharCount);
         updateCharCount();
         initHighlightSync('json-editor');
+        
+        if (typeof SearchReplace !== 'undefined') {
+            searchReplace = new SearchReplace();
+            const searchContainer = document.getElementById('json-search-container');
+            if (searchContainer) {
+                searchReplace.init(editor, searchContainer);
+            }
+        }
     }
 
     // Tree view scroll handler
@@ -210,6 +219,14 @@ function showTextMode() {
     document.getElementById('tree-view').classList.remove('active');
     document.getElementById('text-mode-btn').classList.add('active');
     document.getElementById('tree-mode-btn').classList.remove('active');
+
+    const searchContainer = document.getElementById('json-search-container');
+    if (searchContainer) {
+        searchContainer.style.display = 'block';
+        if (searchReplace) {
+            searchReplace.init(document.getElementById('json-editor'), searchContainer);
+        }
+    }
 }
 
 async function showTreeMode() {
@@ -242,6 +259,9 @@ async function showTreeMode() {
         treeView.classList.add('active');
         document.getElementById('text-mode-btn').classList.remove('active');
         document.getElementById('tree-mode-btn').classList.add('active');
+
+        const searchContainer = document.getElementById('json-search-container');
+        if (searchContainer) searchContainer.style.display = 'none';
 
         const nodeCount = stats?.totalNodes || treeState.nodes.size;
         showStatusMessage(`Tree view: ${nodeCount.toLocaleString()} nodes, depth ${stats?.maxDepth || 0}`);
@@ -850,6 +870,15 @@ function toggleFullscreen() {
 
         overlay.hidden = false;
         document.body.classList.add('fullscreen-active');
+
+        if (currentMode !== 'tree' && searchReplace) {
+             const fsContainer = document.getElementById('fullscreen-search-container');
+             const fsEditor = document.getElementById('json-editor-fs');
+             if (fsContainer && fsEditor) {
+                 fsContainer.style.display = 'block';
+                 searchReplace.init(fsEditor, fsContainer);
+             }
+        }
     } else {
         exitFullscreen();
     }
@@ -903,6 +932,14 @@ function exitFullscreen() {
 
         overlay.hidden = true;
         document.body.classList.remove('fullscreen-active');
+
+        if (searchReplace && currentMode !== 'tree') {
+            const normalContainer = document.getElementById('json-search-container');
+            const normalEditor = document.getElementById('json-editor');
+            if (normalContainer && normalEditor) {
+                searchReplace.init(normalEditor, normalContainer);
+            }
+        }
     }
 }
 
@@ -917,6 +954,10 @@ function showTreeModeFullscreen() {
         showStatusMessage('Please enter JSON to view as tree', 'error');
         return;
     }
+
+    // Hide search in fullscreen tree mode
+    const fsSearchContainer = document.getElementById('fullscreen-search-container');
+    if (fsSearchContainer) fsSearchContainer.style.display = 'none';
 
     // For fullscreen tree, trigger the normal tree mode first
     showTreeMode().then(() => {

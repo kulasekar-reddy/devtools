@@ -100,6 +100,19 @@
         </div>
     </div>
 
+    <!-- AdSense Ad - Top Banner -->
+    <div class="ad-container" style="text-align: center; margin: 20px 0;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4697643139994449"
+             data-ad-slot="SLOT_ID_HERE"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <main class="container">
         <div class="workspace">
             <div class="workspace-header">
@@ -145,6 +158,101 @@
                 </div>
                 <div class="diff-output" id="diff-output"></div>
             </div>
+        </div>
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About Diff Tool</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>A diff (difference) tool compares two text files or code snippets to identify what has changed between them. This fundamental developer tool highlights additions, deletions, and modifications, making it essential for code reviews, debugging, version control, and understanding changes between API responses, configuration files, or data snapshots.</p>
+                    <p>Our Diff Tool provides side-by-side comparison with clear color-coding: additions in green, deletions in red, and unchanged content in white. Whether you're reviewing code changes before a merge, debugging why two API responses differ, comparing configuration files across environments, or analyzing what changed in a document, this tool makes differences immediately visible.</p>
+                    <p>The tool works with any text format—plain text, JSON, XML, YAML, code, logs, or configuration files. Pre-format options for JSON and XML ensure structured data is properly indented before comparison, making it easier to spot meaningful differences rather than just formatting discrepancies. All processing happens locally in your browser, ensuring your code diffs and sensitive data never leave your device.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use Diff Tool</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Basic Comparison:</strong> Paste your original text in the left panel and the modified version in the right panel, then click "Compare". The tool displays differences with color-coding: green for additions, red for deletions, and white for unchanged lines. This makes it easy to scan through and identify exactly what changed.</p>
+
+                    <p><strong>Compare JSON Files:</strong> When comparing JSON, click the "JSON" pre-format button before running the comparison. This formats both inputs with consistent indentation, ensuring you're comparing actual data differences rather than just formatting variations. Essential for comparing API responses across different endpoints or versions.</p>
+
+                    <p><strong>Compare XML Files:</strong> Use the "XML" pre-format button to beautify both XML inputs before comparison. This is particularly useful for configuration files, SOAP responses, or any XML where formatting might differ but the content is what matters. Proper formatting makes structural changes clear.</p>
+
+                    <p><strong>Swap Sides:</strong> Click "Swap Sides" to exchange the left and right inputs. This is useful when you accidentally paste texts in the wrong order, or when you want to view the diff from the opposite perspective (original vs. modified becomes modified vs. original).</p>
+
+                    <p><strong>Clear All:</strong> Removes both text inputs and the comparison results, giving you a fresh start. Use this when switching to a completely different comparison task or when you want to clear sensitive data from the tool.</p>
+
+                    <p><strong>Reading Diff Results:</strong> The output shows line-by-line differences. Red lines with "-" prefix were in the original but removed in the modified version. Green lines with "+" prefix were added in the modified version. White lines appear in both versions unchanged. This format is standard across most diff tools and version control systems.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for Diffs</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Format Data Before Comparing:</strong> For structured data like JSON or XML, always format both inputs before running the diff. Formatting differences (different indentation or line breaks) can obscure actual content changes. Use our pre-format buttons to standardize formatting, then compare to see only meaningful differences.</p>
+
+                    <p><strong>Use Appropriate Comparison Mode:</strong> For code or structured data, character-level differences matter. For prose or documentation, word-level or paragraph-level differences might be more useful. Consider what level of detail you need—are you looking for typo fixes or structural changes?</p>
+
+                    <p><strong>Review Context Lines:</strong> Don't just look at highlighted changes—read the surrounding context (unchanged lines) to understand why the change was made and whether it makes sense in context. Changes that look fine in isolation might reveal issues when seen with surrounding code.</p>
+
+                    <p><strong>Handle Large Files Carefully:</strong> For very large files (thousands of lines), comparing the entire content can be slow and produce overwhelming output. Consider comparing specific sections, using command-line diff tools for large files, or focusing on specific areas where you expect changes.</p>
+
+                    <p><strong>Export Comparison Results:</strong> While our tool focuses on visual comparison, consider documenting significant differences for code review comments, bug reports, or change logs. Screenshot the diff output or copy relevant changed sections for inclusion in documentation.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>How does the diff algorithm work?</strong><br>
+                    Diff tools use algorithms like Myers' diff or Hunt-McIlroy to find the longest common subsequence (LCS) between two texts, then determine the minimal set of changes (additions and deletions) needed to transform one into the other. Our tool compares line-by-line, identifying which lines are unique to each version and which appear in both.</p>
+
+                    <p><strong>Can I compare JSON files?</strong><br>
+                    Yes! Click the "JSON" pre-format button to format both inputs before comparing. This ensures consistent indentation and structure, so you're comparing actual data differences (different values, added/removed fields) rather than just formatting variations. This is essential for comparing API responses or configuration files.</p>
+
+                    <p><strong>What do the colors mean in the diff?</strong><br>
+                    Red (or lines with "-") indicates content that exists in the original but was removed in the modified version. Green (or lines with "+") indicates content that was added in the modified version. White or uncolored lines appear in both versions unchanged. This color scheme is standard across most diff viewers.</p>
+
+                    <p><strong>How do I ignore whitespace differences?</strong><br>
+                    Currently, our tool compares exact line content including whitespace. For JSON and XML, use the pre-format buttons to standardize whitespace before comparing. For other formats, you may need to manually normalize whitespace or use command-line tools with --ignore-whitespace flags for more advanced filtering.</p>
+
+                    <p><strong>Can I export the comparison results?</strong><br>
+                    While we don't have a direct export feature, you can copy the diff output from the results section, take a screenshot, or copy individual changed sections for documentation. For automated diff exports or large-scale comparison tasks, consider command-line tools like diff or git diff.</p>
+
+                    <p><strong>What file formats can I compare?</strong><br>
+                    You can compare any text-based format: plain text, JSON, XML, YAML, JavaScript, Python, Java, HTML, CSS, configuration files, log files, CSV, Markdown, and more. The tool treats all input as text, so binary files won't work, but any text format can be compared effectively.</p>
+
+                    <p><strong>How is this different from git diff?</strong><br>
+                    git diff compares files in version control, tracking changes across commits with file history. Our tool compares two arbitrary text snippets without requiring version control setup. Use git diff for tracking code history; use our tool for quick, one-off comparisons of API responses, config files, or any text where you need to see differences immediately.</p>
+                </div>
+            </details>
         </div>
     </main>
 
