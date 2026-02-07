@@ -51,25 +51,25 @@ class SearchReplace {
     }
 
     renderUI() {
-        this.container.innerHTML = "`
-            <div class=\"search-toolbar\">
-                <div class=\"search-group\">
-                    <input type=\"text\" id=\"sr-search-input\" placeholder=\"Find...\" class=\"search-input">
-                    <div class=\"search-options\">
-                        <label title=\"Case Sensitive\"><input type=\"checkbox\" id=\"sr-case\"> Aa</label>
-                        <label title=\"Regular Expression\"><input type=\"checkbox\" id=\"sr-regex\"> .*</label>
+        this.container.innerHTML = `
+            <div class="search-toolbar">
+                <div class="search-group">
+                    <input type="text" id="sr-search-input" placeholder="Find..." class="search-input">
+                    <div class="search-options">
+                        <label title="Case Sensitive"><input type="checkbox" id="sr-case"> Aa</label>
+                        <label title="Regular Expression"><input type="checkbox" id="sr-regex"> .*</label>
                     </div>
-                    <button id=\"sr-prev\" title=\"Previous Match\">↑</button>
-                    <button id=\"sr-next\" title=\"Next Match\">↓</button>
+                    <button id="sr-prev" title="Previous Match">↑</button>
+                    <button id="sr-next" title="Next Match">↓</button>
                 </div>
-                <div class=\"replace-group\">
-                    <input type=\"text\" id=\"sr-replace-input\" placeholder=\"Replace...\" class=\"search-input">
-                    <button id=\"sr-replace\" title=\"Replace Current\">Replace</button>
-                    <button id=\"sr-replace-all\" title=\"Replace All\">Replace All</button>
+                <div class="replace-group">
+                    <input type="text" id="sr-replace-input" placeholder="Replace..." class="search-input">
+                    <button id="sr-replace" title="Replace Current">Replace</button>
+                    <button id="sr-replace-all" title="Replace All">Replace All</button>
                 </div>
-                <div class=\"search-status\" id=\"sr-status\"></div>
+                <div class="search-status" id="sr-status"></div>
             </div>
-        `";
+        `;
     }
 
     attachUIEvents() {
