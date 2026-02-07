@@ -8,12 +8,19 @@
     <meta name="description" content="Page not found. Browse our free developer tools for JSON, XML, YAML, timestamps, URLs, and diffs.">
     <meta name="robots" content="noindex, nofollow">
 
+    <!-- Critical CSS - Minimal inline for instant render -->
+    <style>*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#3182ce;--secondary-bg:#f7fafc;--border-color:#e2e8f0;--text-primary:#2d3748;--text-secondary:#4a5568}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:var(--text-primary);min-height:100vh}.header{background:#fff;border-bottom:2px solid var(--border-color);padding:20px 0;position:sticky;top:0;z-index:100}.header-content{max-width:1600px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}.logo{text-decoration:none}.logo h1{font-size:1.5rem;font-weight:600;color:#1a202c;margin:0}.container{max-width:1600px;margin:0 auto;padding:20px}</style>
+
     <!-- Font Preloading - Non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'">
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="css/main.css">
+
+    <!-- Page-specific styles -->
     <style>
         .error-container {
             text-align: center;
@@ -166,13 +173,21 @@
         <p>DevTools - Free and open source • No data collected • Works offline</p>
     </footer>
 
-    <!-- Analytics -->
+    <!-- Analytics (deferred for better performance) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4LNPCXR9M"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-B4LNPCXR9M');
+      window.addEventListener('load', function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-B4LNPCXR9M');
+      });
     </script>
+
+    <!-- Auto Ads with frequency hint for better CLS -->
+    <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4697643139994449"
+            crossorigin="anonymous"
+            data-ad-frequency-hint="30s"></script>
 </body>
 </html>
