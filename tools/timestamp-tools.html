@@ -337,6 +337,19 @@
                 <div class="sidebar-footer">
                     <p class="sidebar-footer-text">DevTools<br><a href="../index.html">More Tools</a></p>
                 </div>
+
+                <!-- AdSense Ad - Sidebar Bottom -->
+                <div class="ad-container" style="text-align: center; margin: 20px 0;">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4697643139994449"
+                         data-ad-slot="SLOT_ID_HERE"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
 
             <!-- Main Editor -->
@@ -467,6 +480,103 @@
 
                 <div class="status-bar" id="status-bar"></div>
             </div>
+        </div>
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About Timestamp Converter</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>Unix timestamps (also called Epoch time or POSIX time) are the number of seconds (or milliseconds) that have elapsed since January 1, 1970 00:00:00 UTC. This system is used universally in computing for storing and transmitting time data in a timezone-independent format. Unix timestamps appear in databases, API responses, log files, cookie expiration dates, and blockchain records.</p>
+                    <p>Our Timestamp Converter makes it easy to convert between Unix timestamps and human-readable dates. Whether you're debugging API responses, analyzing server logs, validating JWT tokens, or understanding blockchain transaction times, this tool provides instant conversions with timezone support. All conversions happen locally in your browser, ensuring your timestamp data remains private.</p>
+                    <p>The tool supports both seconds and milliseconds (the JavaScript standard), handles multiple output formats (ISO 8601, RFC 2822, custom formats), and includes timezone selection for accurate local time conversions. You can also share timestamps via permalinks, making it easy to collaborate with team members in different timezones on incident response or debugging sessions.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use Timestamp Converter</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Convert Unix Timestamp to Date:</strong> Paste a Unix timestamp (seconds or milliseconds) and see the equivalent human-readable date and time. The tool automatically detects whether you're using seconds (10 digits) or milliseconds (13 digits). Select your timezone from the dropdown to see the local time. Useful for interpreting timestamps from database records, API responses, or log files.</p>
+
+                    <p><strong>Convert Date to Unix Timestamp:</strong> Enter a date and time (or use the current time button) to get the Unix timestamp. Choose between seconds or milliseconds output depending on your use case. JavaScript uses milliseconds, while many backend systems and databases use seconds. Copy the result for use in API requests, database queries, or code.</p>
+
+                    <p><strong>Select Timezone:</strong> Choose the appropriate timezone to see timestamps in local time. This is crucial when debugging issues across different regions or coordinating with international teams. The tool supports all major timezones and automatically handles daylight saving time transitions.</p>
+
+                    <p><strong>Current Timestamp:</strong> Click "Current Time" to instantly get the current Unix timestamp. This is useful for generating timestamps for testing, creating date ranges for queries, or understanding what timestamp value represents "now" in your application.</p>
+
+                    <p><strong>Share via Permalink:</strong> Generate a shareable URL with the current timestamp embedded. Send this link to team members so they see the exact same timestamp and time interpretation. Perfect for incident reports, bug tickets, or discussing time-sensitive events across timezones.</p>
+
+                    <p><strong>Output Formats:</strong> View timestamps in multiple formats: ISO 8601 (standard for APIs), RFC 2822 (email format), or custom readable formats. Copy whichever format you need for your specific use case—database queries, API payloads, or human documentation.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for Timestamps</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Always Specify Timezone Clearly:</strong> When communicating timestamps to others, always include the timezone (e.g., "2024-01-15 14:30:00 UTC"). Ambiguous timestamps cause confusion in global teams. Use UTC for storage and communication, then convert to local time only for display purposes.</p>
+
+                    <p><strong>Use Milliseconds for Precision:</strong> JavaScript and many modern systems use milliseconds for timestamps. If you need precision beyond one second (for measuring latency, sorting events, or deduplication), use milliseconds (13 digits). For most use cases like scheduling or date comparisons, seconds (10 digits) are sufficient.</p>
+
+                    <p><strong>ISO 8601 Format for APIs:</strong> When sending timestamps in API payloads or storing in JSON, use ISO 8601 format (2024-01-15T14:30:00Z). This format is widely supported, unambiguous (includes timezone), and human-readable. The trailing 'Z' indicates UTC time.</p>
+
+                    <p><strong>Store in UTC, Display in Local:</strong> Always store timestamps in UTC in your database to avoid timezone confusion. Convert to the user's local timezone only when displaying in the UI. This prevents issues when users travel, daylight saving time changes, or your service expands to new regions.</p>
+
+                    <p><strong>Handle Daylight Saving Time:</strong> Be aware that daylight saving time can cause issues when converting timestamps to local time. Some dates may appear to "lose" or "gain" an hour. When scheduling recurring events or calculating durations, work in UTC to avoid these complications.</p>
+
+                    <p><strong>Timestamp Validation:</strong> Validate timestamp ranges to catch errors. A timestamp of 0 likely indicates missing data. Negative timestamps represent dates before 1970. Timestamps in the far future (year 2200+) might indicate milliseconds were used where seconds were expected, or vice versa.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>What is a Unix timestamp?</strong><br>
+                    A Unix timestamp (or Epoch time) is the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC, not counting leap seconds. It's a simple, timezone-independent way to represent a point in time. For example, the timestamp 1705329600 represents January 15, 2024 at 14:00:00 UTC.</p>
+
+                    <p><strong>What's the difference between seconds and milliseconds?</strong><br>
+                    Unix timestamps can be in seconds (10 digits, like 1705329600) or milliseconds (13 digits, like 1705329600000). Seconds are used by Unix systems, databases like PostgreSQL, and many backend languages. Milliseconds are used by JavaScript, Java, and when you need precision beyond one second for things like performance timing.</p>
+
+                    <p><strong>How do I convert a timestamp in JavaScript?</strong><br>
+                    JavaScript's Date.now() returns milliseconds. To get seconds: Math.floor(Date.now() / 1000). To convert timestamp to date: new Date(timestamp * 1000) if timestamp is in seconds, or new Date(timestamp) if in milliseconds.</p>
+
+                    <p><strong>What is ISO 8601 format?</strong><br>
+                    ISO 8601 is an international standard for date and time representation: 2024-01-15T14:30:00Z. The 'T' separates date and time. The 'Z' means UTC (Zulu time). For other timezones, use offsets like +05:30 or -08:00. This format is preferred for APIs and data interchange.</p>
+
+                    <p><strong>Why use UTC instead of local time?</strong><br>
+                    UTC (Coordinated Universal Time) doesn't change with daylight saving time or location. Storing all timestamps in UTC avoids ambiguity and bugs. When a user in Tokyo and a user in New York both save "3:00 PM", those are different moments in time—but both can be represented as one UTC timestamp.</p>
+
+                    <p><strong>How do I handle different timezones?</strong><br>
+                    Store timestamps in UTC in your database. When displaying to users, convert to their local timezone using browser APIs or server-side timezone libraries. Never do math (like "add 1 day") in local time—do it in UTC first, then convert to display local time.</p>
+
+                    <p><strong>What does timestamp 0 mean?</strong><br>
+                    Timestamp 0 represents January 1, 1970 00:00:00 UTC (the Unix Epoch). In practice, a timestamp of 0 usually indicates missing or uninitialized data rather than an actual 1970 date. Similarly, timestamps like 1 or 1000 often indicate test data or bugs rather than legitimate dates.</p>
+                </div>
+            </details>
         </div>
     </main>
 

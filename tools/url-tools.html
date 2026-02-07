@@ -428,6 +428,19 @@
                 <div class="sidebar-footer">
                     <p class="sidebar-footer-text">DevTools<br><a href="../index.html">More Tools</a></p>
                 </div>
+
+                <!-- AdSense Ad - Sidebar Bottom -->
+                <div class="ad-container" style="text-align: center; margin: 20px 0;">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4697643139994449"
+                         data-ad-slot="SLOT_ID_HERE"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
 
             <!-- Main Editor -->
@@ -520,6 +533,105 @@
 
                 <div class="status-bar" id="status-bar"></div>
             </div>
+        </div>
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About URL Encoder/Decoder</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>URL encoding (also called percent-encoding) is the process of converting characters into a format that can be safely transmitted over the internet. URLs can only contain certain ASCII characters—letters, digits, and a few special symbols. When you need to include spaces, non-ASCII characters, or reserved symbols in a URL, they must be encoded using percent signs followed by hexadecimal values (e.g., space becomes %20).</p>
+                    <p>Our URL Tools provide comprehensive encoding and decoding for URLs, query parameters, and URI components. Whether you're building query strings for API requests, encoding form data, parsing URLs to extract parameters, or debugging URL-related issues in web applications, this tool handles all encoding scenarios correctly and securely.</p>
+                    <p>The tool supports both encodeURI (for complete URLs) and encodeURIComponent (for individual parameters), helps you build complex query strings with multiple key-value pairs, and parses existing URLs to show their components. All processing happens locally in your browser, ensuring your potentially sensitive URL parameters (like API keys or user tokens) never leave your device.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use URL Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Encode URL (encodeURI):</strong> Encode an entire URL while preserving URL structure characters like :, /, ?, &, and =. This is useful when you have a complete URL with special characters in the path or query string. Use this when you need to embed a URL as a parameter in another URL, or when passing URLs through systems that might corrupt special characters.</p>
+
+                    <p><strong>Encode Component (encodeURIComponent):</strong> Encode individual URL parameters or path segments. This encodes ALL special characters including =, &, and ? which are structural parts of URLs. Use this when building query strings with user input, encoding form values, or preparing individual parameters for API requests. This is the most commonly needed encoding type.</p>
+
+                    <p><strong>Decode URL:</strong> Convert percent-encoded URLs back to readable format. This decodes all %XX sequences back to their original characters. Useful for reading encoded query parameters, debugging API responses that return encoded URLs, or making sense of encoded URLs in log files or browser address bars.</p>
+
+                    <p><strong>Parse URL Components:</strong> Break down a complete URL into its constituent parts: protocol (http/https), domain, port, path, query string, and hash fragment. This helps you understand URL structure, extract specific parts for processing, or verify that URLs are constructed correctly before sending HTTP requests.</p>
+
+                    <p><strong>Build Query String:</strong> Create properly encoded query strings from key-value pairs. Enter multiple parameters and the tool automatically encodes values and joins them with & separators. This ensures your query strings are correctly formatted and special characters in values don't break the URL structure.</p>
+
+                    <p><strong>Extract Query Parameters:</strong> Parse a query string to extract all key-value pairs. This is useful when analyzing URLs from analytics, debugging API requests, or extracting specific parameters from browser URLs. The tool shows all parameters in a readable format, making it easy to see what data is being passed.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for URL Encoding</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Use encodeURIComponent for Query Parameters:</strong> When building query strings with user input or variable data, always use encodeURIComponent, not encodeURI. This encodes special characters like = and & that would otherwise break the query string structure. For example: ?name=encodeURIComponent(userName)&city=encodeURIComponent(userCity).</p>
+
+                    <p><strong>Use encodeURI for Complete URLs:</strong> When you need to encode an entire URL (for example, to pass it as a parameter to another service), use encodeURI. This preserves the URL structure (protocol, domain, path separators) while encoding only the characters that aren't valid in URLs. It won't encode characters like / : ? & = that are part of URL syntax.</p>
+
+                    <p><strong>Handle Spaces Correctly:</strong> Spaces in URLs should be encoded as %20 (percent-encoding) or + (in query strings for form data). Different contexts use different conventions. encodeURIComponent uses %20. When in doubt, use %20 as it works in all contexts. The + symbol should only be used in application/x-www-form-urlencoded form submissions.</p>
+
+                    <p><strong>Prevent Double-Encoding:</strong> Only encode values once. If you encode an already-encoded string, special characters get encoded multiple times (%20 becomes %2520), breaking the URL. Before encoding, check if the string is already encoded. When decoding, only decode once unless you know the value was intentionally double-encoded.</p>
+
+                    <p><strong>Reserved vs Unreserved Characters:</strong> Unreserved characters (A-Z, a-z, 0-9, -, _, ., ~) don't need encoding and should be kept as-is. Reserved characters (: / ? # [ ] @ ! $ & ' ( ) * + , ; =) have special meaning in URLs and should be encoded when used as data, not as URL structure. Understanding this distinction prevents encoding errors.</p>
+
+                    <p><strong>Security Considerations:</strong> Always encode user input before including it in URLs to prevent injection attacks. Malicious users might try to inject SQL, JavaScript, or other payloads through URL parameters. Proper encoding neutralizes these attacks by converting special characters to harmless percent-encoded sequences.</p>
+
+                    <p><strong>International Characters (Unicode):</strong> Non-ASCII characters (like Chinese, Arabic, emoji) must be encoded in URLs. They're converted to UTF-8 bytes, then each byte is percent-encoded. For example, "你好" becomes "%E4%BD%A0%E5%A5%BD". Modern browsers handle this automatically, but when building URLs programmatically, ensure proper encoding of international text.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>What is URL encoding?</strong><br>
+                    URL encoding (percent-encoding) is the method of converting characters into a format safe for transmission in URLs. Special characters are represented as % followed by two hexadecimal digits (their UTF-8 byte value). For example, space becomes %20, @ becomes %40. This is necessary because URLs can only contain a limited set of ASCII characters.</p>
+
+                    <p><strong>When should I use encodeURI vs encodeURIComponent?</strong><br>
+                    Use encodeURI when encoding a complete URL (it preserves :, /, ?, &, = that are part of URL structure). Use encodeURIComponent when encoding individual parameters or path segments (it encodes ALL special characters including =, &, ?). For query string values, always use encodeURIComponent. For example: url + "?name=" + encodeURIComponent(value).</p>
+
+                    <p><strong>How do I handle spaces in URLs?</strong><br>
+                    Spaces can be encoded as %20 (standard percent-encoding) or + (in query strings for form submissions). encodeURIComponent converts spaces to %20, which works in all URL contexts. The + representation is mainly for application/x-www-form-urlencoded form data. When in doubt, use %20.</p>
+
+                    <p><strong>What characters need to be encoded in URLs?</strong><br>
+                    Any character that's not a letter (A-Z, a-z), digit (0-9), or one of the unreserved characters (- _ . ~) should be encoded when used as data in a URL. Reserved characters (: / ? # [ ] @ ! $ & ' ( ) * + , ; =) have special meaning in URL structure and must be encoded when used as data values.</p>
+
+                    <p><strong>Why is my URL double-encoded?</strong><br>
+                    Double-encoding happens when you encode an already-encoded string. For example, encoding "%20" results in "%2520" (the % itself gets encoded). This breaks URLs. Check if your input is already encoded before encoding it. Libraries and frameworks sometimes encode automatically, leading to accidental double-encoding.</p>
+
+                    <p><strong>How do I build a query string with multiple parameters?</strong><br>
+                    Concatenate parameters with & separators: ?key1=value1&key2=value2. Each value must be encoded: "?name=" + encodeURIComponent(name) + "&city=" + encodeURIComponent(city). Use our Query Builder feature to automate this and avoid manual encoding errors.</p>
+
+                    <p><strong>What does %20 mean in a URL?</strong><br>
+                    %20 is the percent-encoded representation of a space character. URLs cannot contain literal spaces, so they're converted to %20. Other common encodings: %21 is !, %23 is #, %26 is &, %3D is =, %3F is ?. The two digits after % are the hexadecimal ASCII or UTF-8 byte value.</p>
+                </div>
+            </details>
         </div>
     </main>
 

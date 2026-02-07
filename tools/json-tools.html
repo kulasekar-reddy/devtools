@@ -202,6 +202,19 @@
                 <div class="sidebar-footer">
                     <p class="sidebar-footer-text">DevTools<br><a href="xml-tools.html" style="color: #718096;">XML Tools</a></p>
                 </div>
+
+                <!-- AdSense Ad - Sidebar Bottom -->
+                <div class="ad-container" style="text-align: center; margin: 20px 0;">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4697643139994449"
+                         data-ad-slot="SLOT_ID_HERE"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
 
             <!-- Main Editor -->
@@ -247,6 +260,107 @@
         <div id="loading-overlay" class="loading-overlay hidden">
             <div class="loading-spinner"></div>
             <div class="loading-text">Processing JSON...</div>
+        </div>
+
+        <!-- AdSense Ad - Below Editor -->
+        <div class="ad-container" style="text-align: center; margin: 40px 0;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4697643139994449"
+                 data-ad-slot="SLOT_ID_HERE"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Educational Content Sections -->
+        <div class="content-sections">
+            <details class="content-accordion" open>
+                <summary class="accordion-header">
+                    <h2>About JSON Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p>JSON (JavaScript Object Notation) is a lightweight, text-based data format that has become the standard for data interchange on the web. Originally derived from JavaScript, JSON is now language-independent and supported by virtually every modern programming language. It's used extensively in REST APIs, configuration files, NoSQL databases, and data serialization.</p>
+                    <p>Our JSON Tools provide a comprehensive suite of utilities for working with JSON data. Whether you need to format minified JSON for readability, validate syntax before deployment, or visualize complex nested structures, our browser-based tools handle it all instantly without sending data to any server. This makes it perfect for working with sensitive API responses, authentication tokens, or proprietary data structures.</p>
+                    <p>The interactive tree view feature is particularly useful for exploring large JSON documents with hundreds or thousands of nested objects and arrays. You can expand and collapse nodes to focus on specific sections, making it easier to understand the structure of complex API responses or configuration files. All processing happens locally in your browser using modern JavaScript, ensuring fast performance and complete data privacy.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>How to Use JSON Tools</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Stringify:</strong> Convert a JavaScript object literal into a valid JSON string. This is useful when you have JavaScript code with object literals (e.g., from console.log output) and need to convert it to proper JSON format. Simply paste the JavaScript object and click Stringify.</p>
+
+                    <p><strong>Parse:</strong> Convert a JSON string into a JavaScript object and validate its syntax. If the JSON is invalid, you'll see a detailed error message with the line number and specific issue. This helps catch syntax errors like missing commas, unclosed brackets, or invalid characters before you deploy your code.</p>
+
+                    <p><strong>Format (Beautify):</strong> Add proper indentation, line breaks, and spacing to minified or compact JSON. Our formatter uses 2-space indentation by default, making the JSON human-readable while maintaining its structure. This is essential when debugging API responses or reviewing configuration files.</p>
+
+                    <p><strong>Minify:</strong> Remove all unnecessary whitespace, line breaks, and indentation to reduce file size. Minified JSON is ideal for production environments, network transmission, or storage where bandwidth and space are concerns. You can minify JSON before embedding it in HTML or sending it to an API.</p>
+
+                    <p><strong>Tree View:</strong> Visualize JSON structure as an interactive tree with collapsible nodes. Click on objects and arrays to expand or collapse them. This view is invaluable for understanding deeply nested data structures, exploring API responses with complex hierarchies, or finding specific values in large JSON documents.</p>
+
+                    <p><strong>Import/Export:</strong> Load JSON files from your computer or save your formatted JSON to a file. The Import button opens a file picker, and Export creates a downloadable .json file. This is useful for batch processing multiple JSON files or sharing formatted results with your team.</p>
+
+                    <p><strong>Search & Replace:</strong> Use the search toolbar to find and replace text within your JSON. Supports case-sensitive search and regex patterns. This feature helps when you need to update values, rename keys, or modify URLs across large JSON documents.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Best Practices for JSON</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>Always Validate Before Deployment:</strong> Use the Validate button to check your JSON syntax before deploying to production. A single syntax error can break API integrations or crash applications. Common errors include trailing commas, unquoted keys, single quotes instead of double quotes, and unclosed brackets.</p>
+
+                    <p><strong>Use Consistent Indentation:</strong> Format JSON with either 2-space or 4-space indentation and stick with that convention across your project. Consistent formatting makes code reviews easier and helps teams collaborate effectively. Our tool defaults to 2-space indentation, which is the most common standard.</p>
+
+                    <p><strong>Avoid Deeply Nested Structures:</strong> Try to limit nesting to 4-5 levels maximum. Deeply nested JSON (>6 levels) becomes difficult to read, parse, and maintain. If you find yourself with extremely nested data, consider flattening the structure or splitting it into multiple objects.</p>
+
+                    <p><strong>Handle Special Characters Properly:</strong> JSON requires double quotes for strings and escaping special characters like backslashes, quotes, and newlines. Use our escape tool to properly encode strings containing special characters before embedding them in JSON. This prevents parsing errors and security vulnerabilities.</p>
+
+                    <p><strong>Quote All Property Names:</strong> While JavaScript allows unquoted property names, JSON requires all keys to be enclosed in double quotes. This is a common source of errors when converting JavaScript objects to JSON. Always use double quotes for both keys and string values.</p>
+
+                    <p><strong>No Trailing Commas:</strong> JSON does not allow trailing commas after the last element in arrays or objects. While some JavaScript engines are lenient, strict JSON parsers will reject trailing commas. Always remove them before validating or transmitting JSON data.</p>
+
+                    <p><strong>Use Appropriate Data Types:</strong> JSON supports strings, numbers, booleans, null, objects, and arrays. Choose the right type for your data—don't use strings for boolean values or numeric IDs when numbers are more appropriate. Proper typing improves API clarity and reduces bugs.</p>
+                </div>
+            </details>
+
+            <details class="content-accordion">
+                <summary class="accordion-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <span class="accordion-icon">▼</span>
+                </summary>
+                <div class="accordion-content">
+                    <p><strong>What is JSON formatting?</strong><br>
+                    JSON formatting (also called JSON beautifying) is the process of adding proper indentation, line breaks, and spacing to JSON data to make it human-readable. Our free JSON formatter adds 2-space indentation by default, making it easy to read and understand complex JSON structures.</p>
+
+                    <p><strong>Is this JSON formatter free to use?</strong><br>
+                    Yes, our JSON formatter is completely free with no signup required. It works offline in your browser, and we never store or collect your data. All processing happens locally on your device.</p>
+
+                    <p><strong>How do I validate JSON online?</strong><br>
+                    Simply paste your JSON into the editor and click the Validate button. Our tool will check the syntax and highlight any errors with line numbers and descriptions, helping you quickly identify and fix issues.</p>
+
+                    <p><strong>What is JSON stringify?</strong><br>
+                    JSON stringify converts a JavaScript object into a JSON string. This is useful when you need to send data to a server, store it in local storage, or include it in a text format. The stringify process ensures all keys are quoted and special characters are properly escaped.</p>
+
+                    <p><strong>What's the difference between stringify and minify?</strong><br>
+                    Stringify converts a JavaScript object to JSON format (adding quotes to keys, escaping characters). Minify removes whitespace from already-valid JSON to reduce file size. You might stringify first to ensure valid JSON, then minify to reduce bandwidth.</p>
+
+                    <p><strong>How do I fix JSON syntax errors?</strong><br>
+                    Click the Validate button to see the specific error message and line number. Common fixes include: adding missing commas between elements, removing trailing commas, using double quotes instead of single quotes, closing all brackets and braces, and escaping special characters in strings.</p>
+
+                    <p><strong>Can I convert JSON to other formats?</strong><br>
+                    Yes! Use our YAML Tools to convert JSON to YAML format, which is commonly used for Kubernetes configurations and CI/CD pipelines. We also have XML Tools for converting to XML if needed for legacy systems or SOAP APIs.</p>
+                </div>
+            </details>
         </div>
     </main>
 
