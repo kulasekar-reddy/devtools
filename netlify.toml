@@ -22,6 +22,16 @@
   to = "/tools/url-tools.html"
   status = 200
 
+[[redirects]]
+  from = "https://yml.formatting.tech/*"
+  to = "/tools/yml-tools.html"
+  status = 200
+
+[[redirects]]
+  from = "https://diff.formatting.tech/*"
+  to = "/tools/diff-tools.html"
+  status = 200
+
 # Security and caching headers
 [[headers]]
   for = "/*"
