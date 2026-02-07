@@ -580,7 +580,7 @@ details[open] .accordion-icon {
 
 /* Ad Container Styling */
 .ad-container {
-    display: none;  /* Hidden - using Auto Ads instead. Remove this line to enable manual ads */
+    display: none;  /* Hidden - using Auto Ads instead */
     margin: 30px 0;
     padding: 15px;
     background: var(--secondary-bg);
